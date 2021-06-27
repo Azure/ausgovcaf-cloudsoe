@@ -31,7 +31,11 @@ If you aren't familiar with how to contribute to open-source repositories using 
 
 ## 📃Signing the CLA
 
-Before we can accept your pull requests you will be asked to sign electronically Contributor License Agreement (CLA), which is a pre-requisite for any contributions to our repositories. This will be one-time process, so for any future contributions you will not be asked to re-sign anything. After the CLA has been signed, our core team members will have a look at your submission for a final verification of the submission. Please do not delete your development branch until the submission has been closed.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+After the CLA has been signed, our core team members will have a look at your submission for a final verification of the submission. Please do not delete your development branch until the submission has been closed.
 
 You can find Microsoft CLA from the following address - https://cla.microsoft.com.
 
