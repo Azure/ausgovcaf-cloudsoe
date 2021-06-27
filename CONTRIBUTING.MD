@@ -9,6 +9,7 @@ For more information, see the [Code of Conduct FAQ](https://opensource.microsoft
 
 Remember that this repository is maintained by community members who volunteer their time to help. Be courteous and patient.
 
+
 ## ❓ Questions, Problems, Issues, Bugs and contributions
 
 Please open GitHub issues for general questions with a question tag after reading the [FAQ](https://github.com/Azure/ausgovcaf-cloudsoe/wiki/FAQ) on the Wiki.
@@ -22,9 +23,11 @@ Whenever you are submitting any changes to this repository, please follow these 
 * If your pull request shows merge conflicts, make sure to update your local main to be a mirror of what's in the main repo before making your modifications
 * Do not include any binaries in PRs, including compiled Guest Configurations. We maintain a strict no binaries policy as part of this repository.
 
+
 ## ➡ Submitting Pull Requests
 
-> If you aren't familiar with how to contribute to open-source repositories using GitHub, you should check out the [Introduction to GitHub](https://lab.github.com/githubtraining/introduction-to-github) tutorial which covers using github in an interactive lab style learning format.
+If you aren't familiar with how to contribute to open-source repositories using GitHub, you should check out the [Introduction to GitHub](https://lab.github.com/githubtraining/introduction-to-github) tutorial which covers using github in an interactive lab style learning format.
+
 
 ## 📃Signing the CLA
 
