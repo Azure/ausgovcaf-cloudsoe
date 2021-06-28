@@ -1,0 +1,308 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceRegion": {
+            "type": "string",
+            "metadata": {
+                "description": "The region that log analytics is deployed to."
+            }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Log Analytics Workspace where any data sources will be directed."
+            }
+        }
+    },
+    "variables": {
+        "workspaceName": "[split(parameters('workspaceResourceId'),'/')[8]]",
+        "changeTrackingResourceName": "[concat('ChangeTracking(', variables('workspaceName'), ')')]",
+        "securityResourceName": "[concat('Security(', variables('workspaceName'), ')')]",
+        "securityCenterFreeResourceName": "[concat('SecurityCenterFree(', variables('workspaceName'), ')')]",
+        "updatesResourceName": "[concat('Updates(', variables('workspaceName'), ')')]"
+    },
+    "resources": [      
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "name": "[variables('changeTrackingResourceName')]",
+            "location": "[parameters('workspaceRegion')]",
+            "properties": {
+                "workspaceResourceId": "[parameters('workspaceResourceId')]"
+            },
+            "plan": {
+                "name": "[concat('ChangeTracking(', variables('workspaceName'), ')')]",
+                "product": "OMSGallery/ChangeTracking",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+            }
+        },
+        {
+            //Enable Azure Defender for Servers on Log Analytics workspace
+            "type": "Microsoft.OperationsManagement/solutions",
+            "apiVersion": "2015-11-01-preview",
+            "name": "[variables('securityResourceName')]",
+            "location": "Southeast Asia",
+            "plan": {
+                "name": "[variables('securityResourceName')]",
+                "promotionCode": "",
+                "product": "OMSGallery/Security",
+                "publisher": "Microsoft"
+            },
+            "properties": {
+                "workspaceResourceId": "[parameters('workspaceResourceId')]"
+            }
+        },
+        {
+            "type": "Microsoft.OperationsManagement/solutions",
+            "apiVersion": "2015-11-01-preview",
+            "name": "[variables('securityCenterFreeResourceName')]",
+            "location": "Southeast Asia",
+            "plan": {
+                "name": "[variables('securityCenterFreeResourceName')]",
+                "promotionCode": "",
+                "product": "OMSGallery/SecurityCenterFree",
+                "publisher": "Microsoft"
+            },
+            "properties": {
+                "workspaceResourceId": "[parameters('workspaceResourceId')]"
+            }
+        },
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "name": "[variables('updatesResourceName')]",
+            "location": "[parameters('workspaceRegion')]",
+            "plan": {
+                "name": "[variables('updatesResourceName')]",
+                "promotionCode": "",
+                "product": "OMSGallery/Updates",
+                "publisher": "Microsoft"
+            },
+            "properties": {
+                "workspaceResourceId": "[parameters('workspaceResourceId')]"
+            }
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','ChangeTrackingDefaultRegistry_IPv6 Setting')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.OperationsManagement/solutions', variables('changeTrackingResourceName'))]"
+            ],
+            "properties": {
+                "enabled": "True",
+                "keyName": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                "valueName": "",
+                "recurse": "False",
+                "groupTag": "Custom"
+            },
+            "kind": "ChangeTrackingDefaultRegistry"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','ChangeTrackingDefaultRegistry_LSA Setting')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.OperationsManagement/solutions', variables('changeTrackingResourceName'))]"
+            ],
+            "properties": {
+                "enabled": "True",
+                "keyName": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa",
+                "valueName": "",
+                "recurse": "False",
+                "groupTag": "Custom"
+            },
+            "kind": "ChangeTrackingDefaultRegistry"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','ChangeTrackingDefaultRegistry_WindowsNtCurrentVersion')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.OperationsManagement/solutions', variables('changeTrackingResourceName'))]"
+            ],
+            "properties": {
+                "enabled": "True",
+                "keyName": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+                "valueName": "",
+                "recurse": "False",
+                "groupTag": "Custom"
+            },
+            "kind": "ChangeTrackingDefaultRegistry"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-NTLM/Operational'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-NTLM/Operational",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-CodeIntegrity/Operational'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-CodeIntegrity/Operational",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-AppLocker/MSI and Script'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-AppLocker/MSI and Script",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-Security-Mitigations/KernelMode'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-Security-Mitigations/KernelMode",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-Windows Defender/Operational'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-Windows Defender/Operational",
+
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-Security-Mitigations/UserMode'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-Security-Mitigations/UserMode",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-Win32k/Operational'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-Win32k/Operational",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/','DataSource_WindowsEvent_',guid('Microsoft-Windows-Windows Defender/WHC'))]",
+            "properties": {
+                "eventLogName": "Microsoft-Windows-Windows Defender/WHC",
+                "eventTypes": [
+                    {
+                        "eventType": "Error"
+                    },
+                    {
+                        "eventType": "Warning"
+                    },
+                    {
+                        "eventType": "Information"
+                    }
+                ]
+            },
+            "kind": "WindowsEvent"
+        },
+        {
+            //Set Log Analytics workspace to collect all security events
+            "apiVersion": "2020-08-01",
+            "type": "Microsoft.OperationalInsights/workspaces/dataSources",
+            "name": "[concat(variables('workspaceName'),'/SecurityEventCollectionConfiguration')]",
+            "kind": "SecurityEventCollectionConfiguration",
+            "properties": {
+                "tier": "All",
+                "tierSetMethod": "Custom"
+            }
+        }
+    ]
+}

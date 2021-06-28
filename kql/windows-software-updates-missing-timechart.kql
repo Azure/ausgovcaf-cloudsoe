@@ -1,0 +1,4 @@
+//Show system missing updates over time
+UpdateSummary
+| project TimeGenerated,Computer, SecurityUpdatesMissing
+| render timechart with (series = Computer)

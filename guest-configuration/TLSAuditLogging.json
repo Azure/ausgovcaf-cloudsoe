@@ -1,0 +1,10 @@
+{
+    "DisplayName": "GC - TLS Hanshake Schannel Auditing",
+    "Description": "Sets TLS SChannel event logging to required level",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-tls-audit-logging"
+}

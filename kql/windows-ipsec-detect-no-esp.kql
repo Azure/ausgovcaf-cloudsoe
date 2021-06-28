@@ -1,0 +1,11 @@
+//KQL query to detect IPsec SAs without ESP
+SecurityEvent 
+| where EventID == 5451
+| extend ed = parse_xml(EventData).EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'EspAuthType'
+    | project ESPAuthType = ed['#text']
+)
+| where ESPAuthType == "-"
+| project TimeGenerated, Computer, Activity, ESPAuthType

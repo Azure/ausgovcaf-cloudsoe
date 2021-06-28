@@ -1,0 +1,180 @@
+{
+    "version": "Notebook/1.0",
+    "items": [
+      {
+        "type": 12,
+        "content": {
+          "version": "NotebookGroup/1.0",
+          "groupType": "editable",
+          "items": [
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "4b9d666f-cd5c-4aa7-bb35-c20ed964038b",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "Subscription",
+                    "type": 6,
+                    "value": "/subscriptions/888352be-306d-489d-8e87-dacd675cdde7",
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "includeAll": false
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  },
+                  {
+                    "id": "a8f09936-9352-419f-a1ab-2b8e4ea9da11",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "Workspace",
+                    "type": 5,
+                    "isRequired": true,
+                    "query": "Resources \r\n| where type =~ \"microsoft.operationalinsights/workspaces\" \r\n| order by name \r\n| project id, name, selected=row_number()==1, group=resourceGroup\r\n",
+                    "crossComponentResources": [
+                      "{Subscription}"
+                    ],
+                    "typeSettings": {
+                      "resourceTypeFilter": {
+                        "microsoft.operationalinsights/workspaces": true
+                      },
+                      "additionalResourceOptions": []
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    },
+                    "queryType": 1,
+                    "resourceType": "microsoft.resourcegraph/resources"
+                  },
+                  {
+                    "id": "122b9b0b-226f-4556-a23c-f1e5231e6369",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "TimeRange",
+                    "type": 4,
+                    "isRequired": true,
+                    "value": {
+                      "durationMs": 604800000
+                    },
+                    "typeSettings": {
+                      "selectableValues": [
+                        {
+                          "durationMs": 300000
+                        },
+                        {
+                          "durationMs": 900000
+                        },
+                        {
+                          "durationMs": 1800000
+                        },
+                        {
+                          "durationMs": 3600000
+                        },
+                        {
+                          "durationMs": 14400000
+                        },
+                        {
+                          "durationMs": 43200000
+                        },
+                        {
+                          "durationMs": 86400000
+                        },
+                        {
+                          "durationMs": 172800000
+                        },
+                        {
+                          "durationMs": 259200000
+                        },
+                        {
+                          "durationMs": 604800000
+                        },
+                        {
+                          "durationMs": 1209600000
+                        },
+                        {
+                          "durationMs": 2419200000
+                        },
+                        {
+                          "durationMs": 2592000000
+                        },
+                        {
+                          "durationMs": 5184000000
+                        },
+                        {
+                          "durationMs": 7776000000
+                        }
+                      ]
+                    },
+                    "timeContext": {
+                      "durationMs": 86400000
+                    }
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.resourcegraph/resources"
+              },
+              "name": "parameters - 3"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "Resources \r\n | where type =~ 'microsoft.compute/virtualmachines' \r\n| mv-expand nic=properties.networkProfile.networkInterfaces  \r\n| project vmId = id, vmName = name, vmSize=tostring(properties.hardwareProfile.vmSize), nicId = tostring(nic.id)  \r\n| join kind=inner ( \r\n resources \r\n| where type == 'microsoft.network/networkinterfaces' \r\n| mvexpand properties.ipConfigurations \r\n| extend subnetId = tostring(properties_ipConfigurations.properties.subnet.id) \r\n| extend nicId = id \r\n| join kind=inner ( \r\n  resources \r\n| where type == 'microsoft.network/virtualnetworks' \r\n| mvexpand properties.subnets \r\n| where tostring(properties_subnets.properties.addressPrefixes) !contains ':' \r\n| extend subnetId = tostring(properties_subnets.id)) \r\n on subnetId \r\n) on nicId \r\n| project resourceId=vmId \r\n",
+                "size": 4,
+                "title": "VMs connected to IPv4-only subnets",
+                "queryType": 1,
+                "resourceType": "microsoft.resourcegraph/resources",
+                "crossComponentResources": [
+                  "{Subscription}"
+                ],
+                "sortBy": []
+              },
+              "customWidth": "50",
+              "name": "VMs connected to IPv4-only subnets"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "Heartbeat | where SourceComputerId !in (\r\n    ( ConfigurationData \r\n    | where RegistryKey == \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip6\\\\Parameters\"\r\n    | where ValueName == \"DisabledComponents\"\r\n    | where ValueData == 255\r\n    | project SourceComputerId )\r\n)\r\n| extend resourceId=ResourceId\r\n| distinct resourceId",
+                "size": 4,
+                "title": "VMs with IPv6 enabled",
+                "timeContext": {
+                  "durationMs": 172800000
+                },
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "{Workspace}"
+                ],
+                "sortBy": []
+              },
+              "customWidth": "50",
+              "name": "VMs with IPv6 enabled"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"1b6e1fb4-3772-4f5b-865d-359634a75035\",\"mergeType\":\"inner\",\"leftTable\":\"VMs connected to IPv4-only subnets\",\"rightTable\":\"VMs with IPv6 enabled\",\"leftColumn\":\"resourceId\",\"rightColumn\":\"resourceId\"}],\"projectRename\":[{\"originalName\":\"[VMs with IPv6 enabled].resourceId\",\"mergedName\":\"VMs\",\"fromId\":\"1b6e1fb4-3772-4f5b-865d-359634a75035\"},{\"originalName\":\"[query - KQL query].resourceId\"},{\"originalName\":\"[query - 0].rowCount\"},{\"originalName\":\"[query - 0 - Copy].rowCount\"},{\"originalName\":\"resourceId\"},{\"originalName\":\"[query - ARG query].resourceId\"},{\"originalName\":\"[VMs connected to IPv4-only subnets].resourceId\"}]}",
+                "size": 1,
+                "title": "VMs with unused IPv6",
+                "queryType": 7,
+                "gridSettings": {
+                  "rowLimit": 5000
+                }
+              },
+              "name": "VMs unused IPv6"
+            }
+          ]
+        },
+        "name": "Detect unused IPv6"
+      }
+    ],
+    "fallbackResourceIds": [
+      "Azure Monitor"
+    ],
+    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+  }

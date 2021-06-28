@@ -1,0 +1,7 @@
+//Shows the oldest updates not yet installed
+Update
+| where MSRCSeverity == "Critical" or MSRCSeverity == "Security"
+| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId
+| where UpdateState != "Installed"
+| project Computer, Product, MSRCSeverity, KBID, Title, UpdateState, HoursOld = datetime_diff('hour',now(),PublishedDate)
+| sort by HoursOld

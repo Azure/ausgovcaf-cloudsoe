@@ -1,0 +1,35 @@
+//Summarise all WDAC block events by count of event pattern
+Event
+| where EventID == 3077
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'Process Name'
+    | project CallingProcess = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'File Name'
+    | project FileName = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'PolicyName'
+    | project PolicyName = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'FileDescription'
+    | project FileDescription = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ProductName'
+    | project ProductName = tostring(ed['#text'])
+)
+| project TimeGenerated,Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName
+| summarize count() by Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName

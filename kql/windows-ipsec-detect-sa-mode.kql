@@ -1,0 +1,11 @@
+//KQL query to detect IPsec Transport mode
+SecurityEvent 
+| where EventID == 5451
+| extend ed = parse_xml(EventData).EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'Mode'
+    | project Mode = ed['#text']
+)
+| where Mode == "%%16403"
+| project TimeGenerated, Computer, Activity, Mode="Transport"

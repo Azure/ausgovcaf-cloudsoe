@@ -1,0 +1,5 @@
+//Show systems missing most updates
+UpdateSummary 
+| summarize arg_max(TimeGenerated, *) by SourceComputerId
+| project Computer, OsVersion,OldestMissingSecurityUpdateInDays
+| sort by OldestMissingSecurityUpdateInDays

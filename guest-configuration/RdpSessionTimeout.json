@@ -1,0 +1,10 @@
+{
+    "DisplayName": "Audit RDP session timeout",
+    "Description": "Audit if the RDP session timeout warning period is configured to 13 minutes.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-rdp-session-timeout"
+}

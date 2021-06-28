@@ -1,0 +1,10 @@
+{
+    "DisplayName": "GC - NTLM Audit Logging",
+    "Description": "Sets expected NTLM audit settings for servers and domain controllers.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-ntlm-audit-logging"
+}

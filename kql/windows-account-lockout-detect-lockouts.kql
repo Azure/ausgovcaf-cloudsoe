@@ -1,0 +1,3 @@
+//KQL query to show account lockout events
+SecurityEvent 
+| where EventID == 4740

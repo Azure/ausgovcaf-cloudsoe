@@ -1,0 +1,10 @@
+{
+    "DisplayName": "GC - Windows logon Banner",
+    "Description": "Audit if the Windows logon banner complies with the specified banner text and title.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-windows-logon-banner"
+}

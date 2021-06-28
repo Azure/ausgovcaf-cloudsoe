@@ -1,0 +1,10 @@
+{
+    "DisplayName": "Internet Explorer Baseline",
+    "Description": "Policy settings baseline for Internet Explorer sourced from Security Configuration Toolkit.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-windows-ie-baseline"
+}

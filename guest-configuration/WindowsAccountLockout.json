@@ -1,0 +1,12 @@
+{
+    "DisplayName": "GC - Windows Account Lockout settings & logging",
+    "Description": "Ensures expected account lockout threshold and sets account lockout auditing.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources",
+        "AuditPolicyDsc",
+        "SecurityPolicyDsc"
+    ], 
+    "PolicyPath": "gc-windows-account-lockout"
+}

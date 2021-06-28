@@ -1,0 +1,9 @@
+//Identifies the prevelance of unqiue software versions
+ConfigurationData 
+| where ConfigDataType == "Software"
+| where SoftwareType == "Application"  
+| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion
+| summarize Systems=make_set(Computer) by SoftwareName,Publisher,CurrentVersion
+| where not(Publisher == "Microsoft Corporation" and SoftwareName hasprefix "Security Intelligence Update for Microsoft Defender Antivirus - KB")
+| where not(Publisher == "Microsoft Corporation" and SoftwareName hasprefix "Update for Microsoft Defender Antivirus antimalware platform - KB")
+| project SoftwareVersion = strcat(SoftwareName, " ", CurrentVersion), Publisher, SystemCount = array_length(Systems), Systems

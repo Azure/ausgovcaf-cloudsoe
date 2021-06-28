@@ -1,0 +1,221 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "policyScopeId": {
+            "type": "string",
+            "metadata": {
+                "description": "The scope at which policies, relating to the cloud SOE, will be assigned."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Log Analytics Workspace where any data sources will be directed."
+            }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Log Analytics Workspace where any data sources will be directed."
+            }
+        },
+        "workspaceRegion": {
+            "type": "string",
+            "metadata": {
+                "description": "The region that log analytics is deployed to."
+            }
+        },
+        "automationAccountResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource ID of the automation account that is linked to the workspace."
+            }
+        },
+        "updateManagementScope": {
+            "type": "array",
+            "metadata": {
+                "description": "An array of subscription resource IDs that are in-scope of update management."
+            }
+        }
+    },
+    "variables": {
+        "workspaceResourceGroup": "[split(parameters('workspaceResourceId'),'/')[4]]",
+        "automationAccountResourceGroup": "[split(parameters('automationAccountResourceId'),'/')[4]]"
+        
+    },
+    "resources": [
+        {
+            "name": "CloudSOEImageRG",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-06-01",
+            "location": "australiaeast"
+        },
+        {
+            //Enable Azure Defender for Servers at subscription
+            "type": "Microsoft.Security/pricings",
+            "apiVersion": "2018-06-01",
+            "name": "VirtualMachines",
+            "dependsOn": [
+                "CloudSOELaSolutionDeployment"
+            ],
+            "properties": {
+              "pricingTier": "Standard"
+            }
+          },
+          {
+            //Turn on Log Analytics agent autodeployment
+            "name": "default",
+            "type": "Microsoft.Security/autoProvisioningSettings",
+            "apiVersion": "2017-08-01-preview",
+            "dependsOn": [
+                "CloudSOELaSolutionDeployment",
+                "[resourceId('Microsoft.Security/pricings', 'VirtualMachines')]"
+            ],
+            "properties": {
+                "autoProvision": "On"
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "CloudSOEAutomanageAccountDeployment",
+            "resourceGroup": "CloudSOEImageRG",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', 'CloudSOEImageRG')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "apiVersion": "2020-06-30-preview",
+                            "name": "CloudSOEAutomanage",
+                            "type": "Microsoft.Automanage/accounts",
+                            "location": "eastus",
+                            "identity": {
+                                "type": "SystemAssigned"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "CloudSOEImageDeployment",
+            "resourceGroup": "CloudSOEImageRG",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', 'CloudSOEImageRG')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, 'arm-cloudsoe-image.json')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "AutomationDeployment",
+            "resourceGroup": "[variables('automationAccountResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, 'arm-cloudsoe-automation.json')]"
+                },
+                "parameters": {
+                    "automationAccountResourceId": {
+                        "value": "[parameters('automationAccountResourceId')]"
+                    },
+                    "updateManagementScope": {
+                        "value": "[parameters('updateManagementScope')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "CloudSOELaSolutionDeployment",
+            "resourceGroup": "[variables('workspaceResourceGroup')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', 'CloudSOEImageRG')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, 'arm-cloudsoe-la-solutions.json')]"
+                },
+                "parameters": {
+                    "workspaceRegion": {
+                        "value": "[parameters('workspaceRegion')]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[parameters('workspaceResourceId')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "CloudSOEPolicyBaselineDeployment",
+            "location": "eastus",
+            "dependsOn": [
+                "CloudSOEImageDeployment",
+                "CloudSOEAutomanageAccountDeployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, 'arm-cloudsoe-policy-baseline.json')]"
+                },
+                "parameters": {
+                    "policyScopeId": {
+                        "value": "[parameters('policyScopeId')]"
+                    },
+                    "workspaceId": {
+                        "value": "[parameters('workspaceId')]"
+                    },
+                    "windowsSOEImageArray": 
+                    {
+                        "value": "[reference('CloudSOEImageDeployment').outputs.windowsImageIds.value]"
+                    },
+                    "linuxSOEImageArray": {
+                        "value": "[reference('CloudSOEImageDeployment').outputs.linuxImageIds.value]" 
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "CloudSOEWorkbookDeployment",
+            "resourceGroup": "[variables('workspaceResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, 'arm-cloudsoe-workbook.json')]"
+                },
+                "parameters": {
+                    "defaultSubscriptionId": {
+                        "value": "[subscription().subscriptionId]"
+                    },
+                    "defaultWorkspaceResourceId": {
+                        "value": "[parameters('workspaceResourceId')]"
+                    }
+                }
+            }
+        }
+    ]
+}

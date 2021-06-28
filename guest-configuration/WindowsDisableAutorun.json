@@ -1,0 +1,10 @@
+{
+    "DisplayName": "Audit Windows autorun settings",
+    "Description": "Audit if the Windows autorun settings have been configured to disable autorun.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-windows-disable-autorun"
+}

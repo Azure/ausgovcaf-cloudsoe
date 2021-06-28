@@ -1,0 +1,10 @@
+{
+    "DisplayName": "GC - TLS Version .NET Auditing",
+    "Description": "Reports on allowed TLS settings .NET applications for servers.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-tls-dot-net-settings"
+}

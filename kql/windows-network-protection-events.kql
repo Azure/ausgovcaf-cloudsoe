@@ -1,0 +1,37 @@
+//Summarise Network Protection events
+let Responses = datatable (EventID:int, Response:string)
+    [
+        1126, "Block",
+        1125, "Audit"
+    ];
+Event
+| where EventLog == "Microsoft-Windows-Windows Defender/Operational" or EventLog == "Microsoft-Windows-Windows Defender/WHC"
+| where EventID == 1125 or EventID == 1126
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'Detection Time'
+    | project DetectionTime = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'User'
+    | project User = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'Destination'
+    | project Destination = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'Process Name'
+    | project ProcessName = tostring(ed['#text'])
+)
+| join kind=leftouter Responses on EventID
+| summarize Count=count() by Computer, ProcessName, User, Destination, Response
+| project Count, Response, Computer, ProcessName, Destination, User
+| sort by Count
