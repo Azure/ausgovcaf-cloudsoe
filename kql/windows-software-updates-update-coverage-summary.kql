@@ -1,0 +1,15 @@
+//Shows all updates newer than 90 days and all updates with < 100% coverage and renders their coverage summary
+Update
+| where MSRCSeverity == "Critical" or MSRCSeverity == "Security"
+| where TimeGenerated > now(-180days) or UpdateID in ( 
+    (Update
+    | where MSRCSeverity == "Critical" or MSRCSeverity == "Security"
+    | summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId
+    | where UpdateState != "Installed"
+    | project UpdateID)
+)
+| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId
+| summarize NotInstalledCount = countif(UpdateState != "Installed"), InstalledCount = countif(UpdateState == "Installed"), TotalCount = count() by Product, MSRCSeverity, KBID, Title
+//| project Product, MSRCSeverity, KBID, Title, NotInstalledCount, InstalledCount, TotalCount, Coverage = strcat(tostring(InstalledCount / TotalCount * 100),"%")
+| project Update=strcat(Product," - ", Title), NotInstalledCount,InstalledCount
+| render barchart with (kind = stacked)

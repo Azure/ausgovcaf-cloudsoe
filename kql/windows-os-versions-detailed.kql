@@ -1,0 +1,10 @@
+//Details VM and associated operating system version
+let VersionConfigItems = ConfigurationData 
+| where RegistryKey =~ "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"
+| where ValueName =~ "ProductName" or ValueName =~ "ReleaseId"
+| summarize arg_max(TimeGenerated, *) by Computer,ValueName
+| project Computer, ValueName, ValueData;
+VersionConfigItems
+| extend p = pack(ValueName, ValueData)
+| summarize bag=make_bag(p) by Computer
+| evaluate bag_unpack(bag);

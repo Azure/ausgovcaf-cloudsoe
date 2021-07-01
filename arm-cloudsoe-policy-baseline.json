@@ -1,0 +1,479 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "policyScopeId": {
+            "type": "string",
+            "metadata": {
+                "description": "The scope at which policies, relating to the cloud SOE, will be assigned."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Log Analytics Workspace where any data sources will be directed."
+            }
+        },
+        "windowsSOEImageArray": {
+            "type": "array",
+            "metadata": {
+                "description": "An array of all Windows SOE image IDs."
+            },
+            "defaultValue": []
+        },
+        "linuxSOEImageArray": {
+            "type": "array",
+            "metadata": {
+                "description": "An array of all Linux SOE image IDs."
+            },
+            "defaultValue": []
+        }
+    },
+    "variables": {
+        "commonAssignmentParameters": {
+            "assignedBy": "CloudSOE Policy Baseline",
+            "policyScopeId": "[parameters('policyScopeId')]"
+        },
+        "policyDefinitions":[
+            {
+                "relativeUri": "policies/enable-automanage-profile/policy.template.json",
+                "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag"
+            },
+            {
+                "relativeUri": "policies/tag-vm-resources/policy.template.json",
+                "customPolicyDefinitionName": "tag-vm-resources"
+            },
+            {
+                "relativeUri": "policies/gc-windows-logon-banner/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-logon-banner"
+            },
+            {
+                "relativeUri": "policies/enable-vulnerability-assessment/policy.template.json",
+                "customPolicyDefinitionName": "enable-vulnerability-assessment"
+            },
+            {
+                "relativeUri": "policies/gc-ipsec-audit-logging/policy.template.json",
+                "customPolicyDefinitionName": "gc-ipsec-audit-logging"
+            },
+            {
+                "relativeUri": "policies/gc-ntlm-audit-logging/policy.template.json",
+                "customPolicyDefinitionName": "gc-ntlm-audit-logging"
+            },
+            {
+                "relativeUri": "policies/gc-windows-account-lockout/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-account-lockout"
+            },
+            {
+                "relativeUri": "policies/gc-windows-security-baseline-2016/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-security-baseline-2016"
+            },
+            {
+                "relativeUri": "policies/gc-windows-security-baseline-2019/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-security-baseline-2019"
+            },
+            {
+                "relativeUri": "policies/gc-windows-powershell-logging/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-powershell-logging"
+            },
+            {
+                "relativeUri": "policies/gc-windows-disable-autorun/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-disable-autorun"
+            },
+            {
+                "relativeUri": "policies/gc-windows-powershell-v2/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-powershell-v2"
+            },
+            {
+                "relativeUri": "policies/gc-windows-ie-baseline/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-ie-baseline"
+            },
+            {
+                "relativeUri": "policies/gc-tls-schannel-settings/policy.template.json",
+                "customPolicyDefinitionName": "gc-tls-schannel-settings"
+            },
+            {
+                "relativeUri": "policies/gc-tls-dot-net-settings/policy.template.json",
+                "customPolicyDefinitionName": "gc-tls-dot-net-settings"
+            },
+            {
+                "relativeUri": "policies/gc-tls-audit-logging/policy.template.json",
+                "customPolicyDefinitionName": "gc-tls-audit-logging"
+            }
+        ],
+        "policyAssignments": [
+            {
+                "assignmentName": "enable-azure-monitor-for-vms",
+                "displayName": "Enable Azure Monitor for VMs",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a",
+                    "roleDefinitionIds": [
+                        "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+                    ]
+                },
+                "parameters": {
+                    "logAnalytics_1": {
+                        "value": "[parameters('workspaceId')]"
+                    },
+                    "listofImageIdToInclude_windows": {
+                        "value": "[parameters('windowsSOEImageArray')]"
+                    },
+                    "listofImageIdToInclude_linux": {
+                        "value": "[parameters('linuxSOEImageArray')]"
+                    }
+                }
+            },
+            {
+                "assignmentName": "enable-guest-configuration",
+                "displayName": "Install Guest Configuration prerequisites",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/12794019-7a00-42cf-95c2-882eed337cc8",
+                    "roleDefinitionIds": [
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ]
+                },
+                "parameters": {}
+            },
+            {
+                "assignmentName": "enable-automanage-profile-nonprod",
+                "displayName": "Enable Automanage for non-prod systems",
+                "definition": {
+                    "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag",
+                    "roleDefinitionIds": [
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ]
+                },
+                "parameters": {
+                    "automanageAccount": {
+                        "value": "[concat(subscription().id,'/resourcegroups/cloudsoeimagerg/providers/microsoft.automanage/accounts/cloudsoeautomanage')]"
+                    },
+                    "configurationProfileAssignment": {
+                        "value": "Azure virtual machine best practices – Dev/test"
+                    },
+                    "TagName": {
+                        "value": "Production"
+                    },
+                    "TagValue": {
+                        "value": "False"
+                    }
+                }
+            },
+            {
+                "assignmentName": "enable-automanage-profile-prod",
+                "displayName": "Enable Automanage for production systems",
+                "definition":{
+                    "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag",
+                    "roleDefinitionIds": [
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ]
+                },
+                "parameters": {
+                    "automanageAccount": {
+                        "value": "[concat(subscription().id,'/resourcegroups/cloudsoeimagerg/providers/microsoft.automanage/accounts/cloudsoeautomanage')]"
+                    },
+                    "configurationProfileAssignment": {
+                        "value": "Azure virtual machine best practices – Production"
+                    },
+                    "TagName": {
+                        "value": "Production"
+                    },
+                    "TagValue": {
+                        "value": "True"
+                    }
+                }
+            },
+            {
+                "assignmentName": "tag-vm-resources-soe",
+                "displayName": "Tag all SOE-image VMs as SOE",
+                "definition": {
+                    "customPolicyDefinitionName": "tag-vm-resources",
+                    "roleDefinitionIds": [
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ]
+                },
+                "parameters": {
+                    "tagName": {
+                        "value": "SOE"
+                    },
+                    "tagValue": {
+                        "value": "True"
+                    }
+                }
+            },
+            {
+                "assignmentName": "tag-vm-resources-prod",
+                "displayName": "Tag all deployed VMs as production by default",
+                "definition": {
+                    "customPolicyDefinitionName": "tag-vm-resources",
+                    "roleDefinitionIds": [
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                    ]
+                },
+                "parameters": {
+                    "tagName": {
+                        "value": "Production"
+                    },
+                    "tagValue": {
+                        "value": "True"
+                    }
+                }
+            },
+            {
+                "assignmentName": "gc-windows-logon-banner",
+                "displayName": "Audit Windows OS logon banner text",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-logon-banner"
+                },
+                "controls": [
+                    "ISM-0408-4"
+                ],
+                "parameters": {
+                    "bannerTitle": {
+                        "value": "REPLACE WITH YOUR LEGAL BANNER TITLE"
+                    },
+                    "bannerText": {
+                        "value": "REPLACE WITH YOUR LEGAL BANNER TEXT"
+                    }
+                }
+            },
+            {
+                "assignmentName": "disk-encryption",
+                "displayName": "Disk encryption should be applied on virtual machines",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0961003e-5a0a-4549-abde-af6a37f2724d"
+                },
+                "controls": [
+                    "ISM-0459-3"
+                ],
+                "parameters": {
+                }
+            },
+            {
+                "assignmentName": "enable-vulnerability-assessment",
+                "displayName": "Deploy vulnerability assessment solution on virtual machines",
+                "definition": {
+                    "customPolicyDefinitionName": "enable-vulnerability-assessment",
+                    "roleDefinitionIds": [
+                        "fb1c8493-542b-48eb-b624-b4c8fea62acd"
+                    ]
+                },
+                "controls": [
+                    "ISM-1608-0"
+                ],
+                "parameters": {
+                }
+            },
+            {
+                "assignmentName": "gc-ipsec-audit-logging",
+                "displayName": "Enable audit logging for Windows IPsec rules.",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-ipsec-audit-logging"
+                },
+                "controls": [
+                    "ISM-0494-3",
+                    "ISM-0496-4",
+                    "ISM-1233-1",
+                    "ISM-0498-3",
+                    "ISM-0998-4",
+                    "ISM-0999-5",
+                    "ISM-0472-5"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-ntlm-audit-logging",
+                "displayName": "Enable audit logging for NTLM authentication.",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-ntlm-audit-logging"
+                },
+                "controls": [
+                    "ISM-1055-4",
+                    "ISM-1603-0"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "enable-firewall-policy",
+                "displayName": "Windows machines should meet requirements for 'Windows Firewall Properties'",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/35d9882c-993d-44e6-87d2-db66ce21b636"
+                },
+                "controls": [
+                    "ISM-1416-2"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-account-lockout",
+                "displayName": "Enable audit logging for account locking and set lockout threshold.",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-account-lockout"
+                },
+                "controls": [
+                    "ISM-1403-2"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-security-baseline-2016",
+                "displayName": "Enable Windows Server 2016 baseline",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-security-baseline-2016"
+                },
+                "controls": [
+                    "ISM-1409-1"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-security-baseline-2019",
+                "displayName": "Enable Windows Server 2019 baseline",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-security-baseline-2019"
+                },
+                "controls": [
+                    "ISM-1409-1"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-password-length",
+                "displayName": "Audit Windows machines that do not restrict the minimum password length to 14 characters",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a2d0e922-65d0-40c4-8f87-ea6da2d307a2"
+                },
+                "controls": [
+                    "ISM-0421-6"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-powershell-logging",
+                "displayName": "Audit PowerShell logging",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-powershell-logging"
+                },
+                "controls": [
+                    "ISM-1623-0"
+                 ],
+                 "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-disable-autorun",
+                "displayName": "Audit Windows autorun settings",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-disable-autorun"
+                },
+                "controls": [
+                    "ISM-0341-3"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-tls-schannel-settings",
+                "displayName": "Audit SChannel TLS registry settings",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-tls-schannel-settings"
+                },
+                "controls": [
+                    "ISM-1139-0"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-tls-dot-net-settings",
+                "displayName": "Audit .net TLS registry settings",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-tls-dot-net-settings"
+                },
+                "controls": [
+                    "ISM-1139-0"
+                ],
+               "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-powershell-v2",
+                "displayName": "Audit installation of PowerShell v2",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-powershell-v2"
+                },
+                "controls": [
+                    "ISM-1621-0"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "Azure Security Benchmark",
+                "displayName": "Azure Security Benchmark",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"
+                },
+                "controls": [
+                    "ISM-1409-1"
+                ],
+                "parameters": {
+                }
+            },
+            {
+                "assignmentName": "gc-windows-ie-baseline",
+                "displayName": "Internet Explorer Baseline",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-ie-baseline"
+                },
+                "controls": [
+                    "ISM-1486-0",
+                    "ISM-1412-2"
+                ],
+                "parameters": {}
+            }
+        ]
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat('PolicyDefinitions-',variables('policyDefinitions')[copyIndex()].customPolicyDefinitionName)]",
+            "location": "eastus",
+            "copy": {
+                "name": "Policy definition deployments",
+                "count": "[length(variables('policyDefinitions'))]",
+                "mode": "Serial",
+                "batchSize": 1
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[uri(deployment().properties.templateLink.uri, variables('policyDefinitions')[copyIndex()].relativeUri)]"
+                },
+                "parameters": {
+                    "policyName": {
+                        "value": "[variables('policyDefinitions')[copyIndex()].customPolicyDefinitionName]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyAssignments')[copyIndex()].assignmentName]",
+            "apiVersion": "2019-09-01",
+            "location": "eastus",
+            "copy": {
+                "name": "Policy assignments",
+                "count": "[length(variables('policyAssignments'))]",
+                "mode": "Serial",
+                "batchSize": 1
+            },
+            "dependsOn":[
+                "Policy definition deployments"
+            ],
+            "identity": "[createObject('type',if(contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionId'),'None','SystemAssigned'))]",
+            "properties": {
+                "scope": "[variables('commonAssignmentParameters').policyScopeId]",
+                "policyDefinitionId": "[if(contains(variables('policyAssignments')[copyIndex()].definition,'builtinPolicyDefinitionId'), variables('policyAssignments')[copyIndex()].definition.builtinPolicyDefinitionId, reference(concat('PolicyDefinitions-',variables('policyAssignments')[copyIndex()].definition.customPolicyDefinitionName)).outputs.policyDefinitionId.value)]",
+                "displayName": "[variables('policyAssignments')[copyIndex()].displayName]",
+                "metadata": "[if(contains(variables('policyAssignments')[copyIndex()],'controls'),union(createObject('assignedBy',variables('commonAssignmentParameters').assignedBy),createObject('controls',variables('policyAssignments')[copyIndex()].controls)),createObject('assignedBy',variables('commonAssignmentParameters').assignedBy))]",
+                "parameters": "[variables('policyAssignments')[copyIndex()].parameters]"
+            }
+        }
+    ]
+}

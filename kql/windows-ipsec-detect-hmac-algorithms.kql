@@ -1,0 +1,11 @@
+//KQL query to detect IPsec MM HMAC algorithm
+SecurityEvent 
+| where EventID == 4650 or EventID == 4651
+| extend ed = parse_xml(EventData).EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'MMIntegrityAlg'
+    | project MMIntegrityAlg = ed['#text']
+)
+| where MMIntegrityAlg != "%%8242" and MMIntegrityAlg != "%%8243" 
+| project TimeGenerated, Computer, Activity, MMIntegrityAlg

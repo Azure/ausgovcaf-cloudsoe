@@ -1,0 +1,100 @@
+//Aggregate NTLM incomming/outgoing events into one table
+let AllEvents = Event
+| where EventLog =~ "Microsoft-Windows-NTLM/Operational"
+| extend NtlmDirection = iif(EventID == 8001, "Outgoing", iif(EventID == 8002, "Incomming", iif(EventID == 8003,"In Domain (Server)", iif(EventID == 8004,"In Domain (Domain Controller)", "Unknown"))))
+| extend ed = parse_xml(EventData).DataItem.EventData.Data;
+let IncommingEvents = AllEvents | where NtlmDirection == "Incomming"
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'CallerPID'
+    | project CallerPID = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ProcessName'
+    | project ProcessName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientLUID'
+    | project ClientLUID = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientUserName'
+    | project ClientUserName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientDomainName'
+    | project ClientDomainName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'MechanismOID'
+    | project MechanismOID = ed['#text']
+);
+let OutgoingEvents = AllEvents | where NtlmDirection == "Outgoing"
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'TargetName'
+    | project TargetName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'UserName'
+    | project UserName = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'DomainName'
+    | project DomainName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'CallerPID'
+    | project CallerPID = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ProcessName'
+    | project ProcessName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientLUID'
+    | project ClientLUID = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientUserName'
+    | project ClientUserName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'ClientDomainName'
+    | project ClientDomainName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'MechanismOID'
+    | project MechanismOID = ed['#text']
+)
+;
+union IncommingEvents, OutgoingEvents
+| project TimeGenerated, Computer, NtlmDirection, TargetName, UserName, DomainName, CallerPID, ProcessName, ClientLUID, ClientUserName, ClientDomainName, MechanismOID

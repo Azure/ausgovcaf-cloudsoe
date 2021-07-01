@@ -1,0 +1,7 @@
+//Identifies where SNMP service is running on Windows systems
+ConfigurationData 
+| where ConfigDataType == "WindowsServices"
+| where SvcName =~ "snmptrap"
+| where SvcState == "Running"
+| project TimeGenerated,Computer,SvcDisplayName,SvcName,SvcState,SvcStartupType
+| summarize arg_max(TimeGenerated, *) by Computer

@@ -1,0 +1,30 @@
+//Show WDAC blocks as a result of the ISG
+Event
+| where EventID == 3092
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'FileName'
+    | project FileName = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'StatusCode'
+    | project StatusCode = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'PassesSmartlocker'
+    | project PassesISG = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'PolicyName'
+    | project PolicyName = tostring(ed['#text'])
+)
+| where PassesISG == "false"
+| summarize FailCount = count() by FileName
+| sort by FailCount

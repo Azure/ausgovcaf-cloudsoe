@@ -1,0 +1,11 @@
+{
+    "DisplayName": "GC - IPsec Audit Logging",
+    "Description": "Sets Windows Advanced Audit Logging to capture IPsec subcategories.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources",
+        "AuditPolicyDsc"
+    ], 
+    "PolicyPath": "gc-ipsec-audit-logging"
+}

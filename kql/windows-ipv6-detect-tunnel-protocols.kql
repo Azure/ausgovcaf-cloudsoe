@@ -1,0 +1,10 @@
+//KQL query to detect VMs not reporting IPv6 tunnels disabled
+Heartbeat | where SourceComputerId !in (
+    ( ConfigurationData 
+    | where RegistryKey == "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters"
+    | where ValueName == "DisabledComponents"
+    | where binary_and(toint(ValueData),1) == 1
+    | project SourceComputerId )
+)
+| extend resourceId=ResourceId
+| distinct resourceId

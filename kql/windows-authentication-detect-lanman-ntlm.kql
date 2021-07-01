@@ -1,0 +1,13 @@
+//Discover state of lanman auth
+Heartbeat
+| summarize arg_max(TimeGenerated, *) by Computer
+| join kind=leftouter (
+    ( ConfigurationData 
+    | where ConfigDataType == "Registry"
+    | where RegistryKey =~ "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa"
+    | where ValueName =~ "lmcompatibilitylevel"
+    | summarize arg_max(TimeGenerated, *) by Computer
+    | project SourceComputerId, LmCompatibilityLevel = ValueData )
+) on SourceComputerId
+| project Computer, InferredLmCompatibilityLevel = toint(iif(isnull(LmCompatibilityLevel),LmCompatibilityLevel,"3"))
+| project Computer, LanmanEnabled = (InferredLmCompatibilityLevel <= 3), Ntlmv1Enabled = (InferredLmCompatibilityLevel <= 4)

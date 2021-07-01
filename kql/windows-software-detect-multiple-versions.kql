@@ -1,0 +1,9 @@
+//Identifies software applications where multiple versions are present
+ConfigurationData 
+| where ConfigDataType == "Software"
+| where SoftwareType == "Application"  
+| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion
+| summarize Versions=make_set(CurrentVersion) by SoftwareName,Publisher
+| where not(Publisher == "Microsoft Corporation" and SoftwareName hasprefix "Security Intelligence Update for Microsoft Defender Antivirus - KB")
+| where not(Publisher == "Microsoft Corporation" and SoftwareName hasprefix "Update for Microsoft Defender Antivirus antimalware platform - KB")
+| where array_length(Versions) > 1

@@ -1,0 +1,10 @@
+{
+    "DisplayName": "Audit PowerShell logging and transcription settings",
+    "Description": "Audit if PowerShell module logging, script block logging, and transcription and enabled.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-windows-powershell-logging"
+}

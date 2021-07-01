@@ -1,0 +1,17 @@
+//Summarises the lastest WDAC policy load events by Computer, PolicyName, PolicyId
+Event
+| where EventID == 3099
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'PolicyNameBuffer'
+    | project PolicyName = tostring(ed['#text'])
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'PolicyIdBuffer'
+    | project PolicyId = tostring(ed['#text'])
+)
+| project TimeGenerated,Computer,PolicyName,PolicyId
+| summarize arg_max(TimeGenerated,*) by Computer,PolicyName,PolicyId

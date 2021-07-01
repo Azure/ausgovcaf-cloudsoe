@@ -1,0 +1,105 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "automationAccountResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource ID of the automation account that is linked to the workspace."
+            }
+        },
+        "currentDateTime":{
+            "type": "string",
+            "defaultValue": "[utcnow('u')]"
+        },
+        "updateManagementScope": {
+            "type": "array",
+            "metadata": {
+                "description": "An array of subscription resource IDs that are in-scope of update management."
+            }
+        }
+    },
+    "variables": {
+        "automationAccountName": "[split(parameters('automationAccountResourceId'),'/')[8]]",
+        "autoUpdateGroup1StartDateTime":"[concat(dateTimeAdd(parameters('currentDateTime'),'P1D','yyyy-MM-dd'),'T03:00:00+10:00')]",
+        "autoUpdateGroup2StartDateTime":"[concat(dateTimeAdd(parameters('currentDateTime'),'P2D','yyyy-MM-dd'),'T03:00:00+10:00')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('automationAccountName'), '/WindowsAutoUpdateGroup1')]",
+            "properties": {
+                "updateConfiguration": {
+                    "operatingSystem": "Windows",
+                    "windows": {
+                        "includedUpdateClassifications": "Critical, Security, UpdateRollup, FeaturePack, ServicePack, Definition, Tools, Updates",
+                        "rebootSetting": "IfRequired"
+                    },
+                    "targets": {
+                        "azureQueries": [
+                            {
+                                "scope": "[parameters('updateManagementScope')]",
+                                "tagSettings": {
+                                    "tags": {
+                                        "AutoUpdateGroup": [
+                                            "1"
+                                        ]
+                                    },
+                                    "filterOperator": "All"
+                                }
+                            }
+                        ]
+                    },
+                    "duration": "PT2H"
+                },
+                "tasks": {},
+                "scheduleInfo": {
+                    "startTime": "[variables('autoUpdateGroup1StartDateTime')]",
+                    "expiryTime": "9999-12-31T23:59:59.9999999+00:00",
+                    "interval": 2,
+                    "frequency": "Day",
+                    "timeZone": "Australia/Sydney"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('automationAccountName'), '/WindowsAutoUpdateGroup2')]",
+            "properties": {
+                "updateConfiguration": {
+                    "operatingSystem": "Windows",
+                    "windows": {
+                        "includedUpdateClassifications": "Critical, Security, UpdateRollup, FeaturePack, ServicePack, Definition, Tools, Updates",
+                        "rebootSetting": "IfRequired"
+                    },
+                    "targets": {
+                        "azureQueries": [
+                            {
+                                "scope": "[parameters('updateManagementScope')]",
+                                "tagSettings": {
+                                    "tags": {
+                                        "AutoUpdateGroup": [
+                                            "2"
+                                        ]
+                                    },
+                                    "filterOperator": "All"
+                                }
+                            }
+                        ]
+                    },
+                    "duration": "PT2H"
+                },
+                "tasks": {},
+                "scheduleInfo": {
+                    "startTime": "[variables('autoUpdateGroup2StartDateTime')]",
+                    "expiryTime": "9999-12-31T23:59:59.9999999+00:00",
+                    "interval": 2,
+                    "frequency": "Day",
+                    "timeZone": "Australia/Sydney"
+                }
+            }
+        }
+    ]
+}

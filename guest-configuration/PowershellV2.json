@@ -1,0 +1,10 @@
+{
+    "DisplayName": "Audit installation of PowerShell v2",
+    "Description": "Audit if PowerShell v2 is installed on the instance.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-windows-powershell-v2"
+}

@@ -1,0 +1,6 @@
+//KQL query to show failed logins by account and source
+SecurityEvent 
+| where EventID == 4625
+| where Status =~ "0xC000006D"
+| summarize BadLogins = count() by TargetAccount, WorkstationName
+| sort by BadLogins

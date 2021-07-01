@@ -1,0 +1,10 @@
+{
+    "DisplayName": "GC - TLS Versions Schannel Auditing",
+    "Description": "Reports on allowed TLS settings for Schannel.",
+    "Platform": "Windows",
+    "Version": "1.0.0",
+    "DscModules": [
+        "PSDscResources"
+    ], 
+    "PolicyPath": "gc-tls-schannel-settings"
+}

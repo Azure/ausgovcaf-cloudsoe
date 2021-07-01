@@ -1,0 +1,11 @@
+//KQL query to detect IPsec QM SAs with long lifetime
+SecurityEvent 
+| where EventID == 5451
+| extend ed = parse_xml(EventData).EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'LifetimeSeconds'
+    | project LifetimeSeconds = ed['#text']
+)
+| where LifetimeSeconds > 14400
+| project TimeGenerated, Computer, Activity, LifetimeSeconds
