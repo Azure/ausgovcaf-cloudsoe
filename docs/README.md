@@ -3,41 +3,48 @@
 The CloudSOE project aims to develop a community-driven, cloud-native, multi-platform Standard Operating Environment for organisations that adopt Information Security Manual (ISM) guidelines when building information systems.
 
 The project uses a collection of cloud-native technologies to achieve desired outcomes for Azure (and in future, on-premises & other cloud) IaaS systems:
+
 - Azure Image Builder
 - Azure Policy & Guest Configuration
-- Azure Monitor 
+- Azure Monitor
 - Azure Automation
 - Azure Automanage
 
 The example code in this repository should be considered a functional prototype which you can learn from and apply in your own sandpit subscriptions.
 
-# What we deploy and configure
+## What we deploy and configure
 
 The current prototype version of the CloudSOE implements the following features:
 
 ## Enable Azure Automanage for virtual machines
+
 - Profile: _Azure virtual machine best practices - Dev/test_ for non-production systems
 - Profile: _Azure virtual machine best practices - Production_ for non-production systems
 
 ## Enable Azure Defender for Servers
+
 - Enable on Log Analytics workstation
 - Enable for target subscription
 
 ## Configure Azure Update Management
+
 - Enable Log Analytics solution
-- Schedule alternating daily patching windows (Tag with AutoUpdateGroup:1 or AutoUpdateGroup:2) 
+- Schedule alternating daily patching windows (Tag with AutoUpdateGroup:1 or AutoUpdateGroup:2)
 
 ## Tagging Defaults
+
 - Tag all SOE-deployed VMs as SOE:True for discovery
 - Tag all VMs as Production:True unless otherwise tagged
 
 ## Assign built-in Azure Policy
+
 - Enable Azure Azure Monitor for VMs
 - Disk encryption should be applied on virtual machines
 - Deploy vulnerability assessment solution on virtual machines
 - Azure Security Benchmark
 
 ## Guest Configuration policy
+
 - Install Guest Configuration prerequisites
 - Audit Windows OS logon banner text
 - Enable audit logging for Windows IPsec rules
@@ -54,39 +61,41 @@ The current prototype version of the CloudSOE implements the following features:
 - Windows Server 2016, 2019 & IE SCT policy baselines
 
 ## Image build and distribution
+
 - Shared Image Gallery
 - Azure Image Builder (Packer) customisations
-    - Windows
-        - Set OS logon banner
-        - Enable IPsec audit logging
-        - Enable NTLM audit logging
-        - Enable account lockout and failed logon audit logging
-        - Set RDP idle session timeout
-        - Disable SNMP service
-        - Enable PowerShell logging
-        - Disable Autorun
-        - Enable/Disable TLS versions
-        - Enable TLS auditing
-        - Set Internet Explorer SCT baseline settings
-        - Assign default WDAC policy
-            - AllMicrosoft.xml template
-            - User mode recommended block rules
-            - Kernel mode recommended block rules
-            - Intelligent security graph
-            - Audit only
-        - Enable Intelligent Security Graph event logging for WDAC
-        - Enable Network Protection
-        - Enable Exploit Protection (EMET) example configuration
-        - Block shell hosts for standard users
-        - Windows Server
-            - Enable "Network Protection on Windows Server" setting
-            - Windows Server 2019
-                - Set Windows Server 2019 SCT baseline policy delta (from defaults)
-                - Enable all Attack Surface Reduction rules
-            - Windows Server 2016
-                - Set Windows Server 2016 SCT baseline policy delta (from defaults)
+  - Windows
+    - Set OS logon banner
+    - Enable IPsec audit logging
+    - Enable NTLM audit logging
+    - Enable account lockout and failed logon audit logging
+    - Set RDP idle session timeout
+    - Disable SNMP service
+    - Enable PowerShell logging
+    - Disable Autorun
+    - Enable/Disable TLS versions
+    - Enable TLS auditing
+    - Set Internet Explorer SCT baseline settings
+    - Assign default WDAC policy
+      - AllMicrosoft.xml template
+      - User mode recommended block rules
+      - Kernel mode recommended block rules
+      - Intelligent security graph
+      - Audit only
+    - Enable Intelligent Security Graph event logging for WDAC
+    - Enable Network Protection
+    - Enable Exploit Protection (EMET) example configuration
+    - Block shell hosts for standard users
+    - Windows Server
+      - Enable "Network Protection on Windows Server" setting
+      - Windows Server 2019
+        - Set Windows Server 2019 SCT baseline policy delta (from defaults)
+        - Enable all Attack Surface Reduction rules
+      - Windows Server 2016
+        - Set Windows Server 2016 SCT baseline policy delta (from defaults)
 
-## Example Azure Monitor Workbook (dashboard) with embedded KQL:
+## Example Azure Monitor Workbook (dashboard) with embedded KQL
+
 - windows-account-lockout-detect-failed-logins.kql
 - windows-account-lockout-detect-lockouts.kql
 - windows-asr-mitigation-events.kql
@@ -118,30 +127,33 @@ The current prototype version of the CloudSOE implements the following features:
 - Unused IPv6 merged ARG & Logs query
 
 ## Log Analytics solutions
+
 - Change Tracking / Inventory
 - Azure Defender for Servers
 
 ## Log Analytics data sources
-- Registry
-    - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters
-    - HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa
-    - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
-- Event
-    - Microsoft-Windows-NTLM/Operational
-    - Microsoft-Windows-CodeIntegrity/Operational
-    - Microsoft-Windows-AppLocker/MSI and Script
-    - Microsoft-Windows-Security-Mitigations/KernelMode
-    - Microsoft-Windows-Windows Defender/Operational
-    - Microsoft-Windows-Security-Mitigations/UserMode
-    - Microsoft-Windows-Win32k/Operational
-    - Microsoft-Windows-Windows Defender/WHC
-    - Security: All
 
+- Registry
+  - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters
+  - HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa
+  - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+- Event
+  - Microsoft-Windows-NTLM/Operational
+  - Microsoft-Windows-CodeIntegrity/Operational
+  - Microsoft-Windows-AppLocker/MSI and Script
+  - Microsoft-Windows-Security-Mitigations/KernelMode
+  - Microsoft-Windows-Windows Defender/Operational
+  - Microsoft-Windows-Security-Mitigations/UserMode
+  - Microsoft-Windows-Win32k/Operational
+  - Microsoft-Windows-Windows Defender/WHC
+  - Security: All
 
 # Getting started
 
 ## Prerequisites
+
 Ensure you have prepared the following items:
+
 - __Azure Subscription__
 
     Create a dedicated subscription for the purpose of prototype testing.
@@ -149,6 +161,7 @@ Ensure you have prepared the following items:
 - __Log Analytics workspace__
 
     Ensure the workspace is created in a [region that supports Automation Account linking](https://docs.microsoft.com/en-us/azure/automation/how-to/region-mappings).
+    We recommend and have tested the AustraliaEast region for this.
 
 - __Automation Account__
 
@@ -156,18 +169,18 @@ Ensure you have prepared the following items:
 
 - __Link your Workspace and Automation account__
 
-
-
 ## Prepare your inputs
 
 Create a hashtable `$params` to hold your deployment parameters:
 
+```powershell
     $params = @{policyScopeId="/subscriptions/<subscriptionId>";
                 workspaceId="<workspaceId>";
                 workspaceResourceId="/subscriptions/<subscriptionId>/resourcegroups/<resourceGroupName>/providers/microsoft.operationalinsights/workspaces/<workspaceName>";
                 workspaceRegion="Australia East";
                 automationAccountResourceId="/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Automation/automationAccounts/<automationAccountName>";
                 updateManagementScope=@("/subscriptions/<subscriptionId>")}
+```
 
 ---
 
@@ -209,20 +222,25 @@ This is a collection of subscriptionIds which Update Management will be configur
 
 Using the Az module, sign in to Azure Powershell:
 
-    Connect-AzAccount
+```powershell
+Connect-AzAccount
+```
 
 Select your test subscription:
 
-    Set-AzContext -Subscription <subscriptionId>
-
+```powershell
+Set-AzContext -Subscription <subscriptionId>
+```
 
 Create a subscription-level deployment using the above parameters:
 
-    New-AzSubscriptionDeployment `
-        -Name CloudSOEDeployment 
-        -Location australiaeast 
-        -TemplateUri "https://github.com/azure/ausgovcaf-cloudsoe/azureDeploy.json" 
-        -TemplateParameterObject $params
+```powershell
+New-AzSubscriptionDeployment `
+    -Name CloudSOEDeployment 
+    -Location australiaeast 
+    -TemplateUri "https://github.com/azure/ausgovcaf-cloudsoe/azureDeploy.json" 
+    -TemplateParameterObject $params
+```
 
 The deployment process will define and assign policy, configure Log Analytics, configure Automation Account, create a shared image gallery, and run the build process for Windows Server 2019 and Windows Server 2016 images.
 
@@ -232,7 +250,7 @@ Once you deploy a virtual machine from your images, you can configure aspects of
 
 ## Control update windows
 
-Update Management has been configured with two update schedules. These schedules are at 3AM AEST/ADST on alternating nights. To enrol your virtual machines in these update windows use the `autoUpdateGroup` tag. 
+Update Management has been configured with two update schedules. These schedules are at 3AM AEST/ADST on alternating nights. To enrol your virtual machines in these update windows use the `autoUpdateGroup` tag.
 
 For example: `autoUpdateGroup:1` or `autoUpdateGroup:2`
 
@@ -240,10 +258,202 @@ For example: `autoUpdateGroup:1` or `autoUpdateGroup:2`
 
 Two default Automanage profiles have been activated via Azure Policy - one intended for production systems, and one for non-production systems. The application of these profiles is controlled by the `Production` tag.
 
-For example: `Production:true` or `Production:false` 
+For example: `Production:true` or `Production:false`
 
 ## Reporting
 
 The CloudSOE uses standard Azure features, and will use familiar management/monitoring tooling. You will find project-specific outputs in:
-- Azure Policy - We use Guest Configuration to surface policy-compliance of your virtual machines.
-- Azure Monitor Workbooks - We have created an example workbook to surface detailed event log and other system state information. 
+
+- Azure Policy - We use Guest Configuration to surface policy-compliance of settings on your SOE virtual machines.
+- Azure Monitor Workbooks - We have created an example workbook to surface detailed event log and other system state information.
+
+# Making customisations
+
+## Customising Image Builder: Source -> Target images
+
+The image builder process takes an array of Azure marketplace images as source images an applies _customisations_ conditional on the source image, and then builds a target image in the shared image gallery. 
+
+When invoking the deployment of the image template, the image builder will build two images by default, depending on the `buildImages` parameter:
+
+    "parameters" : {
+        ...
+        "buildImages": {
+            "type": "array",
+            "allowedValues": [
+                "WindowsServer2019",
+                "WindowsServer2016"
+            ],
+            "defaultValue": [
+                "WindowsServer2019",
+                "WindowsServer2016"
+            ],
+            "metadata": {
+                "description": "Set of images to build."
+            }
+        },
+        ...
+    }
+
+The values specified in the `buildImages` (array) parameter are by the template to select the source image, but indexing into an `imagePropertySet` variable. In this example, the `imagePropertiesSet.WindowsServer2019` object contains all the information necessary to select a source image, and populate the properties of the built image:
+
+    "variables": {
+        "imagePropertiesSet":{
+            "WindowsServer2019": {
+                "osType": "Windows",
+                "source": {
+                    "type": "PlatformImage",
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2019-Datacenter",
+                    "version": "latest"
+                },
+                "soePublisher": "[parameters('publisher')]",
+                "soeOffer": "WindowsServerSOE",
+                "soeSku": "WindowsServer2019SOE",
+                "soeDescription": "Windows Server 2019 SOE"
+            },
+            ...
+        }
+        ...
+    }
+
+## Customising Image Builder: Customisations
+
+[Customisations](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/image-builder-json#properties-customize) are the construct used by [Azure Image Builder](https://docs.microsoft.com/en-us/azure/virtual-machines/image-builder-overview) to apply changes to an image as it is transformed from source to target. It is anticipated that as the project scales, a number of operating system customisations will apply multiple times to images with common properties. For example, there are a number of customisations that might apply to all Windows images, both client and server. Similarly, a number of customisations will apply to all Windows Server versions. Lastly, there may be specific customisations that apply only to a specific version of Windows Server OS.
+
+To optimise for the above, the project uses a custom `buildImageCustomisationAssignments` data structure, under which all customisation will sit. The template will extract all the applicable customisations, based on OS type, publisher, offer, and SKU, and union them into the final set of customisations. At a macro-level, the `buildImageCustomisationAssignments` data structure has the following structure:
+
+    "buildImageCustomisationAssignments": {
+        "windows": {
+            "customisations":[
+                //Customisations that apply to all Windows systems
+            ],
+            "MicrosoftWindowsServer": {
+                "customisations":[
+                    //Customisations that apply to all Windows Server systems
+                ],
+                "WindowsServer": {
+                    "customisations":[],
+                    "2019-Datacenter": {
+                        "customisations":[
+                            //Customisations that apply to all Windows Server 2019 systems
+                        ]
+                    },
+                    "2016-Datacenter": {
+                        "customisations":[
+                            //Customisations that apply to all Windows Server 2016 systems
+                        ]
+                    }
+                }
+            }
+        }
+    }
+
+During build the `buildImageCustomisationAssignments` data structure is indexed by the properties of the `imagePropertiesSet.<buildImages[copyIndex()]>.source` object, as specified in section __Customising Image Builder: Source -> Target images__
+
+## Customising Policy
+
+The project relies on both built-in and custom policy. When working with policy in the project, you will need to consider both the policy definition, and the policy assignment aspects.
+
+### Customising policy definitions
+
+Each policy definition in the project is defined by its own linked ARM template. You will find all custom project policies under path `/policies/`. E.g. `/policies/gc-tls-audit-logging/policy.template.json`.
+
+> __Important!__
+>
+> Any policy definition templates used in the template should have a `policyName` (string) parameter specified in the `parameters:{}` section of the template, and a `policyDefinitionId` (string) output specified in the `outputs:{}` section of the template.
+>
+> See existing policies for examples.
+
+Once you have developed a functional ARM template that creates your `policyDefinition` resource, you will need to ensure the template is invoked as a linked template by `arm-cloudsoe-policy-baseline.json`. The process of invoking linked templates has been simplified. Rather than defining the linked template, you only need to create a reference in the `policyDefinitions` (array) variable in arm-cloudsoe-policy-baseline.json.
+
+```json
+"variables": {
+    ...
+    "policyDefinitions":[
+        {
+            "relativeUri": "policies/enable-automanage-profile/policy.template.json",
+            "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag"
+        },
+        ...
+        {
+            "relativeUri": "policies/new-policy-path/policy.template.json",
+            "customPolicyDefinitionName": "new-policy-name"
+        }
+}
+```
+
+---
+
+Input: `relativeUri`
+
+This is the relative path of the template to invoke as a linked template. This template should create a policyDefintion and implement a `policyName` (string) attribute and `policyDefinitionId` (string) output as described above.
+
+---
+
+Input: `customPolicyDefinitionName`
+
+This is a unique name (not display name) for the policyDefinition that also be used in policy assignment references.
+
+#### Customising policy definitions: Guest Configuration policy
+
+Generating Guest Configuration Policy involves creation of both Guest Configuration packages and policy templates. For instructions on how to develop Guest Configuration, follow [this guide](https://docs.microsoft.com/en-us/azure/governance/policy/how-to/guest-configuration-create). 
+
+Once you have a package and a policy template, you can embed them in the project as described above. In this project we store Guest Configuration packages in `/guest-configuration/` and policy templates in `/policies/`.
+
+### Customising policy assignments
+
+The process of creating policy assignments in the poject has been simplified. Rather than defining distinct `policyAssignment` resources, a copy block is used for assigning both built-in and custom policy definitions. You only need to create a reference in the `policyAssignments` (array) variable in arm-cloudsoe-policy-baseline.json.
+
+```json
+"policyAssignments": [
+...
+    {
+        "assignmentName": "disk-encryption",
+        "displayName": "Disk encryption should be applied on virtual machines",
+        "definition": {
+            "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0961003e-5a0a-4549-abde-af6a37f2724d"
+        },
+        "parameters": {}
+    },
+...
+    {
+        "assignmentName": "gc-ipsec-audit-logging",
+        "displayName": "Enable audit logging for Windows IPsec rules.",
+        "definition": {
+            "customPolicyDefinitionName": "gc-ipsec-audit-logging"
+        },
+        "parameters": {}
+    },
+...
+]
+```
+
+The above example shows two example assignments: one where the assignment references a built-in policyDefinition via the `definition.builtinPolicyDefinitionId` reference, and another that references a custom policyDefinition via the `definition.customPolicyDefinitionName` reference. 
+
+The use of `definition.customPolicyDefinitionName` means that we can resolve the policy definition reference at deployment time, based on the name assign in the __Customising policy definitions__ section above.
+
+#### Customising policy assignments: Parameters
+
+When creating a policy assignment in the `policyAssignments` variable, using the provided data structure, you may also need to provide parameters into that assignment. Below is an example, using the parameters object:
+
+```json
+{
+    "assignmentName": "tag-vm-resources-prod",
+    "displayName": "Tag all deployed VMs as production by default",
+    "definition": {
+        "customPolicyDefinitionName": "tag-vm-resources",
+        "roleDefinitionIds": [
+            "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        ]
+    },
+    "parameters": {
+        "tagName": {
+            "value": "Production"
+        },
+        "tagValue": {
+            "value": "True"
+        }
+    }
+}
+```
