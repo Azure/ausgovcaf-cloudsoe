@@ -22,7 +22,7 @@ The example code in this repository should be considered a functional prototype 
 
 ## Getting started
 
-Please see [getting started](https://github.com/Azure/ausgovcaf-cloudsoe/docs/index.html) section of the docs for instructions on getting started
+Please see [getting started](https://aka.ms/cloudsoe/#/?id=getting-started) section of the docs for instructions on getting started
 
 ## Roadmap
 We hope that future development of the CloudSOE project will be ✨community-driven✨. We can think of a number of enhancements that would improve the utility of the solution, such as:
