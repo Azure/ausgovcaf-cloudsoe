@@ -165,9 +165,6 @@ Ensure you have prepared the following items:
 
     Ensure the automation account is created in a region that is in accordance with the [supported mappings table](https://docs.microsoft.com/en-us/azure/automation/how-to/region-mappings#supported-mappings).
 
-- __Link your Workspace and Automation account__
-    
-    add instructions here
 
 ### Prepare your inputs
 
@@ -442,10 +439,12 @@ When creating a policy assignment in the `policyAssignments` variable, using the
     }
 
 ## Roadmap
-We hope that future development of the CloudSOE project will be :sparkles:community-driven:sparkles:. We can think of a number of enhancements that would improve the utility of the solution, such as: 
+We hope that future development of the CloudSOE project will be ✨community-driven✨. We can think of a number of enhancements that would improve the utility of the solution, such as:
+
+- Simplify the setup process
 - Test/build Azure Arc for on-premises and other cloud management
-- Add Linux support 
-- Move to policy-based setting enforcement (I.e. not just audit)
+- Add Linux support
+- Move to policy-based setting enforcement (i.e. not just audit)
 - ESLZ integration
 - Review and implement delta guidelines since November 2020 ISM
 
