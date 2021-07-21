@@ -281,6 +281,7 @@ The image builder process takes an array of Azure marketplace images as source i
 
 When invoking the deployment of the image template, the image builder will build two images by default, depending on the `buildImages` parameter:
 
+```json
     "parameters" : {
         ...
         "buildImages": {
@@ -300,8 +301,11 @@ When invoking the deployment of the image template, the image builder will build
         ...
     }
 
+```
+
 The values specified in the `buildImages` (array) parameter are by the template to select the source image, but indexing into an `imagePropertySet` variable. In this example, the `imagePropertiesSet.WindowsServer2019` object contains all the information necessary to select a source image, and populate the properties of the built image:
 
+```json
     "variables": {
         "imagePropertiesSet":{
             "WindowsServer2019": {
@@ -322,6 +326,7 @@ The values specified in the `buildImages` (array) parameter are by the template 
         }
         ...
     }
+```
 
 ## Customising Image Builder: Customisations
 
@@ -329,6 +334,7 @@ The values specified in the `buildImages` (array) parameter are by the template 
 
 To optimise for the above, the project uses a custom `buildImageCustomisationAssignments` data structure, under which all customisation will sit. The template will extract all the applicable customisations, based on OS type, publisher, offer, and SKU, and union them into the final set of customisations. At a macro-level, the `buildImageCustomisationAssignments` data structure has the following structure:
 
+```json
     "buildImageCustomisationAssignments": {
         "windows": {
             "customisations":[
@@ -354,6 +360,7 @@ To optimise for the above, the project uses a custom `buildImageCustomisationAss
             }
         }
     }
+```
 
 During build the `buildImageCustomisationAssignments` data structure is indexed by the properties of the `imagePropertiesSet.<buildImages[copyIndex()]>.source` object, as specified in section __Customising Image Builder: Source -> Target images__
 
