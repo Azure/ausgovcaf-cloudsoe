@@ -1,8 +1,14 @@
+# CloudSOE
+
+
+
+
+
 # About this project
 
-The CloudSOE project aims to develop a community-driven, cloud-native, multi-platform Standard Operating Environment for organisations that adopt Information Security Manual (ISM) guidelines when building information systems.
+Welcome to the CloudSOE project - we're developing a community-driven, cloud-native, multi-platform Standard Operating Environment (SOE) for organisations that adopt Information Security Manual (ISM) guidelines when building information systems that use Virtual Machines.
 
-The project uses a collection of cloud-native technologies to achieve desired outcomes for Azure (and in future, on-premises & other cloud) IaaS systems:
+The project uses a collection of cloud-native technologies to achieve desired outcomes for Azure (and in future, on-premises & multi-cloud) IaaS systems:
 
 - Azure Image Builder
 - Azure Policy & Guest Configuration
@@ -457,3 +463,13 @@ When creating a policy assignment in the `policyAssignments` variable, using the
     }
 }
 ```
+
+## Roadmap
+We hope that future development of the CloudSOE project will be ✨community-driven✨. We can think of a number of enhancements that would improve the utility of the solution, such as:
+
+- Simplify the setup process
+- Test/build Azure Arc for on-premises and other cloud management
+- Add Linux support
+- Move to policy-based setting enforcement (i.e. not just audit)
+- ESLZ integration
+- Review and implement delta guidelines since November 2020 ISM
