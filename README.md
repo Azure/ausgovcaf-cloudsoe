@@ -1,4 +1,4 @@
-<img src="https://github.com/Azure/ausgovcaf-cloudsoe/docs/_media.logo.png" alt="CloudSOE Logo with a cloud and shield with a tick" width="200" height="204">
+<img src="https://github.com/Azure/ausgovcaf-cloudsoe/docs/_media/logo.png" alt="CloudSOE Logo with a cloud and shield with a tick" width="200" height="204">
 
 > Accelerating your IaaS deployments.
 
