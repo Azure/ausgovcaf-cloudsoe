@@ -1,4 +1,4 @@
-<img src="docs/_media/logo.png" alt="CloudSOE Logo with a cloud and shield with a tick" width="200" height="204">
+<img src="docs/_media/logo.png" alt="CloudSOE Logo with a cloud and shield with a tick" width="400" height="404" align="center">
 
 > Accelerating your IaaS deployments.
 
