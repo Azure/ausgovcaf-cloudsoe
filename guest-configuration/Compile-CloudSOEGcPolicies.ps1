@@ -2,10 +2,10 @@
     [string]$GcPolFilePathString = (Get-Item "."), #The guest-configuration folder
     
     [Parameter(Mandatory=$true)]
-    [string]$GcPolStorageAccountRg,
+    [string]$GcPolStorageAccountRg, # the name of the resource group that contains the storage account
     
     [Parameter(Mandatory=$true)]
-    [string]$GcPolStorageAccountName,
+    [string]$GcPolStorageAccountName, #the storage account
     
     [string]$GcPolStorageAccountContainer = "guest-configuration"
 )
@@ -19,7 +19,7 @@ If ($PSVersionTable.PSVersion.Major -ne 7) {
 }
 
 #Install modules
-Install-Module -Name GuestConfiguration -Force
+Install-Module -MaximumVersion 3.1.3 -Name GuestConfiguration -Force
 #Import-Module PSDesiredStateConfiguration
 
 #Get DSC configurations 

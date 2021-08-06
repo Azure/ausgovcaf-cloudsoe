@@ -14,7 +14,7 @@ The project uses a collection of cloud-native technologies to achieve desired ou
 
 - Azure Image Builder
 - Azure Policy & Guest Configuration
-- Azure Monitor 
+- Azure Monitor
 - Azure Automation
 - Azure Automanage
 

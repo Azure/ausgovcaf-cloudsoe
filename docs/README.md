@@ -175,7 +175,69 @@ Ensure you have prepared the following items:
 
 - __Link your Workspace and Automation account__
 
-## Prepare your inputs
+- __Storage Account__
+
+    Create a storage account in a desired region for hosting your Azure Policy Guest Configuration artifacts. This endpoint will be referenced in the Guest Configuration audit policy and accessed by the SOE VMs to download required GC policy artifacts.
+
+## Deploying Guest Configuration Policies
+
+The ```Compile-CloudSOEGcPolicies.ps1``` file is located in the ```<root>\guest-configuration``` folder and when run will:
+
+1. Compile all guest configuration policies in the .\guest-configuration\ folder
+1. Build and upload the guest configuration packages to a storage account blob container
+1. Create the azure policy guest configuration policy definition template
+1. Remove all temporary files
+
+The script checks for the existence of a .json file for each guest configuration policy that contains publishing metadata required for compiling and publishing each guest configuration policy.
+
+You will need a storage account to host your guest configuration policies in Azure Blob storage
+
+GC policies must be compiled and uploaded to a storage account in order to be defined and applied.
+
+These instructions assume the following:
+Windows Server 2019
+Powershell 7.1
+Az modules
+Git
+
+
+Clone the repo to your local machine
+
+> git clone . https://github.com/Azure/ausgovcaf-cloudsoe.git
+
+Install the Powershell 7.x AZ Module
+> install-module Az
+
+Using the Az module, sign in to Azure Powershell:
+Note: DeviceCode might be an easier way to login if this device is off your network.
+```powershell
+Connect-AzAccount
+```
+
+Select your subscription if necessary:
+
+```powershell
+Set-AzContext -Subscription <subscriptionId>
+```
+
+Create a storage account in a region close your VMs, eg:
+
+Note: Change these values to match your organisation / naming policy
+
+```powershell
+New-AzResourceGroup -name cloudsoegcpolicyrg -Location australiaeast
+New-AzStorageAccount -ResourceGroupName cloudsoegcpolicyrg -Name cloudsoepolicystore -SkuName 'Standard_LRS' -Location 'australiaeast' |New-AzStorageContainer -Name guest-configuration -Permission Blob
+```
+Run the ```Compile-CloudSOEGcPolicies.ps1``` file with parameters
+
+```powershell
+Compile-CloudSOEGcPolicies.ps1 -GcPolFilePathString . -GcPolStorageAccountRg cloudsoepolicyrg  -GcPolStorageAccountName cloudsoepolicystore -GcPolStorageAccountContainer guest-configuration -Verbose
+```
+
+Commit and push the new files in .\policies to your repo
+
+
+## Prepare your inputs for deploying the SOE code
 
 Create a hashtable `$params` to hold your deployment parameters:
 
@@ -232,7 +294,7 @@ Using the Az module, sign in to Azure Powershell:
 Connect-AzAccount
 ```
 
-Select your test subscription:
+Select your subscription:
 
 ```powershell
 Set-AzContext -Subscription <subscriptionId>
