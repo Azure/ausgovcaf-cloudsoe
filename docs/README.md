@@ -244,7 +244,7 @@ The CloudSOE ARM templates rely on published Guest Configuration packages. These
 
     ---
 
- - __Commit the new policy template files to your forked repo__
+ - __Commit and push the new policy template files to your forked repo__
 
     The previous step will have generated a number of ARM templates in /policies. These templates will be deployed as linked deployments by ```arm-cloudsoe-policy-baseline.json```
 
