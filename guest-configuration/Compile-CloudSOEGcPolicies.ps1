@@ -34,7 +34,7 @@ $PSFiles | % {
         & ($_.FullName)
     
         #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
-        $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json
+        $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json -AsHashtable
         if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "DscModules") {
             $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force}
         }
@@ -50,7 +50,8 @@ $PSFiles | % {
             -Description $GcPolicyMetadata.Description `
             -Path ($GcPolFilePath.FullName + '\policiestemp') `
             -Platform $GcPolicyMetadata.Platform `
-            -Version $GcPolicyMetadata.Version
+            -Version $GcPolicyMetadata.Version `
+            -Parameter $GcPolicyMetadata.PolicyParameters
 
         #Load guest configuration policy file and apply transforms 
         $GcPolicy = Get-Content  ($GcPolFilePath.FullName + "\policiestemp\AuditIfNotExists.json" )
