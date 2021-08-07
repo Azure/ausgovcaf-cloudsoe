@@ -18,10 +18,6 @@ If ($PSVersionTable.PSVersion.Major -ne 7) {
     exit 1
 }
 
-#Install modules
-Install-Module -MaximumVersion 3.1.3 -Name GuestConfiguration -Force
-#Import-Module PSDesiredStateConfiguration
-
 #Get DSC configurations 
 $GcPolFilePath = Get-item $GcPolFilePathString
 $PSFiles = $GcPolFilePath.GetFiles("*.ps1")
@@ -36,7 +32,7 @@ $PSFiles | % {
         #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
         $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json
         if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "DscModules") {
-            $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force}
+            $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force; Import-Module $_ -Force}
         }
 
         #Build and upload guest configuration package
