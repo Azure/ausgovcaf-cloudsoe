@@ -164,16 +164,30 @@ Ensure you have prepared the following items:
 
     Create a dedicated subscription for the purpose of prototype testing.
 
+    ```powershell
+    New-AzResourceGroup -Name cloudsoe-rg -Location 'Australia East'
+    ```
+
 - __Log Analytics workspace__
 
     Ensure the workspace is created in a [region that supports Automation Account linking](https://docs.microsoft.com/en-us/azure/automation/how-to/region-mappings).
     We recommend and have tested the AustraliaEast region for this.
 
+    ```powershell
+    New-AzOperationalInsightsWorkspace -Location 'Australia East' -Name cloudsoe-law -Sku standard -ResourceGroupName cloudsoe-rg
+    ```
+
 - __Automation Account__
 
     Ensure the automation account is created in a region that is in accordance with the [supported mappings table](https://docs.microsoft.com/en-us/azure/automation/how-to/region-mappings#supported-mappings).
 
+    ```powershell
+    New-AzAutomationAccount -Name 'cloudsoe-aac' -Location 'Australia East' -ResourceGroupName cloudsoe-rg -Plan 'Basic'
+    ```
+
 - __Link your Workspace and Automation account__
+    
+    This is performed automatically by the deployment.
 
 - __Storage Account__
 
@@ -247,7 +261,12 @@ The CloudSOE ARM templates rely on published Guest Configuration packages. These
  - __Commit and push the new policy template files to your forked repo__
 
     The previous step will have generated a number of ARM templates in /policies. These templates will be deployed as linked deployments by ```arm-cloudsoe-policy-baseline.json```
+    
+    > git add .
+    > git commit
+    > git push -u origin
 
+    Your repo should contain the updated guest configuration policy files ready to be referenced by the linked deployments.
 
 ## Prepare your inputs for deploying the SOE code
 
@@ -315,11 +334,7 @@ Set-AzContext -Subscription <subscriptionId>
 Create a subscription-level deployment using the above parameters:
 
 ```powershell
-New-AzSubscriptionDeployment `
-    -Name CloudSOEDeployment 
-    -Location australiaeast 
-    -TemplateUri "https://github.com/azure/ausgovcaf-cloudsoe/azureDeploy.json" 
-    -TemplateParameterObject $params
+New-AzSubscriptionDeployment -Name CloudSOEDeployment -Location australiaeast -TemplateUri "https://raw.githubusercontent.com/your username or gh org/ausgovcaf-cloudsoe/main/azureDeploy.json" -TemplateParameterObject $params
 ```
 
 The deployment process will define and assign policy, configure Log Analytics, configure Automation Account, create a shared image gallery, and run the build process for Windows Server 2019 and Windows Server 2016 images.
