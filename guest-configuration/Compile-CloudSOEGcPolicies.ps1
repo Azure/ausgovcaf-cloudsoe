@@ -64,6 +64,9 @@ $PSFiles | % {
                 Default {}
             }
         }
+        if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "PolicyParameters") { #Apply PolicyParameters-specific transforms
+            $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals = "[" + $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals
+        }
 
         #Cleanup
         Remove-Item ($GcPolFilePath.FullName + "\" + $DscShortName) -Recurse -Force
