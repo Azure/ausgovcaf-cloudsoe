@@ -18,10 +18,6 @@ If ($PSVersionTable.PSVersion.Major -ne 7) {
     exit 1
 }
 
-#Install modules
-Install-Module -MaximumVersion 3.1.3 -Name GuestConfiguration -Force
-#Import-Module PSDesiredStateConfiguration
-
 #Get DSC configurations 
 $GcPolFilePath = Get-item $GcPolFilePathString
 $PSFiles = $GcPolFilePath.GetFiles("*.ps1")
