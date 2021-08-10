@@ -22,8 +22,8 @@
             "name": "IPsecAuditLogging",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/IPsecAuditLogging.zip?sv=2019-07-07&sr=b&sig=IEnsN4okj5fZjZIDuElWoswKnK%2BGdARH9J%2FapVcf%2BpU%3D&st=2021-08-06T06%3A37%3A55Z&se=2024-08-06T06%3A37%3A55Z&sp=rl",
-            "contentHash": "7EA20C428A6F2FE18935F0F9B8EDE1602B28A5DAB67374ACA3899F9F2AFDC393",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/IPsecAuditLogging.zip?sv=2019-07-07&sr=b&sig=7KY8I3cEsSLmX4SKU4PqF3Yfsq2QNYdq97DS5q4C8qo%3D&st=2021-08-09T23%3A59%3A27Z&se=2024-08-09T23%3A59%3A27Z&sp=rl",
+            "contentHash": "55476289253570572515645C7979821A15E3C7770A018F62D8695578F56827BD",
             "configurationParameter": {}
           }
         },

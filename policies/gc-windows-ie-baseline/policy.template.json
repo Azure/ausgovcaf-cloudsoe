@@ -22,8 +22,8 @@
             "name": "IEBaseline",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/IEBaseline.zip?sv=2019-07-07&sr=b&sig=aisxwfGtTfGYbWvQchEB900IhMzTJQuSter%2BshCEuqU%3D&st=2021-08-06T06%3A37%3A27Z&se=2024-08-06T06%3A37%3A27Z&sp=rl",
-            "contentHash": "9B3E03C8AB8F7438F7EB9FF2E4D157A151178BD887F4A05AC96A6CB0B69F2560",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/IEBaseline.zip?sv=2019-07-07&sr=b&sig=TV1D%2BQOQtQvPiW23m%2BjvizIj3eJZfWA7SBcJjfIyPoA%3D&st=2021-08-09T23%3A59%3A06Z&se=2024-08-09T23%3A59%3A06Z&sp=rl",
+            "contentHash": "A257BC3A257271AB269C3E7BAD1DC63FBAFAAACBED2A38049064D1AEFB89F28C",
             "configurationParameter": {}
           }
         },

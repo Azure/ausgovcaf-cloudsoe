@@ -22,8 +22,8 @@
             "name": "WindowsAccountLockout",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/WindowsAccountLockout.zip?sv=2019-07-07&sr=b&sig=gQjVwnfLhqaLaff4wT4bu14%2BcUX8f7nYdEd%2B6rsGnNQ%3D&st=2021-08-06T06%3A40%3A19Z&se=2024-08-06T06%3A40%3A19Z&sp=rl",
-            "contentHash": "8C08882BC57331F3DC3CEA6879E0F61DAA86251A88C42C966A46864943B1EF84",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/WindowsAccountLockout.zip?sv=2019-07-07&sr=b&sig=9W0ePvyQEk5Mt%2BBNad1JfcQ8CW0%2BiMuPL3BBm5ieZyk%3D&st=2021-08-10T00%3A03%3A24Z&se=2024-08-10T00%3A03%3A24Z&sp=rl",
+            "contentHash": "6B848EFC8DE41240D5EC51021E910E72B28B818F723C4775EE256271EE429E85",
             "configurationParameter": {}
           }
         },

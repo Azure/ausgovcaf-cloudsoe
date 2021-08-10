@@ -22,12 +22,31 @@
             "name": "WindowsLogonBanner",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/WindowsLogonBanner.zip?sv=2019-07-07&sr=b&sig=1oZxfVjWx5%2FJZ5UVKhWkwuiFO%2BItRJ6DcDcD7QWSZpA%3D&st=2021-08-06T06%3A40%3A49Z&se=2024-08-06T06%3A40%3A49Z&sp=rl",
-            "contentHash": "0029582FA4978B33377B26EC59A12E1807E9E45F079C9E39E4E320153B39BF87",
-            "configurationParameter": {}
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/WindowsLogonBanner.zip?sv=2019-07-07&sr=b&sig=Ncbnyhd1W0o1NnDWlqx%2FLJSIt2IEQFxN37oT187K5Zo%3D&st=2021-08-10T00%3A03%3A46Z&se=2024-08-10T00%3A03%3A46Z&sp=rl",
+            "contentHash": "DA57B55FCF1C48B4A3A4F366E770D276CCEB536FCB950760A5D841A4E43F6CDA",
+            "configurationParameter": {
+              "BannerText": "[Registry]Ensure Windows logon banner text is set correctly;ValueData",
+              "BannerTitle": "[Registry]Ensure Windows logon banner title is set correctly;ValueData"
+            }
           }
         },
         "parameters": {
+          "BannerTitle": {
+            "metadata": {
+              "displayName": "Windows logon banner title",
+              "description": "Windows logon banner title"
+            },
+            "defaultValue": "YOUR LOGON BANNER TITLE HERE",
+            "type": "string"
+          },
+          "BannerText": {
+            "metadata": {
+              "displayName": "Windows logon banner text",
+              "description": "Windows logon banner text"
+            },
+            "defaultValue": "YOUR LOGON BANNER TEXT HERE",
+            "type": "string"
+          },
           "IncludeArcMachines": {
             "Type": "String",
             "Metadata": {
@@ -231,6 +250,10 @@
                   {
                     "field": "Microsoft.GuestConfiguration/guestConfigurationAssignments/complianceStatus",
                     "equals": "Compliant"
+                  },
+                  {
+                    "field": "Microsoft.GuestConfiguration/guestConfigurationAssignments/parameterHash",
+                    "equals": "[[base64(concat('[Registry]Ensure Windows logon banner title is set correctly;ValueData', '=', parameters('BannerTitle'), ',', '[Registry]Ensure Windows logon banner text is set correctly;ValueData', '=', parameters('BannerText')))]"
                   }
                 ]
               }

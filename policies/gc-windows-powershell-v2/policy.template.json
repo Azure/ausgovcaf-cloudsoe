@@ -22,8 +22,8 @@
             "name": "PowershellV2",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/PowershellV2.zip?sv=2019-07-07&sr=b&sig=dupBKE5Cl5d51UhAL8ctbZArv594U%2BNW%2BiKUurQx3dA%3D&st=2021-08-06T06%3A38%3A40Z&se=2024-08-06T06%3A38%3A40Z&sp=rl",
-            "contentHash": "6F3BF947D45626ED774309FECDEAFEDEECFFE35F56F3304D7DB9482D76989EA4",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/PowershellV2.zip?sv=2019-07-07&sr=b&sig=y13TurRwHeFt%2BsD%2Fz1e6C%2B5vHqGrf3BBiZ48c0F0ilM%3D&st=2021-08-09T23%3A59%3A59Z&se=2024-08-09T23%3A59%3A59Z&sp=rl",
+            "contentHash": "925026C549C6B82273C45B0599DA94C9DFBA7894963688224CEDEAD69B73AD5E",
             "configurationParameter": {}
           }
         },

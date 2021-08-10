@@ -22,8 +22,8 @@
             "name": "WindowsServer2016Baseline",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/WindowsServer2016Baseline.zip?sv=2019-07-07&sr=b&sig=aNgDMXCYUFHsn1NNdTyqEN%2FfEhpF%2BF9k1nOsIWgKG1M%3D&st=2021-08-06T06%3A41%3A10Z&se=2024-08-06T06%3A41%3A10Z&sp=rl",
-            "contentHash": "967AD60558F7314C627FC5E9EA08630E4298D45541CA4CA5557E16D812462ACF",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/WindowsServer2016Baseline.zip?sv=2019-07-07&sr=b&sig=nKXH%2Bk1KDppiOjzKrxXOmzB3KzYcWSRllpXkq5NmPdo%3D&st=2021-08-10T00%3A03%3A58Z&se=2024-08-10T00%3A03%3A58Z&sp=rl",
+            "contentHash": "98D61DF5D95271CF80D3AEEAB50F7B73533275236CAD6F591BFAB6661AB834A4",
             "configurationParameter": {}
           }
         },
@@ -72,7 +72,7 @@
                           },
                           {
                             "field": "Microsoft.Compute/imageSKU",
-                            "notLike": "2016*"
+                            "like": "2016*"
                           }
                         ]
                       },

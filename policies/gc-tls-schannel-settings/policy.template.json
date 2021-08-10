@@ -22,8 +22,8 @@
             "name": "TLSSchannelSettings",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/TLSSchannelSettings.zip?sv=2019-07-07&sr=b&sig=0K1SUaJnixq%2FXAWy6jL1RtBhnDytYF9B8HPbr0kK9s4%3D&st=2021-08-06T06%3A39%3A43Z&se=2024-08-06T06%3A39%3A43Z&sp=rl",
-            "contentHash": "9E2B19A7D80CE44311169810649AF593C01B32AB077D2BDEFA08069C39EAAA42",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/TLSSchannelSettings.zip?sv=2019-07-07&sr=b&sig=FzQbML%2FLrhPrN3L3BK%2FLLqm4eERylkZa97Kw2zycJKQ%3D&st=2021-08-10T00%3A02%3A47Z&se=2024-08-10T00%3A02%3A47Z&sp=rl",
+            "contentHash": "2EA6216F84BA924F218032683E92CF799F1B808A62940DEAE456EA413EA0DCEE",
             "configurationParameter": {}
           }
         },

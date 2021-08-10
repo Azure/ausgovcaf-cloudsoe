@@ -22,8 +22,8 @@
             "name": "PowershellLogging",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/PowershellLogging.zip?sv=2019-07-07&sr=b&sig=%2FHZ7a5g9%2Bvae4%2BPjdHU32F%2FAWYToWbVVI2%2BKBKajRq0%3D&st=2021-08-06T06%3A38%3A25Z&se=2024-08-06T06%3A38%3A25Z&sp=rl",
-            "contentHash": "47FF1F7265D3D67C9423049466EA40A3680D84123D2CE67B5BD441DCDB2FD455",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/PowershellLogging.zip?sv=2019-07-07&sr=b&sig=T2pNMVZyOWw1bkQpC%2BOoQu%2FBZtdanGdJRVzdNbQW7d4%3D&st=2021-08-09T23%3A59%3A48Z&se=2024-08-09T23%3A59%3A48Z&sp=rl",
+            "contentHash": "5DD42408C5D8CEDDA89EDB5C9EC904A8B336419404A0F9BBC464D87D0D6C62F5",
             "configurationParameter": {}
           }
         },

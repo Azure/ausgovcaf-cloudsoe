@@ -22,8 +22,8 @@
             "name": "TLSAuditLogging",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/TLSAuditLogging.zip?sv=2019-07-07&sr=b&sig=29rQ3LvMPISr%2Bmrv7nDPS5uwuYN4u2wOniqyahsFrpg%3D&st=2021-08-06T06%3A39%3A12Z&se=2024-08-06T06%3A39%3A12Z&sp=rl",
-            "contentHash": "52EA43E36DB64363D79CC627F574490AF72914C6BA53EFA143CC814B66660BB9",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/TLSAuditLogging.zip?sv=2019-07-07&sr=b&sig=o6Ze6cxajkxtfvqo%2BSww5m3zEwEIrtvgEeK%2FHKsvxc4%3D&st=2021-08-10T00%3A02%3A18Z&se=2024-08-10T00%3A02%3A18Z&sp=rl",
+            "contentHash": "106A9FB1416875C05F6B5CAD188D6779A886AF286DD0BBCE489B423495B0FC7D",
             "configurationParameter": {}
           }
         },

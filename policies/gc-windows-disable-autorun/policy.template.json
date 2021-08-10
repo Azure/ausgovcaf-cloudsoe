@@ -22,8 +22,8 @@
             "name": "WindowsDisableAutorun",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/WindowsDisableAutorun.zip?sv=2019-07-07&sr=b&sig=CeXH%2BbXQuFiPVlt9IIiszM%2Fj0KR%2F6VFTZ5KvOmz%2Fi5A%3D&st=2021-08-06T06%3A40%3A35Z&se=2024-08-06T06%3A40%3A35Z&sp=rl",
-            "contentHash": "B9E013A8D151BD2FAFEA438CEA3B8B397DF70559EFB9C34165D8DD0E87A26F8E",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/WindowsDisableAutorun.zip?sv=2019-07-07&sr=b&sig=wR9DDYKDnbZGHCzhXgmjmx%2FVaqhghQ1bXZvLb8PO8Ws%3D&st=2021-08-10T00%3A03%3A34Z&se=2024-08-10T00%3A03%3A34Z&sp=rl",
+            "contentHash": "CBE21A9E671B61D421187CA44114EBF272C67D753F90622775D85F366F69E9F3",
             "configurationParameter": {}
           }
         },

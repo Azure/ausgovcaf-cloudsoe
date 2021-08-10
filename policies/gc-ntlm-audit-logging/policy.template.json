@@ -22,8 +22,8 @@
             "name": "NtlmAuditLogging",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/NtlmAuditLogging.zip?sv=2019-07-07&sr=b&sig=3OcOEeWLSCSv1bK1m2B0SanBlCrktmTOcTdIg8zjzRE%3D&st=2021-08-06T06%3A38%3A10Z&se=2024-08-06T06%3A38%3A10Z&sp=rl",
-            "contentHash": "DA76B3CED39D09EC459B1939D4A133DAF0DFB41C45A5F088AABE8B74252A0DE9",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/NtlmAuditLogging.zip?sv=2019-07-07&sr=b&sig=LvaYPwE3oGPf647PkRIqlLFHrqMjb5oOEAsOyc2WnnM%3D&st=2021-08-09T23%3A59%3A37Z&se=2024-08-09T23%3A59%3A37Z&sp=rl",
+            "contentHash": "17D68F8F09889AB5E32FAA65A8C08D9BDE937BCBA95E785F75A03762C87A2C22",
             "configurationParameter": {}
           }
         },

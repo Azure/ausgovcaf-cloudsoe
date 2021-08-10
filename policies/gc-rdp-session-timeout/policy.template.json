@@ -22,8 +22,8 @@
             "name": "RdpSessionTimeout",
             "version": "1.0.0",
             "contentType": "Custom",
-            "contentUri": "https://scloudsoepolicystore.blob.core.windows.net/guest-configuration/RdpSessionTimeout.zip?sv=2019-07-07&sr=b&sig=jqIJheXXRYndq%2FTtCw8WZ8OGY4avqa9xQLSYtEaRS%2B8%3D&st=2021-08-06T06%3A38%3A56Z&se=2024-08-06T06%3A38%3A56Z&sp=rl",
-            "contentHash": "7A5C77393650D3613EE7F71E808B071A5FC73DF577358FD4B695D7E7C1AD444E",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/RdpSessionTimeout.zip?sv=2019-07-07&sr=b&sig=B9LmwKxD4MPqMmwhI1yKogcTOWBaWHRTWhP67q8JXCs%3D&st=2021-08-10T00%3A02%3A07Z&se=2024-08-10T00%3A02%3A07Z&sp=rl",
+            "contentHash": "4C2A743BE27837C5A556CB8D65DBCC836A478787D8BA7BD0E80ED18E93626D52",
             "configurationParameter": {}
           }
         },
