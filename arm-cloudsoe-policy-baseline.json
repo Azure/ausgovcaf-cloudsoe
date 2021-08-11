@@ -456,7 +456,7 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "name": "[variables('policyAssignments')[copyIndex()].assignmentName]",
             "apiVersion": "2019-09-01",
-            "location": "eastus",
+            "location": "australiaeast",
             "copy": {
                 "name": "Policy assignments",
                 "count": "[length(variables('policyAssignments'))]",
@@ -466,13 +466,35 @@
             "dependsOn":[
                 "Policy definition deployments"
             ],
-            "identity": "[createObject('type',if(contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionId'),'None','SystemAssigned'))]",
+            "identity": "[createObject('type',if(contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds'),'SystemAssigned','None'))]",
             "properties": {
                 "scope": "[variables('commonAssignmentParameters').policyScopeId]",
                 "policyDefinitionId": "[if(contains(variables('policyAssignments')[copyIndex()].definition,'builtinPolicyDefinitionId'), variables('policyAssignments')[copyIndex()].definition.builtinPolicyDefinitionId, reference(concat('PolicyDefinitions-',variables('policyAssignments')[copyIndex()].definition.customPolicyDefinitionName)).outputs.policyDefinitionId.value)]",
                 "displayName": "[variables('policyAssignments')[copyIndex()].displayName]",
                 "metadata": "[if(contains(variables('policyAssignments')[copyIndex()],'controls'),union(createObject('assignedBy',variables('commonAssignmentParameters').assignedBy),createObject('controls',variables('policyAssignments')[copyIndex()].controls)),createObject('assignedBy',variables('commonAssignmentParameters').assignedBy))]",
                 "parameters": "[variables('policyAssignments')[copyIndex()].parameters]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignment",
+            "name": "[concat('Deploy-',variables('policyDefinitions')[copyIndex()].assignmentName)]",
+            "apiVersion": "2019-09-01",
+            "location": "australiaeast",
+            "copy": {
+                "name": "Policy role assignments",
+                "count": "[length(variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
+                //should only be as long as those policy assignments that have a roleassignmentid definition
+                "mode": "Serial",
+                "batchSize": 1
+            },
+            "dependsOn":[
+                "Policy assignments"
+            ],
+            "properties": {
+                "principalType": "ServicePrincipal",
+                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
+                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
+                //get the princpal id from the assignment
             }
         }
     ]
