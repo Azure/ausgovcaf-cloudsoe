@@ -476,7 +476,7 @@
             }
         },
         {
-            "type": "Microsoft.Authorization/roleAssignment",
+            "type": "Microsoft.Authorization/roleAssignments",
             "name": "[concat('Deploy-',variables('policyDefinitions')[copyIndex()].assignmentName)]",
             "apiVersion": "2019-09-01",
             "location": "australiaeast",
