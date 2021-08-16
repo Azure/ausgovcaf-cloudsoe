@@ -432,7 +432,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[concat('PolicyDefinitions-',variables('policyDefinitions')[copyIndex()].customPolicyDefinitionName)]",
-            "location": "eastus",
+            "location": "australiaeast",
             "copy": {
                 "name": "Policy definition deployments",
                 "count": "[length(variables('policyDefinitions'))]",
@@ -476,26 +476,43 @@
             }
         },
         {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "name": "[concat('Deploy-',variables('policyDefinitions')[copyIndex()].assignmentName)]",
-            "apiVersion": "2019-09-01",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "condition": "[equals(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds')]",
+            "name": "[concat('RoleAssignments-',variables('policyAssignments')[copyIndex()].assignmentName)]",
             "location": "australiaeast",
+            "dependsOn": [
+                "Policy assignments"
+            ],
             "copy": {
                 "name": "Policy role assignments",
-                "count": "[length(variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
-                //should only be as long as those policy assignments that have a roleassignmentid definition
+                "count": "[length(variables('policyAssignments'))]",
                 "mode": "Serial",
                 "batchSize": 1
             },
-            "dependsOn":[
-                "Policy assignments"
-            ],
             "properties": {
-                "principalType": "ServicePrincipal",
-                "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
-                //get the princpal id from the assignment
+                "mode": "Incremental",
+                "template" : {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {},
+                "functions": [],
+                "variables": {},
+                "resources": [
+                {
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "name": "[guid(concat('Deploy-',variables('policyAssignments')[copyIndex()].assignmentName))]",
+                    "apiVersion": "2019-09-01",
+                    "location": "australiaeast",
+                    "properties": {
+                        "principalType": "ServicePrincipal",
+                        "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
+                        "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
+                    }
+                }
+                ]
+                }
             }
         }
-    ]
+        ]
 }
