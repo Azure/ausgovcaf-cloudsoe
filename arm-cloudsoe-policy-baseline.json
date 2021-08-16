@@ -478,7 +478,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "condition": "[equals(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds')]",
+            "condition": "[contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds')]",
             "name": "[concat('RoleAssignments-',variables('policyAssignments')[copyIndex()].assignmentName)]",
             "location": "australiaeast",
             "dependsOn": [
