@@ -501,7 +501,7 @@
                 "resources": [
                 {
                     "type": "Microsoft.Authorization/roleAssignments",
-                    "name": "[guid(concat(variables('policyAssignments')[copyIndex()].assignmentName), variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
+                    "name": "[guid(variables('policyAssignments')[copyIndex()].assignmentName)]",
                     "apiVersion": "2019-09-01",
                     "location": "australiaeast",
                     "properties": {
