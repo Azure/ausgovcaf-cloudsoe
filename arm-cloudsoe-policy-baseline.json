@@ -479,7 +479,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "condition": "[contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds')]",
-            "name": "[concat('RoleAssignments-',variables('policyAssignments')[copyIndex()].assignmentName)]",
+            "name": "[concat('RoleAssignments-', variables('policyAssignments')[copyIndex()].assignmentName)]",
             "location": "australiaeast",
             "dependsOn": [
                 "Policy assignments"
@@ -506,7 +506,7 @@
                     "location": "australiaeast",
                     "properties": {
                         "principalType": "ServicePrincipal",
-                        "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds)]",
+                        "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds[0])]",
                         "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
                     }
                 }
