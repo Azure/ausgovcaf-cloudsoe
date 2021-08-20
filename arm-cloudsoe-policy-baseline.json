@@ -502,7 +502,7 @@
                 {
                     "type": "Microsoft.Authorization/roleAssignments",
                     "name": "[guid(variables('policyAssignments')[copyIndex()].assignmentName)]",
-                    "apiVersion": "2019-09-01",
+                    "apiVersion": "2018-07-01",
                     "location": "australiaeast",
                     "properties": {
                         "principalType": "ServicePrincipal",
