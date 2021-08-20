@@ -9,10 +9,9 @@ For more information, see the [Code of Conduct FAQ](https://opensource.microsoft
 
 Remember that this repository is maintained by community members who volunteer their time to help. Be courteous and patient.
 
-
 ## ❓ Questions, Problems, Issues, Bugs and contributions
 
-Please open GitHub issues for general questions with a question tag after reading the [FAQ](https://github.com/Azure/ausgovcaf-cloudsoe/wiki/FAQ) on the Wiki.
+Please open GitHub issues for general questions with a question tag after reading the [getting started guide](https://aka.ms/cloudsoe)
 Feature requests and bug reports can be raised with the appropriate tag for discussion.
 
 Whenever you are submitting any changes to this repository, please follow these recommendations.

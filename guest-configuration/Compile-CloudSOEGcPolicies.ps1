@@ -30,7 +30,7 @@ $PSFiles | % {
         & ($_.FullName)
     
         #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
-        $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json
+        $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json -AsHashtable
         if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "DscModules") {
             $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force; Import-Module $_ -Force}
         }
@@ -46,18 +46,24 @@ $PSFiles | % {
             -Description $GcPolicyMetadata.Description `
             -Path ($GcPolFilePath.FullName + '\policiestemp') `
             -Platform $GcPolicyMetadata.Platform `
-            -Version $GcPolicyMetadata.Version
+            -Version $GcPolicyMetadata.Version `
+            -Parameter $GcPolicyMetadata.PolicyParameters
 
         #Load guest configuration policy file and apply transforms 
         $GcPolicy = Get-Content  ($GcPolFilePath.FullName + "\policiestemp\AuditIfNotExists.json" )
         $GcPolicy = $GcPolicy.Replace("[parameters('IncludeArcMachines')]","[[parameters('IncludeArcMachines')]") #apply nested parameter escape
         $GcPolicy = $GcPolicy | ConvertFrom-Json
-        if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "PlatformVersion") { #Apply PlatformVersion-specific transforms
+        if ($GcPolicyMetadata.keys -contains "PlatformVersion") { #Apply PlatformVersion-specific transforms
+            $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] = New-Object -TypeName pscustomobject
+            Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name field -Value "Microsoft.Compute/imageSKU"
             switch ($GcPolicyMetadata.PlatformVersion) {
-                "Server 2016" { $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1].notlike = "2016*" } 
-                "Server 2019" { $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1].notlike = "2019*" }
+                "Server 2016" { Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name like -Value "2016*" } 
+                "Server 2019" { Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name like -Value "2019*" }
                 Default {}
             }
+        }
+        if ($GcPolicyMetadata.keys -contains "PolicyParameters") { #Apply PolicyParameters-specific transforms
+            $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals = "[" + $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals
         }
 
         #Cleanup

@@ -6,5 +6,25 @@
     "DscModules": [
         "PSDscResources"
     ], 
-    "PolicyPath": "gc-windows-logon-banner"
+    "PolicyPath": "gc-windows-logon-banner",
+    "PolicyParameters": [
+        {
+            "Name": "BannerTitle",
+            "DisplayName": "Windows logon banner title",
+            "Description": "Windows logon banner title",
+            "ResourceType": "Registry",
+            "ResourceId": "Ensure Windows logon banner title is set correctly",
+            "ResourcePropertyName": "ValueData",
+            "DefaultValue": "YOUR LOGON BANNER TITLE HERE"
+        },
+        {
+            "Name": "BannerText",
+            "DisplayName": "Windows logon banner text",
+            "Description": "Windows logon banner text",
+            "ResourceType": "Registry",
+            "ResourceId": "Ensure Windows logon banner text is set correctly",
+            "ResourcePropertyName": "ValueData",
+            "DefaultValue": "YOUR LOGON BANNER TEXT HERE"
+        }
+    ]
 }

@@ -43,7 +43,7 @@
             "type": "Microsoft.OperationsManagement/solutions",
             "apiVersion": "2015-11-01-preview",
             "name": "[variables('securityResourceName')]",
-            "location": "Southeast Asia",
+            "location": "[parameters('workspaceRegion')]",
             "plan": {
                 "name": "[variables('securityResourceName')]",
                 "promotionCode": "",
@@ -58,7 +58,7 @@
             "type": "Microsoft.OperationsManagement/solutions",
             "apiVersion": "2015-11-01-preview",
             "name": "[variables('securityCenterFreeResourceName')]",
-            "location": "Southeast Asia",
+            "location": "[parameters('workspaceRegion')]",
             "plan": {
                 "name": "[variables('securityCenterFreeResourceName')]",
                 "promotionCode": "",
