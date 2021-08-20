@@ -32,7 +32,7 @@ $PSFiles | % {
         #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
         $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json -AsHashtable
         if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "DscModules") {
-            $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force}
+            $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force; Import-Module $_ -Force}
         }
 
         #Build and upload guest configuration package

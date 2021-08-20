@@ -191,7 +191,7 @@ Ensure you have prepared the following items:
 
 - __Storage Account__
 
-    Create a storage account in a desired region for hosting your Azure Policy Guest Configuration artifacts. This endpoint will be referenced in the Guest Configuration audit policy and accessed by the SOE VMs to download required GC policy artifacts.
+    Create a storage account in a desired region for hosting your Azure Policy Guest Configuration artifacts. This endpoint will be referenced in the Guest Configuration audit policy and accessed by the SOE VMs to download required GC policy artifacts. This storage account should have a container ready for hosting Guest Configuration packages.
 
     ```powershell
     New-AzStorageAccount -ResourceGroupName cloudsoe-rg -Name cloudsoegcpol -Location 'Australia East' -SkuName Standard_LRS -Kind BlobStorage -AccessTier Hot -verbose | New-AzStorageContainer -Verbose -Name guest-config -Permission Blob
@@ -210,16 +210,23 @@ The CloudSOE ARM templates rely on published Guest Configuration packages. These
     This is in preparation of the Guest Configuration package build. We recommend you deploy a temporary VM for this step. We have tested with the following software configuration:
 
     - Windows Server 2019 OS
-    - Powershell 7.1
-    - Az modules
-    - Git
+    - [Powershell 7.1](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7.1)
+    - [GuestConfiguration PowerShell module](https://www.powershellgallery.com/packages/GuestConfiguration)
+    - [Git](https://git-scm.com/download/win)
 
     Use the following command to clone the repo:
 
-    > git clone . https://github.com/yourgithubaccount/ausgovcaf-cloudsoe.git
+    > git clone https://github.com/yourgithubaccount/ausgovcaf-cloudsoe.git
 
 
 - __Compile and upload the Guest Configuration packages__
+
+    Sign in the to the account that has the equivalent of _Storage Blob Data Contributor_ access to the Guest Configuration package storage account:
+
+    ```
+    Login-AzAccount
+    Select-AzSubscription xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx 
+    ```
 
     We have provided a sample script which automates the compilation and publication of Guest Configurations, as well as the generation of ARM templates for the associated policyDefinition.
 
@@ -262,16 +269,17 @@ The CloudSOE ARM templates rely on published Guest Configuration packages. These
 
     ---
 
- - __Commit and push the new policy template files to your forked repo__
+ - __Add, commit and push the new policy template files to your forked repo__
 
     The previous step will have generated a number of ARM templates in /policies. These templates will be deployed as linked deployments by ```arm-cloudsoe-policy-baseline.json```
     
-    > git add .
-    > git commit
-    > git push -u origin
-
+    ```
+    git add .
+    git commit -m "Created policy templates"
+    git push
+    ```
     Your repo should contain the updated guest configuration policy files ready to be referenced by the linked deployments.
-
+    
 ## Prepare your inputs for deploying the SOE code
 
 Create a hashtable `$params` to hold your deployment parameters:
