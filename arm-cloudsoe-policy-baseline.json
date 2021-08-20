@@ -432,7 +432,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "[concat('PolicyDefinitions-',variables('policyDefinitions')[copyIndex()].customPolicyDefinitionName)]",
-            "location": "eastus",
+            "location": "australiaeast",
             "copy": {
                 "name": "Policy definition deployments",
                 "count": "[length(variables('policyDefinitions'))]",
@@ -456,7 +456,7 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "name": "[variables('policyAssignments')[copyIndex()].assignmentName]",
             "apiVersion": "2019-09-01",
-            "location": "eastus",
+            "location": "australiaeast",
             "copy": {
                 "name": "Policy assignments",
                 "count": "[length(variables('policyAssignments'))]",
@@ -466,7 +466,7 @@
             "dependsOn":[
                 "Policy definition deployments"
             ],
-            "identity": "[createObject('type',if(contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionId'),'None','SystemAssigned'))]",
+            "identity": "[createObject('type',if(contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds'),'SystemAssigned','None'))]",
             "properties": {
                 "scope": "[variables('commonAssignmentParameters').policyScopeId]",
                 "policyDefinitionId": "[if(contains(variables('policyAssignments')[copyIndex()].definition,'builtinPolicyDefinitionId'), variables('policyAssignments')[copyIndex()].definition.builtinPolicyDefinitionId, reference(concat('PolicyDefinitions-',variables('policyAssignments')[copyIndex()].definition.customPolicyDefinitionName)).outputs.policyDefinitionId.value)]",
@@ -474,6 +474,45 @@
                 "metadata": "[if(contains(variables('policyAssignments')[copyIndex()],'controls'),union(createObject('assignedBy',variables('commonAssignmentParameters').assignedBy),createObject('controls',variables('policyAssignments')[copyIndex()].controls)),createObject('assignedBy',variables('commonAssignmentParameters').assignedBy))]",
                 "parameters": "[variables('policyAssignments')[copyIndex()].parameters]"
             }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "condition": "[contains(variables('policyAssignments')[copyIndex()].definition,'roleDefinitionIds')]",
+            "name": "[concat('RoleAssignments-', variables('policyAssignments')[copyIndex()].assignmentName)]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "Policy assignments"
+            ],
+            "copy": {
+                "name": "Policy role assignments",
+                "count": "[length(variables('policyAssignments'))]",
+                "mode": "Serial",
+                "batchSize": 1
+            },
+            "properties": {
+                "mode": "Incremental",
+                "template" : {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {},
+                "functions": [],
+                "variables": {},
+                "resources": [
+                {
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "name": "[guid(variables('policyAssignments')[copyIndex()].assignmentName)]",
+                    "apiVersion": "2019-04-01-preview",
+                    "location": "australiaeast",
+                    "properties": {
+                        "principalType": "ServicePrincipal",
+                        "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds[0])]",
+                        "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
+                    }
+                }
+                ]
+                }
+            }
         }
-    ]
+        ]
 }
