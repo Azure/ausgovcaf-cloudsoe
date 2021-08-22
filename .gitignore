@@ -1,0 +1,2 @@
+#ignore guest config policy uploads
+/polices/gc*
