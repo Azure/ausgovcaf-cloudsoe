@@ -1,0 +1,249 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "[parameters('policyName')]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "displayName": "GC - Windows Account Lockout settings & logging",
+        "policyType": "Custom",
+        "mode": "All",
+        "description": "Ensures expected account lockout threshold and sets account lockout auditing.",
+        "metadata": {
+          "category": "Guest Configuration",
+          "guestConfiguration": {
+            "name": "WindowsAccountLockout",
+            "version": "1.0.0",
+            "contentType": "Custom",
+            "contentUri": "https://cloudsoestg23.blob.core.windows.net/guest-config/WindowsAccountLockout.zip?sv=2019-07-07&sr=b&sig=9W0ePvyQEk5Mt%2BBNad1JfcQ8CW0%2BiMuPL3BBm5ieZyk%3D&st=2021-08-10T00%3A03%3A24Z&se=2024-08-10T00%3A03%3A24Z&sp=rl",
+            "contentHash": "6B848EFC8DE41240D5EC51021E910E72B28B818F723C4775EE256271EE429E85",
+            "configurationParameter": {}
+          }
+        },
+        "parameters": {
+          "IncludeArcMachines": {
+            "Type": "String",
+            "Metadata": {
+              "DisplayName": "Include Arc connected servers",
+              "Description": "By selecting this option, you agree to be charged monthly per Arc connected machine."
+            },
+            "AllowedValues": [
+              "True",
+              "False"
+            ],
+            "DefaultValue": "False"
+          }
+        },
+        "policyRule": {
+          "if": {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "field": "type",
+                    "equals": "Microsoft.Compute/virtualMachines"
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "field": "Microsoft.Compute/imagePublisher",
+                        "in": [
+                          "esri",
+                          "incredibuild",
+                          "MicrosoftDynamicsAX",
+                          "MicrosoftSharepoint",
+                          "MicrosoftVisualStudio",
+                          "MicrosoftWindowsDesktop",
+                          "MicrosoftWindowsServerHPCPack"
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "MicrosoftWindowsServer"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageSKU",
+                            "notLike": "2008*"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "MicrosoftSQLServer"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "notLike": "SQL2008*"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "microsoft-dsvm"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "equals": "dsvm-windows"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "microsoft-ads"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "in": [
+                              "standard-data-science-vm",
+                              "windows-data-science-vm"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "batch"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "equals": "rendering-windows2016"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "center-for-internet-security-inc"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "like": "cis-windows-server-201*"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "pivotal"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "like": "bosh-windows-server*"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "field": "Microsoft.Compute/imagePublisher",
+                            "equals": "cloud-infrastructure-services"
+                          },
+                          {
+                            "field": "Microsoft.Compute/imageOffer",
+                            "like": "ad*"
+                          }
+                        ]
+                      },
+                      {
+                        "allOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "field": "Microsoft.Compute/virtualMachines/osProfile.windowsConfiguration",
+                                "exists": "true"
+                              },
+                              {
+                                "field": "Microsoft.Compute/virtualMachines/storageProfile.osDisk.osType",
+                                "like": "Windows*"
+                              }
+                            ]
+                          },
+                          {
+                            "anyOf": [
+                              {
+                                "field": "Microsoft.Compute/imageSKU",
+                                "exists": "false"
+                              },
+                              {
+                                "allOf": [
+                                  {
+                                    "field": "Microsoft.Compute/imageSKU",
+                                    "notLike": "2008*"
+                                  },
+                                  {
+                                    "field": "Microsoft.Compute/imageOffer",
+                                    "notLike": "SQL2008*"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "value": "[[parameters('IncludeArcMachines')]",
+                    "equals": "true"
+                  },
+                  {
+                    "field": "type",
+                    "equals": "Microsoft.HybridCompute/machines"
+                  },
+                  {
+                    "field": "Microsoft.HybridCompute/imageOffer",
+                    "like": "windows*"
+                  }
+                ]
+              }
+            ]
+          },
+          "then": {
+            "effect": "auditIfNotExists",
+            "details": {
+              "type": "Microsoft.GuestConfiguration/guestConfigurationAssignments",
+              "name": "WindowsAccountLockout",
+              "existenceCondition": {
+                "allOf": [
+                  {
+                    "field": "Microsoft.GuestConfiguration/guestConfigurationAssignments/complianceStatus",
+                    "equals": "Compliant"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "policyDefinitionId": {
+      "value": "[resourceId('Microsoft.Authorization/policyDefinitions',parameters('policyName'))]",
+      "type": "string"
+    }
+  }
+}
