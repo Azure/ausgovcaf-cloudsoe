@@ -131,12 +131,16 @@
                         ]
                     },
                     {
-
                         //Enble PowerShell logging
                         "type": "PowerShell",
                         "name": "PowerShellLogging",
                         "runElevated": true,
                         "inline": [
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows' -Name PowerShell",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell' -Name ScriptBlockLogging",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell' -Name ModuleLogging",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging' -Name ModuleNames",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell' -Name Transcription",
                             "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging' -Name EnableScriptBlockLogging -Value 1 -Type 'DWord'",
                             "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging' -Name EnableModuleLogging -Value 1 -Type 'DWord'",
                             "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\PowerShell\\ModuleLogging\\ModuleNames' -Name '*' -Value '*' -Type 'String'",
