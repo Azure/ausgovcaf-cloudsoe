@@ -1,0 +1,62 @@
+name: 🐞 Bug or error report
+description: Report an anomaly or unexpected behavior
+labels: ['Needs: Triage :mag:', 'type:bug-suspected']
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      - [x] Bug
+      
+      Thank you for reporting a bug!
+
+      - All bug reports are welcome - we want to fix them!
+      - This repo is maintained by volunteers. Please be courteous and patient. 🙂
+      - Remember to include sufficient details and context.
+      - If you have multiple bugs, please submit them in separate issues.
+
+      Please provide the following details about the issue you encountered.  *Issues that do not provide the information requested in this form will be flagged as **incomplete** & automatically closed.*
+
+- type: markdown
+  attributes:
+    value: |
+      Provide a clear & concise description of what the bug is. Please follow the guidance on [How To Create Good Issues](https://github.com/pnp/sp-dev-fx-webparts/wiki/How-to-Create-Good-Issues) which explains how to apply formatting, adding references & resources, screenshots, etc.
+
+- type: textarea
+  id: what-happened
+  attributes:
+    label: What happened?
+    description: Describe the observed behavior
+    placeholder: Tell us what you see!
+  validations:
+    required: true
+
+- type: textarea
+  id: steps
+  attributes:
+    label: Steps to reproduce
+    description: How do you reproduce this? Please provide as much step-by-step detail as possible.
+    value: |
+      1.
+      2.
+      3.
+  validations:
+    required: true
+
+- type: textarea
+  id: expected
+  attributes:
+    label: Expected behavior
+    description: What did you expect to happen when the reproduce steps are followed?
+    placeholder: Tell us what you expected to see!
+  validations:
+    required: true
+
+- type: markdown
+  attributes:
+    value: |
+      When solving bugs, most time is spent going back and forth with the issue author asking for more information about their environment. 
+      
+      Save yourself some time (and those who are trying to help you); provide us with your environment information so we can reproduce the issue.
+      
+      We're not trying to be difficult here, we just want to help as quickly as possible.
