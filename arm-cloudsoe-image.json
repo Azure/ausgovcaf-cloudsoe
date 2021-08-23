@@ -2588,6 +2588,31 @@
                             "Set-AppLockerPolicy -XmlPolicy $ApplockerScriptHostRulesFilePath",
                             "Remove-Item $ApplockerScriptHostRulesFilePath"
                         ]
+                    },
+                    {
+                        //Sets Windows Firewall state in compliance with GC policy
+                        "type": "PowerShell",
+                        "name": "WindowsFirewall",
+                        "runElevated": true,
+                        "inline": [
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall' -ErrorAction SilentlyContinue",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\DomainProfile' -ErrorAction SilentlyContinue",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -ErrorAction SilentlyContinue",
+                            "New-Item -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -ErrorAction SilentlyContinue",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\DomainProfile' -Name 'EnableFirewall' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'EnableFirewall' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'AllowLocalIPsecPolicyMerge' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'AllowLocalPolicyMerge' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'DisableNotifications' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'DefaultOutboundAction' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile' -Name 'DisableUnicastResponsesToMulticastBroadcast' -Value 0 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'EnableFirewall' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'AllowLocalIPsecPolicyMerge' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'AllowLocalPolicyMerge' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'DisableNotifications' -Value 1 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'DefaultOutboundAction' -Value 0 -Type 'Dword'",
+                            "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\WindowsFirewall\\PublicProfile' -Name 'DisableUnicastResponsesToMulticastBroadcast' -Value 1 -Type 'Dword'"
+                        ]
                     }
                 ],
                 "MicrosoftWindowsServer": {
