@@ -54,11 +54,11 @@ $PSFiles | % {
         $GcPolicy = $GcPolicy.Replace("[parameters('IncludeArcMachines')]","[[parameters('IncludeArcMachines')]") #apply nested parameter escape
         $GcPolicy = $GcPolicy | ConvertFrom-Json
         if ($GcPolicyMetadata.keys -contains "PlatformVersion") { #Apply PlatformVersion-specific transforms
-            $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] = New-Object -TypeName pscustomobject
-            Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name field -Value "Microsoft.Compute/imageSKU"
+            $GcPolicy.properties.policyrule.if.anyof[0].allof += New-Object -TypeName pscustomobject
+            Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name field -Value "Microsoft.Compute/virtualMachines/storageProfile.imageReference.id"
             switch ($GcPolicyMetadata.PlatformVersion) {
-                "Server 2016" { Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name like -Value "2016*" } 
-                "Server 2019" { Add-Member -InputObject $gcpolicy.properties.policyRule.if.anyof[0].allof[1].anyof[1].allof[1] -MemberType NoteProperty -Name like -Value "2019*" }
+                "Server 2016" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2016SOE" } 
+                "Server 2019" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2019SOE" }
                 Default {}
             }
         }
