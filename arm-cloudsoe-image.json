@@ -109,7 +109,15 @@
                             "auditpol /set /subcategory:'{0CCE9235-69AE-11D9-BED3-505054503030}' /success:enable",
                             "auditpol /set /subcategory:'{0CCE9215-69AE-11D9-BED3-505054503030}' /failure:enable",
                             "net accounts /lockoutthreshold:5"
-                            
+                        ]
+                    },
+                    {
+                        //Sets minimum password length setting
+                        "type": "PowerShell",
+                        "name": "PasswordLength",
+                        "runElevated": true,
+                        "inline": [
+                            "net accounts /minpwlen:14"
                         ]
                     },
                     {
