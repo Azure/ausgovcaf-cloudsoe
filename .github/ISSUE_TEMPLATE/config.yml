@@ -1,5 +1,11 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Ask a Question
+    about: ❓ Please ask general questions & answers here
+    url: https://github.com/Azure/ausgovcaf-cloudsoe/discussions/categories/q-a
+  - name: Suggestion / Idea
+    about: 🗣️💡 Do you have a suggestion or idea about the project or something we can do better?
+    url: https://github.com/Azure/ausgovcaf-cloudsoe/discussions/categories/ideas
   - name: Start a discussion
-    about: 🗨 Start a friendly conversation with the other members of the community
+    about: 🗨 Start a friendly conversation with the other members of the community to discuss other things
     url: https://github.com/Azure/ausgovcaf-cloudsoe/discussions
