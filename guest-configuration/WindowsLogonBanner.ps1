@@ -1,8 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-Install-Module 'PSDscResources'
-
 Configuration WindowsLogonBanner
 {
     param
@@ -14,25 +12,19 @@ Configuration WindowsLogonBanner
         $BannerText
     )
 
-    Import-DscResource -ModuleName 'PSDscResources'
+    Import-DscResource -ModuleName 'SecurityPolicyDsc'
 
     Node localhost {
-        Registry 'Ensure Windows logon banner title is set correctly'
+        SecurityOption 'Ensure Windows logon banner title is set correctly'
         {
-            Ensure = 'Present'
-            Key = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
-            ValueName = "legalnoticecaption"
-            ValueData = $BannerTitle
-            ValueType = "String"
+            Name = "Banner Title"
+            Interactive_logon_Message_title_for_users_attempting_to_log_on = $BannerTitle
         }
 
-        Registry 'Ensure Windows logon banner text is set correctly'
+        SecurityOption 'Ensure Windows logon banner text is set correctly'
         {
-            Ensure = 'Present'
-            Key = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
-            ValueName = "legalnoticetext"
-            ValueData = $BannerText
-            ValueType = "String"
+            Name = "Banner Text"
+            Interactive_logon_Message_text_for_users_attempting_to_log_on = $BannerText
         }
     }
 }

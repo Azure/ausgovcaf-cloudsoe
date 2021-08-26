@@ -4,7 +4,7 @@
     "Platform": "Windows",
     "Version": "1.0.0",
     "DscModules": [
-        "PSDscResources"
+        "SecurityPolicyDsc"
     ], 
     "PolicyPath": "gc-windows-logon-banner",
     "PolicyParameters": [
@@ -12,18 +12,18 @@
             "Name": "BannerTitle",
             "DisplayName": "Windows logon banner title",
             "Description": "Windows logon banner title",
-            "ResourceType": "Registry",
+            "ResourceType": "SecurityOption",
             "ResourceId": "Ensure Windows logon banner title is set correctly",
-            "ResourcePropertyName": "ValueData",
+            "ResourcePropertyName": "Interactive_logon_ Message_title_for_ users_attempting_ to_log_on",
             "DefaultValue": "YOUR LOGON BANNER TITLE HERE"
         },
         {
             "Name": "BannerText",
             "DisplayName": "Windows logon banner text",
             "Description": "Windows logon banner text",
-            "ResourceType": "Registry",
+            "ResourceType": "SecurityOption",
             "ResourceId": "Ensure Windows logon banner text is set correctly",
-            "ResourcePropertyName": "ValueData",
+            "ResourcePropertyName": "Interactive_logon_Message_text_for_users_attempting_to_log_on",
             "DefaultValue": "YOUR LOGON BANNER TEXT HERE"
         }
     ]
