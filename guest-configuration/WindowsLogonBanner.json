@@ -14,7 +14,7 @@
             "Description": "Windows logon banner title",
             "ResourceType": "SecurityOption",
             "ResourceId": "Ensure Windows logon banner title is set correctly",
-            "ResourcePropertyName": "Interactive_logon_ Message_title_for_ users_attempting_ to_log_on",
+            "ResourcePropertyName": "Interactive_logon_Message_title_for_users_attempting_to_log_on",
             "DefaultValue": "YOUR LOGON BANNER TITLE HERE"
         },
         {
