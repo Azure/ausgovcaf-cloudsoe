@@ -40,7 +40,7 @@ The current prototype version of the CloudSOE implements the following features:
 
 ## Assign built-in Azure Policy
 
-- Enable Azure Azure Monitor for VMs
+- Enable Azure Monitor for VMs
 - Disk encryption should be applied on virtual machines
 - Deploy vulnerability assessment solution on virtual machines
 - Azure Security Benchmark
