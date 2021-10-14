@@ -1,4 +1,7 @@
-﻿param (
+﻿# https://www.jsnover.com/blog/2013/12/07/write-host-considered-harmful/
+# friends don't let friends write-host
+
+param (
     [string]$GcPolFilePathString = (Get-Item "."), #The guest-configuration folder
     
     [Parameter(Mandatory=$true)]
@@ -21,33 +24,42 @@ If ($PSVersionTable.PSVersion.Major -ne 7) {
 #Get DSC configurations 
 $GcPolFilePath = Get-item $GcPolFilePathString
 $PSFiles = $GcPolFilePath.GetFiles("*.ps1")
-$PSFiles | % {
+$PSFiles | ForEach-Object {
 
     $DscShortName = $_.Basename
 
     if (Test-Path ($DscShortName + ".json")) {
-        #Compile the DSC to MOF
-        & ($_.FullName)
-    
+           
         #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
         $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json -AsHashtable
-        if ((Get-Member -InputObject $GcPolicyMetadata).Name -contains "DscModules") {
-            $GcPolicyMetadata.DscModules | % {Install-Module $_ -Force; Import-Module $_ -Force}
-        }
+        
+        if ($GcPolicyMetadata.ContainsKey("DscModules"))
+            {
+                $GcPolicyMetadata.DscModules | ForEach-Object {Install-Module $_ -Force; Import-Module $_ -Force}
+            }
+
+        #Compile the DSC to MOF
+
+        Write-Verbose "Compiling DSC " + ($_.Fullname)
+        & ($_.FullName)
 
         #Build and upload guest configuration package
+        Write-Verbose "Build guest configuration package $DscShortName"
         New-GuestConfigurationPackage -Name $DscShortName -Configuration ($GcPolFilePath.FullName + "\" + $DscShortName + "\localhost.mof") -Path Packages -Force
-        $ContentUri = Publish-GuestConfigurationPackage -Path ($GcPolFilePath.FullName + "\Packages\" + $DscShortName + "\" + $DscShortName + ".zip") -ResourceGroupName $GcPolStorageAccountRg -StorageAccountName $GcPolStorageAccountName -StorageContainerName $GcPolStorageAccountContainer -Force
 
+        Write-Verbose "Publish guest configuration package $DscShortName"
+        $ContentUri = Publish-GuestConfigurationPackage -Path ($GcPolFilePath.FullName + "\Packages\" + $DscShortName + "\" + $DscShortName + ".zip") -ResourceGroupName $GcPolStorageAccountRg -StorageAccountName $GcPolStorageAccountName -StorageContainerName $GcPolStorageAccountContainer -Force
+        
         #Create guest configuration policy file
         New-GuestConfigurationPolicy `
+            -PolicyID (New-Guid).Guid `
             -ContentUri $ContentUri.ContentUri `
             -DisplayName $GcPolicyMetadata.DisplayName `
             -Description $GcPolicyMetadata.Description `
             -Path ($GcPolFilePath.FullName + '\policiestemp') `
             -Platform $GcPolicyMetadata.Platform `
             -Version $GcPolicyMetadata.Version `
-            -Parameter $GcPolicyMetadata.PolicyParameters
+            -Parameter $GcPolicyMetadata.PolicyParameters `
 
         #Load guest configuration policy file and apply transforms 
         $GcPolicy = Get-Content  ($GcPolFilePath.FullName + "\policiestemp\AuditIfNotExists.json" )
