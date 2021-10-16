@@ -39,8 +39,7 @@ $PSFiles | ForEach-Object {
             }
 
         #Compile the DSC to MOF
-
-        Write-Verbose "Compiling DSC " + ($_.Fullname)
+        Write-Verbose -Message "Compile DSC for $DscShortName"
         & ($_.FullName)
 
         #Build and upload guest configuration package
