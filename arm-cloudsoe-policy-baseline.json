@@ -7,26 +7,6 @@
             "metadata": {
                 "description": "The scope at which policies, relating to the cloud SOE, will be assigned."
             }
-        },
-        "workspaceId": {
-            "type": "string",
-            "metadata": {
-                "description": "The Log Analytics Workspace where any data sources will be directed."
-            }
-        },
-        "windowsSOEImageArray": {
-            "type": "array",
-            "metadata": {
-                "description": "An array of all Windows SOE image IDs."
-            },
-            "defaultValue": []
-        },
-        "linuxSOEImageArray": {
-            "type": "array",
-            "metadata": {
-                "description": "An array of all Linux SOE image IDs."
-            },
-            "defaultValue": []
         }
     },
     "variables": {
@@ -35,14 +15,6 @@
             "policyScopeId": "[parameters('policyScopeId')]"
         },
         "policyDefinitions":[
-            {
-                "relativeUri": "policies/enable-automanage-profile/policy.template.json",
-                "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag"
-            },
-            {
-                "relativeUri": "policies/tag-vm-resources/policy.template.json",
-                "customPolicyDefinitionName": "tag-vm-resources"
-            },
             {
                 "relativeUri": "policies/gc-windows-logon-banner/policy.template.json",
                 "customPolicyDefinitionName": "gc-windows-logon-banner"
@@ -105,27 +77,6 @@
             }
         ],
         "policyAssignments": [
-            {
-                "assignmentName": "enable-azure-monitor-for-vms",
-                "displayName": "Enable Azure Monitor for VMs",
-                "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a",
-                    "roleDefinitionIds": [
-                        "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
-                    ]
-                },
-                "parameters": {
-                    "logAnalytics_1": {
-                        "value": "[parameters('workspaceId')]"
-                    },
-                    "listofImageIdToInclude_windows": {
-                        "value": "[parameters('windowsSOEImageArray')]"
-                    },
-                    "listofImageIdToInclude_linux": {
-                        "value": "[parameters('linuxSOEImageArray')]"
-                    }
-                }
-            },
             {
                 "assignmentName": "enable-guest-configuration",
                 "displayName": "Install Guest Configuration prerequisites",
