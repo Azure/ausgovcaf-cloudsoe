@@ -70,6 +70,7 @@ $PSFiles | ForEach-Object {
             switch ($GcPolicyMetadata.PlatformVersion) {
                 "Server 2016" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2016SOE" } 
                 "Server 2019" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2019SOE" }
+                "Server 2022" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2022SOE" }
                 Default {}
             }
         }
