@@ -1,0 +1,13 @@
+{
+    "DisplayName": "GC - Windows Server 2022 Baseline",
+    "Description": "Windows Server 2022 Baseline converted from SCT GPO.",
+    "Platform": "Windows",
+    "PlatformVersion": "Server 2022",
+    "Version": "1.0.0",
+    "DscModules": [
+        "GPRegistryPolicyDsc",
+        "AuditPolicyDsc",
+        "SecurityPolicyDsc"
+    ], 
+    "PolicyPath": "gc-windows-security-baseline-2022"
+}
