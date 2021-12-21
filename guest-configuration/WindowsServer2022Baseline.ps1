@@ -1243,17 +1243,17 @@ Configuration WindowsServer2022Baseline
               Name = 'Interactive_logon_Machine_inactivity_limit'
          }
 
-	 SecurityOption RemoteSam
-         {
-              Name = 'test'
-              Network_access_Restrict_clients_allowed_to_make_remote_calls_to_SAM = @(
-              	MSFT_RestrictedRemoteSamSecurityDescriptor
+        SecurityOption 'SecurityRegistry(INF): Network_access_Restrict_clients_allowed_to_make_remote_calls_to_SAM'
+        {
+            Name = 'Network_access_Restrict_clients_allowed_to_make_remote_calls_to_SAM'
+            Network_access_Restrict_clients_allowed_to_make_remote_calls_to_SAM = @(
+                MSFT_RestrictedRemoteSamSecurityDescriptor
                 {
                     Permission = 'Allow'
                     Identity   = 'Administrators'
                 }
-              )
-         }
+            )
+        }
 
          RefreshRegistryPolicy 'ActivateClientSideExtension'
          {
