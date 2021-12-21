@@ -72,6 +72,10 @@
                 "customPolicyDefinitionName": "gc-windows-security-baseline-2019"
             },
             {
+                "relativeUri": "policies/gc-windows-security-baseline-2022/policy.template.json",
+                "customPolicyDefinitionName": "gc-windows-security-baseline-2022"
+            },
+            {
                 "relativeUri": "policies/gc-windows-powershell-logging/policy.template.json",
                 "customPolicyDefinitionName": "gc-windows-powershell-logging"
             },
@@ -245,6 +249,17 @@
                 "displayName": "Enable Windows Server 2019 baseline",
                 "definition": {
                     "customPolicyDefinitionName": "gc-windows-security-baseline-2019"
+                },
+                "controls": [
+                    "ISM-1409-1"
+                ],
+                "parameters": {}
+            },
+            {
+                "assignmentName": "gc-windows-security-baseline-2022",
+                "displayName": "Enable Windows Server 2022 baseline",
+                "definition": {
+                    "customPolicyDefinitionName": "gc-windows-security-baseline-2022"
                 },
                 "controls": [
                     "ISM-1409-1"
