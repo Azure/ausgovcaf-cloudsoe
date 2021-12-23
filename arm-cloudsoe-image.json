@@ -42,14 +42,13 @@
                     "type": "PlatformImage",
                     "publisher": "MicrosoftWindowsServer",
                     "offer": "WindowsServer",
-                    "sku": "2022-datacenter-azure-edition",
+                    "sku": "2022-datacenter",
                     "version": "latest"
                 },
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2022SOE",
-                "soeDescription": "Windows Server 2022 SOE",
-                "soeHyperVGeneration": "V2"
+                "soeDescription": "Windows Server 2022 SOE"
             },
             "WindowsServer2019": {
                 "osType": "Windows",
@@ -63,8 +62,7 @@
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2019SOE",
-                "soeDescription": "Windows Server 2019 SOE",
-                "soeHyperVGeneration": "V1"
+                "soeDescription": "Windows Server 2019 SOE"
             },
             "WindowsServer2016": {
                 "osType": "Windows",
@@ -78,8 +76,7 @@
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2016SOE",
-                "soeDescription": "Windows Server 2016 SOE",
-                "soeHyperVGeneration": "V1"
+                "soeDescription": "Windows Server 2016 SOE"
             }
         },
 
@@ -2878,8 +2875,7 @@
                 "identifier": {
                 "publisher": "[parameters('publisher')]",
                 "offer": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeOffer]",
-                "sku": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku]",
-                "hyperVGeneration": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeHyperVGeneration]"
+                "sku": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku]"
                 },
                 "recommended": {
                 "vCPUs": {
