@@ -2645,7 +2645,7 @@
                     ],
                     "WindowsServer": {
                         "customisations":[],
-                        "2022-datacenter-azure-edition": {
+                        "2022-datacenter": {
                             "customisations":[
                                 {
                                     //Applies the settings from the Windows Server 2022 baseline from Security Configuration Toolkit
