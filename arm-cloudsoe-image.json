@@ -16,10 +16,12 @@
         "buildImages": {
             "type": "array",
             "allowedValues": [
+                "WindowsServer2022",
                 "WindowsServer2019",
                 "WindowsServer2016"
             ],
             "defaultValue": [
+                "WindowsServer2022",
                 "WindowsServer2019",
                 "WindowsServer2016"
             ],
@@ -2643,6 +2645,26 @@
                     ],
                     "WindowsServer": {
                         "customisations":[],
+                        "2022-datacenter-azure-edition": {
+                            "customisations":[
+                                {
+                                    //Applies the settings from the Windows Server 2022 baseline from Security Configuration Toolkit
+                                    "type": "PowerShell",
+                                    "name": "WindowsServer2022Baseline",
+                                    "runElevated": true,
+                                    "inline": [
+                                        "md c:\\temp",
+                                        "md c:\\temp\\expand",
+                                        "Invoke-WebRequest 'https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/Windows%20Server%202022%20Security%20Baseline.zip' -OutFile c:\\temp\\ws2022baseline.zip",
+                                        "Unblock-File c:\\temp\\ws2022baseline.zip",
+                                        "Expand-Archive -Path c:\\temp\\ws2022baseline.zip -DestinationPath c:\\temp\\expand",
+                                        "copy 'C:\\temp\\expand\\Windows Server-2022-Security-Baseline-FINAL\\GPOs\\{20FAD6FB-7C6D-496E-801C-0434769847FF}\\DomainSysvol\\GPO\\Machine\registry.pol' c:\\Windows\\System32\\GroupPolicy\\Machine\\Registry.pol",
+                                        "secedit /configure /db c:\\temp\\secedit.sdb /cfg 'C:\\temp\\expand\\Windows Server-2022-Security-Baseline-FINAL\\GPOs\\{20FAD6FB-7C6D-496E-801C-0434769847FF}\\DomainSysvol\\GPO\\Machine\\microsoft\\windows nt\\SecEdit\\GptTmpl.inf' /overwrite /quiet",
+                                        "remove-item c:\\temp -Recurse -Force"
+                                    ]
+                                }
+                            ]
+                        },
                         "2019-Datacenter": {
                             "customisations":[
                                 {
