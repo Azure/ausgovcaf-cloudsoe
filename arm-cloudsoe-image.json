@@ -48,7 +48,8 @@
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2022SOE",
-                "soeDescription": "Windows Server 2022 SOE"
+                "soeDescription": "Windows Server 2022 SOE",
+                "soeHyperVGeneration": "V2"
             },
             "WindowsServer2019": {
                 "osType": "Windows",
@@ -62,7 +63,8 @@
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2019SOE",
-                "soeDescription": "Windows Server 2019 SOE"
+                "soeDescription": "Windows Server 2019 SOE",
+                "soeHyperVGeneration": "V1"
             },
             "WindowsServer2016": {
                 "osType": "Windows",
@@ -76,7 +78,8 @@
                 "soePublisher": "[parameters('publisher')]",
                 "soeOffer": "WindowsServerSOE",
                 "soeSku": "WindowsServer2016SOE",
-                "soeDescription": "Windows Server 2016 SOE"
+                "soeDescription": "Windows Server 2016 SOE",
+                "soeHyperVGeneration": "V1"
             }
         },
 
@@ -2875,7 +2878,8 @@
                 "identifier": {
                 "publisher": "[parameters('publisher')]",
                 "offer": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeOffer]",
-                "sku": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku]"
+                "sku": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku]",
+                "hyperVGeneration": "[variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeHyperVGeneration]"
                 },
                 "recommended": {
                 "vCPUs": {
