@@ -15,7 +15,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 255
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+              Key = 'Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoAutorun'
@@ -24,7 +24,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+              Key = 'Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableAutomaticRestartSignOn'
@@ -33,7 +33,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
+              Key = 'Software\Microsoft\Windows\CurrentVersion\Policies\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy'
@@ -42,7 +42,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
+              Key = 'Software\Microsoft\Windows\CurrentVersion\Policies\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters\AllowEncryptionOracle'
@@ -51,7 +51,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters'
+              Key = 'Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Biometrics\FacialFeatures\EnhancedAntiSpoofing'
@@ -60,7 +60,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Biometrics\FacialFeatures'
+              Key = 'Software\Policies\Microsoft\Biometrics\FacialFeatures'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds\DisableEnclosureDownload'
@@ -69,7 +69,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds'
+              Key = 'Software\Policies\Microsoft\Internet Explorer\Feeds'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowProtectedCreds'
@@ -78,7 +78,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\CredentialsDelegation'
+              Key = 'Software\Policies\Microsoft\Windows\CredentialsDelegation'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application\MaxSize'
@@ -87,7 +87,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 32768
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application'
+              Key = 'Software\Policies\Microsoft\Windows\EventLog\Application'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security\MaxSize'
@@ -96,7 +96,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 196608
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security'
+              Key = 'Software\Policies\Microsoft\Windows\EventLog\Security'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\EventLog\System\MaxSize'
@@ -105,7 +105,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 32768
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\EventLog\System'
+              Key = 'Software\Policies\Microsoft\Windows\EventLog\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Explorer\NoAutoplayfornonVolume'
@@ -114,7 +114,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Explorer'
+              Key = 'Software\Policies\Microsoft\Windows\Explorer'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\NoBackgroundPolicy'
@@ -123,7 +123,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}'
+              Key = 'Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\NoGPOListChanges'
@@ -132,7 +132,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}'
+              Key = 'Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated'
@@ -141,7 +141,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Installer'
+              Key = 'Software\Policies\Microsoft\Windows\Installer'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Installer\EnableUserControl'
@@ -150,7 +150,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Installer'
+              Key = 'Software\Policies\Microsoft\Windows\Installer'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Kernel DMA Protection\DeviceEnumerationPolicy'
@@ -159,7 +159,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Kernel DMA Protection'
+              Key = 'Software\Policies\Microsoft\Windows\Kernel DMA Protection'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\LanmanWorkstation\AllowInsecureGuestAuth'
@@ -168,7 +168,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\LanmanWorkstation'
+              Key = 'Software\Policies\Microsoft\Windows\LanmanWorkstation'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths\\*\SYSVOL'
@@ -177,7 +177,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 'RequireMutualAuthentication=1,RequireIntegrity=1'
               ValueType = 'String'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths'
+              Key = 'Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths\\*\NETLOGON'
@@ -186,7 +186,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 'RequireMutualAuthentication=1,RequireIntegrity=1'
               ValueType = 'String'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths'
+              Key = 'Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Personalization\NoLockScreenCamera'
@@ -195,7 +195,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Personalization'
+              Key = 'Software\Policies\Microsoft\Windows\Personalization'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Personalization\NoLockScreenSlideshow'
@@ -204,7 +204,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Personalization'
+              Key = 'Software\Policies\Microsoft\Windows\Personalization'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\EnableScriptBlockLogging'
@@ -213,7 +213,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
+              Key = 'Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
          }
 
          RegistryPolicyFile 'DEL_\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\EnableScriptBlockInvocationLogging'
@@ -223,7 +223,7 @@ Configuration WindowsServer2022Baseline
               Ensure = 'Absent'
               ValueType = 'String'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
+              Key = 'Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\System\EnumerateLocalUsers'
@@ -232,7 +232,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\System'
+              Key = 'Software\Policies\Microsoft\Windows\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\System\EnableSmartScreen'
@@ -241,7 +241,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\System'
+              Key = 'Software\Policies\Microsoft\Windows\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\System\ShellSmartScreenLevel'
@@ -250,7 +250,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 'Block'
               ValueType = 'String'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\System'
+              Key = 'Software\Policies\Microsoft\Windows\System'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\Windows Search\AllowIndexingEncryptedStoresOrItems'
@@ -259,7 +259,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\Windows Search'
+              Key = 'Software\Policies\Microsoft\Windows\Windows Search'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client\AllowBasic'
@@ -268,7 +268,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Client'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client\AllowUnencryptedTraffic'
@@ -277,7 +277,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Client'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client\AllowDigest'
@@ -286,7 +286,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Client'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Client'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service\AllowBasic'
@@ -295,7 +295,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Service'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service\AllowUnencryptedTraffic'
@@ -304,7 +304,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Service'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service\DisableRunAs'
@@ -313,7 +313,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service'
+              Key = 'Software\Policies\Microsoft\Windows\WinRM\Service'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient\EnableMulticast'
@@ -322,7 +322,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient'
+              Key = 'Software\Policies\Microsoft\Windows NT\DNSClient'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint\RestrictDriverInstallationToAdministrators'
@@ -331,7 +331,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint'
+              Key = 'Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Rpc\RestrictRemoteClients'
@@ -340,7 +340,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Rpc'
+              Key = 'Software\Policies\Microsoft\Windows NT\Rpc'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services\DisablePasswordSaving'
@@ -349,7 +349,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services'
+              Key = 'Software\Policies\Microsoft\Windows NT\Terminal Services'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services\fDisableCdm'
@@ -358,7 +358,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services'
+              Key = 'Software\Policies\Microsoft\Windows NT\Terminal Services'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services\fPromptForPassword'
@@ -367,7 +367,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services'
+              Key = 'Software\Policies\Microsoft\Windows NT\Terminal Services'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services\fEncryptRPCTraffic'
@@ -376,7 +376,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services'
+              Key = 'Software\Policies\Microsoft\Windows NT\Terminal Services'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services\MinEncryptionLevel'
@@ -385,7 +385,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 3
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services'
+              Key = 'Software\Policies\Microsoft\Windows NT\Terminal Services'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PolicyVersion'
@@ -394,7 +394,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 538
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\DefaultOutboundAction'
@@ -403,7 +403,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\DefaultInboundAction'
@@ -412,7 +412,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\EnableFirewall'
@@ -421,7 +421,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\DomainProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\EnableFirewall'
@@ -430,7 +430,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\DefaultInboundAction'
@@ -439,7 +439,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\DefaultOutboundAction'
@@ -448,7 +448,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PrivateProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\EnableFirewall'
@@ -457,7 +457,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\DefaultOutboundAction'
@@ -466,7 +466,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\DefaultInboundAction'
@@ -475,7 +475,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
+              Key = 'Software\Policies\Microsoft\WindowsFirewall\PublicProfile'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft\WindowsInkWorkspace\AllowWindowsInkWorkspace'
@@ -484,7 +484,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft\WindowsInkWorkspace'
+              Key = 'Software\Policies\Microsoft\WindowsInkWorkspace'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\Software\Policies\Microsoft Services\AdmPwd\AdmPwdEnabled'
@@ -493,7 +493,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\Software\Policies\Microsoft Services\AdmPwd'
+              Key = 'Software\Policies\Microsoft Services\AdmPwd'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest\UseLogonCredential'
@@ -502,7 +502,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
+              Key = 'SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel\DisableExceptionChainValidation'
@@ -511,7 +511,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel'
+              Key = 'SYSTEM\CurrentControlSet\Control\Session Manager\kernel'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch\DriverLoadPolicy'
@@ -520,7 +520,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 3
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch'
+              Key = 'SYSTEM\CurrentControlSet\Policies\EarlyLaunch'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\SMB1'
@@ -529,7 +529,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\MrxSmb10\Start'
@@ -538,7 +538,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 4
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\MrxSmb10'
+              Key = 'SYSTEM\CurrentControlSet\Services\MrxSmb10'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\Netbt\Parameters\NoNameReleaseOnDemand'
@@ -547,7 +547,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 1
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Netbt\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\Netbt\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\Netbt\Parameters\NodeType'
@@ -556,7 +556,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 2
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Netbt\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\Netbt\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\EnableICMPRedirect'
@@ -565,7 +565,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 0
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DisableIPSourceRouting'
@@ -574,7 +574,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 2
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
          }
 
          RegistryPolicyFile 'Registry(POL): HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\DisableIPSourceRouting'
@@ -583,7 +583,7 @@ Configuration WindowsServer2022Baseline
               ValueData = 2
               ValueType = 'Dword'
               TargetType = 'ComputerConfiguration'
-              Key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+              Key = 'SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
          }
 
          AuditPolicySubcategory 'Audit Credential Validation (Success) - Inclusion'
