@@ -2,7 +2,7 @@
 
 > Accelerating your IaaS deployments.
 
-- Windows Server 2019 and Windows Server 2016 prototype
+- Windows Server 2022, 2019, and 2016 prototype
 - Infrastructure-as-Code 
 - Get insights from your Azure, on-premises, and other cloud workloads
 
