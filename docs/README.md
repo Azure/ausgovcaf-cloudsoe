@@ -60,7 +60,7 @@ The current prototype version of the CloudSOE implements the following features:
 - Audit .net TLS registry settings
 - Audit installation of PowerShell v2
 - Audit RDP session timeout (screen locking)
-- Windows Server 2016, 2019 & IE SCT policy baselines
+- Windows Server 2016, 2019, & IE SCT policy baselines
 
 ## Image build and distribution
 
