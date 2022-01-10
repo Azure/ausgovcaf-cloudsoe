@@ -182,16 +182,6 @@
                 "parameters": {
                     "policyScopeId": {
                         "value": "[parameters('policyScopeId')]"
-                    },
-                    "workspaceId": {
-                        "value": "[parameters('workspaceId')]"
-                    },
-                    "windowsSOEImageArray": 
-                    {
-                        "value": "[reference('CloudSOEImageDeployment').outputs.windowsImageIds.value]"
-                    },
-                    "linuxSOEImageArray": {
-                        "value": "[reference('CloudSOEImageDeployment').outputs.linuxImageIds.value]" 
                     }
                 }
             }

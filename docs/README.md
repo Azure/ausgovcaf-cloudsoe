@@ -60,7 +60,7 @@ The current prototype version of the CloudSOE implements the following features:
 - Audit .net TLS registry settings
 - Audit installation of PowerShell v2
 - Audit RDP session timeout (screen locking)
-- Windows Server 2016, 2019 & IE SCT policy baselines
+- Windows Server 2016, 2019, 2022 & IE SCT policy baselines
 
 ## Image build and distribution
 
@@ -90,6 +90,9 @@ The current prototype version of the CloudSOE implements the following features:
     - Block shell hosts for standard users
     - Windows Server
       - Enable "Network Protection on Windows Server" setting
+      - Windows Server 2022
+        - Set Windows Server 2022 SCT baseline
+        - Enable all Attack Surface Reduction rules
       - Windows Server 2019
         - Set Windows Server 2019 SCT baseline policy delta (from defaults)
         - Enable all Attack Surface Reduction rules
@@ -338,7 +341,7 @@ Create a subscription-level deployment using the above parameters:
 New-AzSubscriptionDeployment -Name CloudSOEDeployment -Location australiaeast -TemplateUri "https://raw.githubusercontent.com/your username or gh org/ausgovcaf-cloudsoe/main/azureDeploy.json" -TemplateParameterObject $params
 ```
 
-The deployment process will define and assign policy, configure Log Analytics, configure Automation Account, create a shared image gallery, and run the build process for Windows Server 2019 and Windows Server 2016 images.
+The deployment process will define and assign policy, configure Log Analytics, configure Automation Account, create a shared image gallery, and run the build process for Windows Server 2022, Windows Server 2019 and Windows Server 2016 images.
 
 # Operation
 
@@ -377,10 +380,12 @@ When invoking the deployment of the image template, the image builder will build
         "buildImages": {
             "type": "array",
             "allowedValues": [
+                "WindowsServer2022",
                 "WindowsServer2019",
                 "WindowsServer2016"
             ],
             "defaultValue": [
+                "WindowsServer2022",
                 "WindowsServer2019",
                 "WindowsServer2016"
             ],
@@ -436,6 +441,11 @@ To optimise for the above, the project uses a custom `buildImageCustomisationAss
                 ],
                 "WindowsServer": {
                     "customisations":[],
+                    "2022-Datacenter": {
+                        "customisations":[
+                            //Customisations that apply to all Windows Server 2022 systems
+                        ]
+                    },
                     "2019-Datacenter": {
                         "customisations":[
                             //Customisations that apply to all Windows Server 2019 systems
