@@ -321,7 +321,7 @@
                                 "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]'!*",
                                 "$XPath = 'Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]'!*"
                             ],
-                            "name": "NTLMEvents"
+                            "name": "ASREvents"
                         }
                     ]
                 },
@@ -404,7 +404,7 @@
                                 "$XPath = 'Microsoft-Windows-Win32k/Operational!*[System[((EventID=260))]]'!*",
                                 "$XPath = 'System!*[System[Provider[@Name='Microsoft-Windows-WER-Diag'] and (EventID=5)]]'!*"    
                             ],
-                            "name": "NTLMEvents"
+                            "name": "ExploitProtectionEvents"
                         }
                     ]
                 },
@@ -445,7 +445,7 @@
                                 "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*",
                                 "$XPath = 'Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*"  
                             ],
-                            "name": "NTLMEvents"
+                            "name": "NetworkProtectionEvents"
                         }
                     ]
                 },
@@ -485,7 +485,7 @@
                             "xPathQueries": [
                                 "$XPath = 'System!*[System[((EventID=36880))]]'!*"
                             ],
-                            "name": "NTLMEvents"
+                            "name": "SChannelEvents"
                         }
                     ]
                 },
