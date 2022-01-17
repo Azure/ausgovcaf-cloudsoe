@@ -427,6 +427,47 @@
                     }
                 ]
             }
+        },
+        {
+            "apiVersion": "2021-04-01",
+            "type": "Microsoft.Insights/dataCollectionRules",
+            "name": "DCR-NetworkProtectionEvents",
+            "kind": "Windows",
+            "location": "[parameters('workspaceRegion')]",
+            "properties": {
+                "dataSources": {
+                    "windowsEventLogs": [
+                        {
+                            "streams": [
+                                "Microsoft-WindowsEvent"
+                            ],
+                            "xPathQueries": [
+                                "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*",
+                                "$XPath = 'Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*"  
+                            ],
+                            "name": "NTLMEvents"
+                        }
+                    ]
+                },
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "workspaceResourceId": "[parameters('workspaceResourceId')]",
+                            "name": "[variables('workspaceName')]"
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "streams": [
+                            "Microsoft-Event"
+                        ],
+                        "destinations": [
+                            "[variables('workspaceName')]"
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }
