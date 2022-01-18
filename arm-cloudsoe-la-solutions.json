@@ -322,8 +322,8 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]'!*",
-                                "$XPath = 'Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]'!*"
+                                "Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]",
+                                "Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]"
                             ],
                             "name": "ASREvents"
                         }
@@ -363,7 +363,7 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'Microsoft-Windows-NTLM/Operational!*[System[((EventID &gt;= 8001 and EventID &lt;= 8004))]]'!*"
+                                "Microsoft-Windows-NTLM/Operational!*[System[((EventID &gt;= 8001 and EventID &lt;= 8004))]]"
                             ],
                             "name": "NTLMEvents"
                         }
@@ -403,10 +403,10 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'Microsoft-Windows-Security-Mitigations/KernelMode!*[System[((EventID &gt;= 1 and EventID &lt;= 24))]]'!*",
-                                "$XPath = 'Microsoft-Windows-Security-Mitigations/UserMode!*[System[((EventID &gt;= 1 and EventID &lt;= 24))]]'!*",
-                                "$XPath = 'Microsoft-Windows-Win32k/Operational!*[System[((EventID=260))]]'!*",
-                                "$XPath = 'System!*[System[Provider[@Name='Microsoft-Windows-WER-Diag'] and (EventID=5)]]'!*"    
+                                "Microsoft-Windows-Security-Mitigations/KernelMode!*[System[((EventID &gt;= 1 and EventID &lt;= 24))]]",
+                                "Microsoft-Windows-Security-Mitigations/UserMode!*[System[((EventID &gt;= 1 and EventID &lt;= 24))]]",
+                                "Microsoft-Windows-Win32k/Operational!*[System[((EventID=260))]]",
+                                "System!*[System[Provider[@Name='Microsoft-Windows-WER-Diag'] and (EventID=5)]]"    
                             ],
                             "name": "ExploitProtectionEvents"
                         }
@@ -446,8 +446,8 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*",
-                                "$XPath = 'Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*"  
+                                "Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]",
+                                "Microsoft-Windows-Windows Defender/WHC!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]"  
                             ],
                             "name": "NetworkProtectionEvents"
                         }
@@ -487,7 +487,7 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'System!*[System[((EventID=36880))]]'!*"
+                                "System!*[System[((EventID=36880))]]"
                             ],
                             "name": "SChannelEvents"
                         }
@@ -527,7 +527,7 @@
                                 "Microsoft-Event"
                             ],
                             "xPathQueries": [
-                                "$XPath = 'Microsoft-Windows-CodeIntegrity/Operational!*[System[((EventID=3077 or EventID=3092 or EventID=3099))]]'!*"
+                                "Microsoft-Windows-CodeIntegrity/Operational!*[System[((EventID=3077 or EventID=3092 or EventID=3099))]]"
                             ],
                             "name": "WDACEvents"
                         }
