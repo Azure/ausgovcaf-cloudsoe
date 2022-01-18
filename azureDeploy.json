@@ -175,7 +175,8 @@
             "location": "australiaeast",
             "dependsOn": [
                 "CloudSOEImageDeployment",
-                "CloudSOEAutomanageAccountDeployment"
+                "CloudSOEAutomanageAccountDeployment",
+                "CloudSOELaSolutionDeployment"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -186,6 +187,12 @@
                 "parameters": {
                     "policyScopeId": {
                         "value": "[parameters('policyScopeId')]"
+                    },
+                    "windowsImageIds": {
+                        "value": "[reference('CloudSOEImageDeployment').outputs.windowsImageIds.value]"
+                    },
+                    "dataCollectionRuleEventResourceIds": {
+                        "value": "[reference('CloudSOELaSolutionDeployment').outputs.dataCollectionRuleResourceIds.value]"
                     }
                 }
             }
