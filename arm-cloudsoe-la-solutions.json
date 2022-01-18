@@ -635,5 +635,20 @@
                 ]
             }
         }
-    ]
+    ],
+    "outputs": {
+        "dataCollectionRuleResourceIds":{
+            "type": "object",
+            "value": {
+                "DCR-AccountLockoutEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-AccountLockoutEvents')]",
+                "DCR-ASREvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-ASREvents')]",
+                "DCR-NTLMEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-NTLMEvents')]",
+                "DCR-ExploitProtectionEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-ExploitProtectionEvents')]",
+                "DCR-IPsecEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-IPsecEvents')]",
+                "DCR-NetworkProtectionEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-NetworkProtectionEvents')]",
+                "DCR-SChannelEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-SChannelEvents')]",
+                "DCR-WDACEvents": "[resourceId('Microsoft.Insights/dataCollectionRules','DCR-WDACEvents')]"
+            }
+        }
+    }
 }
