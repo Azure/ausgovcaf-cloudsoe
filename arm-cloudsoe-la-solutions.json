@@ -476,6 +476,47 @@
         {
             "apiVersion": "2021-04-01",
             "type": "Microsoft.Insights/dataCollectionRules",
+            "name": "DCR-IPsecEvents",
+            "kind": "Windows",
+            "location": "[parameters('workspaceRegion')]",
+            "properties": {
+                "dataSources": {
+                    "windowsEventLogs": [
+                        {
+                            "streams": [
+                                "Microsoft-Event"
+                            ],
+                            "xPathQueries": [
+                                "Security!*[System[((EventID &gt;= 4650 and EventID &lt;= 4651))]]", //Main mode security associations
+                                "Security!*[System[((EventID=5451))]]"                               //Quick mode security associations
+                            ],
+                            "name": "IPsecEvents"
+                        }
+                    ]
+                },
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "workspaceResourceId": "[parameters('workspaceResourceId')]",
+                            "name": "[variables('workspaceName')]"
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "streams": [
+                            "Microsoft-Event"
+                        ],
+                        "destinations": [
+                            "[variables('workspaceName')]"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2021-04-01",
+            "type": "Microsoft.Insights/dataCollectionRules",
             "name": "DCR-NetworkProtectionEvents",
             "kind": "Windows",
             "location": "[parameters('workspaceRegion')]",
