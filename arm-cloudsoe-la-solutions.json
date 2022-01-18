@@ -311,6 +311,47 @@
         {
             "apiVersion": "2021-04-01",
             "type": "Microsoft.Insights/dataCollectionRules",
+            "name": "DCR-AccountLockoutEvents",
+            "kind": "Windows",
+            "location": "[parameters('workspaceRegion')]",
+            "properties": {
+                "dataSources": {
+                    "windowsEventLogs": [
+                        {
+                            "streams": [
+                                "Microsoft-Event"
+                            ],
+                            "xPathQueries": [
+                                "Security!*[System[((EventID=4625))]]", //Failed logins
+                                "Security!*[System[((EventID=4740))]]"  //Lockout
+                            ],
+                            "name": "AccountLockoutEvents"
+                        }
+                    ]
+                },
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "workspaceResourceId": "[parameters('workspaceResourceId')]",
+                            "name": "[variables('workspaceName')]"
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "streams": [
+                            "Microsoft-Event"
+                        ],
+                        "destinations": [
+                            "[variables('workspaceName')]"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2021-04-01",
+            "type": "Microsoft.Insights/dataCollectionRules",
             "name": "DCR-ASREvents",
             "kind": "Windows",
             "location": "[parameters('workspaceRegion')]",
