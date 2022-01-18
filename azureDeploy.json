@@ -24,7 +24,11 @@
             "type": "string",
             "metadata": {
                 "description": "The region that log analytics is deployed to."
-            }
+            },
+            "allowedValues": [
+                "australiaeast",
+                "australiasoutheast"
+            ]
         },
         "automationAccountResourceId": {
             "type": "string",
