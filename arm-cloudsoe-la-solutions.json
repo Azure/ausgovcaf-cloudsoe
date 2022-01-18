@@ -319,7 +319,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1121 and EventID &lt;= 1122))]]'!*",
@@ -360,7 +360,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'Microsoft-Windows-NTLM/Operational!*[System[((EventID &gt;= 8001 and EventID &lt;= 8004))]]'!*"
@@ -400,7 +400,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'Microsoft-Windows-Security-Mitigations/KernelMode!*[System[((EventID &gt;= 1 and EventID &lt;= 24))]]'!*",
@@ -443,7 +443,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'Microsoft-Windows-Windows Defender/Operational!*[System[((EventID &gt;= 1125 and EventID &lt;= 1126))]]'!*",
@@ -484,7 +484,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'System!*[System[((EventID=36880))]]'!*"
@@ -524,7 +524,7 @@
                     "windowsEventLogs": [
                         {
                             "streams": [
-                                "Microsoft-WindowsEvent"
+                                "Microsoft-Event"
                             ],
                             "xPathQueries": [
                                 "$XPath = 'Microsoft-Windows-CodeIntegrity/Operational!*[System[((EventID=3077 or EventID=3092 or EventID=3099))]]'!*"
