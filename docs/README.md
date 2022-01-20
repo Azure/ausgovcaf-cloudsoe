@@ -285,7 +285,7 @@ Create a hashtable `$params` to hold your deployment parameters:
     $params = @{policyScopeId="/subscriptions/<subscriptionId>";
                 workspaceId="<workspaceId>";
                 workspaceResourceId="/subscriptions/<subscriptionId>/resourcegroups/<resourceGroupName>/providers/microsoft.operationalinsights/workspaces/<workspaceName>";
-                workspaceRegion="Australia East";
+                workspaceRegion="australiaeast";
                 automationAccountResourceId="/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Automation/automationAccounts/<automationAccountName>";
                 updateManagementScope=@("/subscriptions/<subscriptionId>")}
 ```
@@ -312,7 +312,7 @@ This is the resourceId attribute of the Log Analytics workspace which will be us
 
 Input: `workspaceRegion`
 
-This is the Azure region of the Log Analytics workspace which will be used by the project to enable solutions and collect logs and other data sources.
+This is the Azure region of the Log Analytics workspace which will be used by the project to enable solutions and collect logs and other data sources. This should be specified in short form. (I.e. "australiaeast")
 
 ---
 
