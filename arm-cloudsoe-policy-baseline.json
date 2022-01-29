@@ -323,7 +323,10 @@
                 "assignmentName": "enable-dcr-association-account-lockout-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-AccountLockoutEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -338,7 +341,10 @@
                 "assignmentName": "enable-dcr-association-asr-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-ASREvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -353,7 +359,10 @@
                 "assignmentName": "enable-dcr-association-ntlm-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-NTLMEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -368,7 +377,10 @@
                 "assignmentName": "enable-dcr-association-exploit-protection-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-ExploitProtectionEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -383,7 +395,10 @@
                 "assignmentName": "enable-dcr-association-ipsec-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-IPsecEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -398,7 +413,10 @@
                 "assignmentName": "enable-dcr-association-network-protection-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-NetworkProtectionEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -413,7 +431,10 @@
                 "assignmentName": "enable-dcr-association-schannel-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-SChannelEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
@@ -428,7 +449,10 @@
                 "assignmentName": "enable-dcr-association-wdac-events",
                 "displayName": "Windows VMs should associate with the data collection rule: DCR-WDACEvents",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c"
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/eab1f514-22e3-42e3-9a1f-e1dc9199355c",
+                    "roleDefinitionIds": [
+                        "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+                    ]
                 },
                 "parameters": {
                     "listOfWindowsImageIdToInclude": {
