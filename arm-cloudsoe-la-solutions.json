@@ -304,7 +304,7 @@
             "name": "[concat(variables('workspaceName'),'/SecurityEventCollectionConfiguration')]",
             "kind": "SecurityEventCollectionConfiguration",
             "properties": {
-                "tier": "Custom",
+                "tier": "Recommended",
                 "tierSetMethod": "Custom"
             }
         },
