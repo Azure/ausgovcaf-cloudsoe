@@ -81,6 +81,16 @@
             }
         },
         {
+            //Set the subscriptions log workspace
+            "name": "default",
+            "type": "Microsoft.Security/workspaceSettings",
+            "apiVersion": "2017-08-01-preview",
+            "properties": {
+                "workspaceId": "[parameters('workspaceResourceId')]",
+                "scope": "[parameters('policyScopeId')]"
+            }
+        },
+        {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-05-01",
             "name": "CloudSOEAutomanageAccountDeployment",
