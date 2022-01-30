@@ -470,6 +470,22 @@
                         "value": "[parameters('dataCollectionRuleEventResourceIds')['DCR-WDACEvents']]"
                     }
                 }
+            },
+            {
+                "assignmentName": "enable-azure-monitor-agent-windows",
+                "displayName": "Configure Windows virtual machines to run Azure Monitor Agent",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ca817e41-e85a-4783-bc7f-dc532d36235e",
+                    "roleDefinitionIds": [
+                        "9980e02c-c2be-4d73-94e8-173b1dc7cf3c",
+                        "b24988ac-6180-42a0-ab88-20f7382dd24c" //Contributor
+                    ]
+                },
+                "parameters": {
+                    "listOfWindowsImageIdToInclude": {
+                        "value": "[parameters('windowsImageIds')]"
+                    }
+                }
             }
         ]
     },
