@@ -10,18 +10,12 @@ The project uses a collection of cloud-native technologies to achieve desired ou
 - Azure Policy & Guest Configuration
 - Azure Monitor
 - Azure Automation
-- Azure Automanage
 
 The example code in this repository should be considered a functional prototype which you can learn from and apply in your own sandpit subscriptions.
 
 ## What we deploy and configure
 
 The current prototype version of the CloudSOE implements the following features:
-
-## Enable Azure Automanage for virtual machines
-
-- Profile: _Azure virtual machine best practices - Dev/test_ for non-production systems
-- Profile: _Azure virtual machine best practices - Production_ for non-production systems
 
 ## Enable Azure Defender for Servers
 
@@ -353,12 +347,6 @@ Update Management has been configured with two update schedules. These schedules
 
 For example: `autoUpdateGroup:1` or `autoUpdateGroup:2`
 
-## Control Automanage profiles
-
-Two default Automanage profiles have been activated via Azure Policy - one intended for production systems, and one for non-production systems. The application of these profiles is controlled by the `Production` tag.
-
-For example: `Production:true` or `Production:false`
-
 ## Reporting
 
 The CloudSOE uses standard Azure features, and will use familiar management/monitoring tooling. You will find project-specific outputs in:
@@ -478,21 +466,17 @@ Each policy definition in the project is defined by its own linked ARM template.
 >
 > See existing policies for examples.
 
-Once you have developed a functional ARM template that creates your `policyDefinition` resource, you will need to ensure the template is invoked as a linked template by `arm-cloudsoe-policy-baseline.json`. The process of invoking linked templates has been simplified. Rather than defining the linked template, you only need to create a reference in the `policyDefinitions` (array) variable in arm-cloudsoe-policy-baseline.json.
+Once you have developed a functional ARM template that creates your `policyDefinition` resource, you will need to ensure the template is invoked as a linked template by `arm-cloudsoe-policy-baseline.json`. The process of invoking linked templates has been simplified. Rather than defining the linked template, you only need to create a reference in the `policyDefinitions` (array) variable in `arm-cloudsoe-policy-baseline.json`.
 
 ```json
 "variables": {
     ...
     "policyDefinitions":[
         {
-            "relativeUri": "policies/enable-automanage-profile/policy.template.json",
-            "customPolicyDefinitionName": "enable-automanage-profile-based-on-tag"
-        },
-        ...
-        {
             "relativeUri": "policies/new-policy-path/policy.template.json",
             "customPolicyDefinitionName": "new-policy-name"
-        }
+        },
+    ...
 }
 ```
 
