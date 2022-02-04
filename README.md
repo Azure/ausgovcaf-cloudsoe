@@ -2,7 +2,7 @@
 
 > Accelerating your IaaS deployments.
 
-- Windows Server 2019 and Windows Server 2016 prototype
+- Windows Server 2022, 2019 and 2016 prototype
 - Infrastructure-as-Code 
 - Get insights from your Azure, on-premises, and other cloud workloads
 
@@ -16,7 +16,6 @@ The project uses a collection of cloud-native technologies to achieve desired ou
 - Azure Policy & Guest Configuration
 - Azure Monitor
 - Azure Automation
-- Azure Automanage
 
 The example code in this repository should be considered a functional prototype which you can learn from and apply in your own sandpit subscriptions.
 
