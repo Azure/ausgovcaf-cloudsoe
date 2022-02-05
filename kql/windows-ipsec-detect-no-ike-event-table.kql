@@ -1,0 +1,23 @@
+//KQL query to detect IPsec SAs without IKE (Event table)
+Event 
+| where EventID == 5451
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'KeyingModuleName'
+    | project KeyingModuleName = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'LocalAddress'
+    | project LocalAddress = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'RemoteAddress'
+    | project RemoteAddress = ed['#text']
+)
+| where KeyingModuleName !startswith "IKE"
+| project TimeGenerated, Computer, LocalAddress, RemoteAddress, KeyingModuleName
