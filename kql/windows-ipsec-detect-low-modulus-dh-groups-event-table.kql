@@ -1,0 +1,23 @@
+//KQL query to detect IPsec DH Groups with low modulus (Event table)
+Event 
+| where EventID == 4650 or EventID == 4651
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'DHGroup'
+    | project DHGroup = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'LocalAddress'
+    | project LocalAddress = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'RemoteAddress'
+    | project RemoteAddress = ed['#text']
+)
+| where DHGroup != "%%8232" and DHGroup != "%%8248" and DHGroup != "%%8233" and DHGroup != "%%8234"
+| project TimeGenerated, Computer, LocalAddress, RemoteAddress, DHGroup

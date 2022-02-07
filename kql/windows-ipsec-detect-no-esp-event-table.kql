@@ -1,0 +1,23 @@
+//KQL query to detect IPsec SAs without ESP (Event table)
+Event 
+| where EventID == 5451
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'EspAuthType'
+    | project ESPAuthType = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'LocalAddress'
+    | project LocalAddress = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'RemoteAddress'
+    | project RemoteAddress = ed['#text']
+)
+| where ESPAuthType == "-"
+| project TimeGenerated, Computer, LocalAddress, RemoteAddress

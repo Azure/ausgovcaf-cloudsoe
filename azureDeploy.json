@@ -24,7 +24,11 @@
             "type": "string",
             "metadata": {
                 "description": "The region that log analytics is deployed to."
-            }
+            },
+            "allowedValues": [
+                "australiaeast",
+                "australiasoutheast"
+            ]
         },
         "automationAccountResourceId": {
             "type": "string",
@@ -74,6 +78,16 @@
             ],
             "properties": {
                 "autoProvision": "On"
+            }
+        },
+        {
+            //Set the subscriptions log workspace
+            "name": "default",
+            "type": "Microsoft.Security/workspaceSettings",
+            "apiVersion": "2017-08-01-preview",
+            "properties": {
+                "workspaceId": "[parameters('workspaceResourceId')]",
+                "scope": "[parameters('policyScopeId')]"
             }
         },
         {
@@ -171,7 +185,8 @@
             "location": "australiaeast",
             "dependsOn": [
                 "CloudSOEImageDeployment",
-                "CloudSOEAutomanageAccountDeployment"
+                "CloudSOEAutomanageAccountDeployment",
+                "CloudSOELaSolutionDeployment"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -182,6 +197,12 @@
                 "parameters": {
                     "policyScopeId": {
                         "value": "[parameters('policyScopeId')]"
+                    },
+                    "windowsImageIds": {
+                        "value": "[reference('CloudSOEImageDeployment').outputs.windowsImageIds.value]"
+                    },
+                    "dataCollectionRuleEventResourceIds": {
+                        "value": "[reference('CloudSOELaSolutionDeployment').outputs.dataCollectionRuleResourceIds.value]"
                     }
                 }
             }

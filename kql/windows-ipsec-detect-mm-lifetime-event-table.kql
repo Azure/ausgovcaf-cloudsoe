@@ -1,0 +1,23 @@
+//KQL query to detect IPsec MM SAs with long lifetime (Event table)
+Event 
+| where EventID == 4650 or EventID == 4651
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'MMLifetime'
+    | project LifetimeSeconds = (ed['#text'] * 60)
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'LocalAddress'
+    | project LocalAddress = ed['#text']
+)
+| extend ed = parse_xml(EventData).DataItem.EventData.Data
+| mv-apply ed on 
+(
+    where ed['@Name'] == 'RemoteAddress'
+    | project RemoteAddress = ed['#text']
+)
+| where LifetimeSeconds >= 14400
+| project TimeGenerated, Computer, LocalAddress, RemoteAddress, LifetimeSeconds
