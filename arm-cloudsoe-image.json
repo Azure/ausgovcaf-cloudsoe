@@ -2200,7 +2200,7 @@
                             "</SiPolicy>",
                             "'@",
                             "#Initiatise new policy XML",
-                            "$PolicyName= 'GovCloudSOEPrototype_Enforce'",
+                            "$PolicyName= 'GovCloudSOEPrototype_Audit'",
                             "$BaseCIPolicyPath = $env:windir+'\\schemas\\CodeIntegrity\\ExamplePolicies\\AllowMicrosoft.xml'",
                             "$ActivePolicyFilePath = $env:windir+'\\System32\\CodeIntegrity\\SiPolicy.p7b'",
                             "#Start with built-in policy",
