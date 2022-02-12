@@ -554,27 +554,52 @@
             },
             "properties": {
                 "mode": "Incremental",
-                "template" : {
-                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                "contentVersion": "1.0.0.0",
-                "parameters": {},
-                "functions": [],
-                "variables": {},
-                "resources": [
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters":
                 {
-                    "type": "Microsoft.Authorization/roleAssignments",
-                    "name": "[guid(variables('policyAssignments')[copyIndex()].assignmentName)]",
-                    "apiVersion": "2019-04-01-preview",
-                    "location": "australiaeast",
-                    "properties": {
-                        "principalType": "ServicePrincipal",
-                        "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('policyAssignments')[copyIndex()].definition.roleDefinitionIds[0])]",
-                        "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignments')[copyIndex()].assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
+                    "policyAssignment": {
+                        "value": "[variables('policyAssignments')[copyIndex()]]"
+                    },
+                    "policyScopeId": {
+                        "value": "[parameters('policyScopeId')]"
                     }
-                }
-                ]
+                },
+                "template" : {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "policyAssignment": {
+                            "type": "object"
+                        },
+                        "policyScopeId": {
+                            "type": "string"
+                        }
+                    },
+                    "functions": [],
+                    "variables": {},
+                    "resources": [
+                    {
+                        "type": "Microsoft.Authorization/roleAssignments",
+                        "copy": {
+                            "name": "Policy individual role assignments",
+                            "count": "[length(parameters('policyAssignment').definition.roleDefinitionIds)]",
+                            "mode": "Serial",
+                            "batchSize": 1
+                        },
+                        "name": "[guid(parameters('policyAssignment').assignmentName,parameters('policyAssignment').definition.roleDefinitionIds[copyIndex('Policy individual role assignments')])]",
+                        "apiVersion": "2019-04-01-preview",
+                        "location": "australiaeast",
+                        "properties": {
+                            "principalType": "ServicePrincipal",
+                            "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', parameters('policyAssignment').definition.roleDefinitionIds[copyIndex('Policy individual role assignments')])]",
+                            "principalId": "[toLower(reference(concat(parameters('policyScopeId'),'/providers/Microsoft.Authorization/policyAssignments/', parameters('policyAssignment').assignmentName), '2019-09-01', 'Full' ).identity.principalId)]"
+                        }
+                    }
+                    ]
                 }
             }
         }
-        ]
+    ]
 }
