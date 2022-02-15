@@ -1,0 +1,140 @@
+name: Build Guest Configuration policies
+
+on: 
+  workflow_dispatch:
+    inputs:
+      subscriptionId:
+        description: 'Subscription Id'     
+        required: true
+      resourceGroup:
+        description: 'Resource group'     
+        required: true
+      storageAccountName:
+        description: 'Storage account name'     
+        required: true
+      storageAccountContainer:
+        description: 'Storage account container'     
+        required: true
+        default: 'guest-configuration'
+      
+jobs:
+  Compile-Guest-Configuration:
+    runs-on: windows-2022
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Set Azure subscription
+        uses: Azure/powershell@v1
+        with:
+          inlineScript: Set-AzContext -SubscriptionId ${{ github.event.inputs.subscriptionId }}
+          azPSVersion: latest
+      - name: Build and publish guest configuration policies
+        shell: pwsh
+        run: |
+            #Gather inputs
+            $GcPolStorageAccountRg = "${{ github.event.inputs.resourceGroup }}"
+            $GcPolStorageAccountName = "${{ github.event.inputs.storageAccountName }}"
+            $GcPolStorageAccountContainer = "${{ github.event.inputs.storageAccountContainer }}"
+            
+            #Prepare runner with prereqs
+            Install-Module -Name GuestConfiguration -RequiredVersion 3.5.4 -AllowClobber -Force
+            
+            #Identify DSC configurations
+            Set-Location .\guest-configuration\
+            $GcPolFilePathString = (Get-Item ".")
+            $GcPolFilePath = Get-item $GcPolFilePathString
+            $PSFiles = $GcPolFilePath.GetFiles("*.ps1")
+            
+            $PSFiles | ForEach-Object {
+              $DscShortName = $_.Basename
+
+              if (Test-Path ($DscShortName + ".json")) {
+
+                  #Load the guest configuration metadata (accompanying json file) and install associated DSC modules
+                  $GcPolicyMetadata = Get-Content ($DscShortName + ".json") | ConvertFrom-Json -AsHashtable
+
+                  #Load any policy-specific DSC modules
+                  if ($GcPolicyMetadata.ContainsKey("DscModules")) {
+                          $GcPolicyMetadata.DscModules | ForEach-Object {Install-Module $_ -Force; Import-Module $_ -Force}
+                  }
+
+                  #Compile the DSC to MOF
+                  & ($_.FullName)
+
+                  #Build and publish new guest configuration package to storage account
+                  New-GuestConfigurationPackage -Name $DscShortName -Configuration ($GcPolFilePath.FullName + "\" + $DscShortName + "\localhost.mof") -Path Packages -Force
+                  $ContentUri = Publish-GuestConfigurationPackage -Path ($GcPolFilePath.FullName + "\Packages\" + $DscShortName + "\" + $DscShortName + ".zip") -ResourceGroupName $GcPolStorageAccountRg -StorageAccountName $GcPolStorageAccountName -StorageContainerName $GcPolStorageAccountContainer -Force
+
+                  #Create guest configuration policy file
+                  New-GuestConfigurationPolicy `
+                      -PolicyID (New-Guid).Guid `
+                      -ContentUri $ContentUri.ContentUri `
+                      -DisplayName $GcPolicyMetadata.DisplayName `
+                      -Description $GcPolicyMetadata.Description `
+                      -Path ($GcPolFilePath.FullName + '\policiestemp') `
+                      -Platform $GcPolicyMetadata.Platform `
+                      -Version $GcPolicyMetadata.Version `
+                      -Parameter $GcPolicyMetadata.PolicyParameters `
+
+                  #Load guest configuration policy file and apply custom transforms
+                  #This adjusts some of the targeting 
+                  $GcPolicy = Get-Content  ($GcPolFilePath.FullName + "\policiestemp\AuditIfNotExists.json" )
+                  $GcPolicy = $GcPolicy.Replace("[parameters('IncludeArcMachines')]","[[parameters('IncludeArcMachines')]") #apply nested parameter escape
+                  $GcPolicy = $GcPolicy | ConvertFrom-Json
+                  if ($GcPolicyMetadata.keys -contains "PlatformVersion") { #Apply PlatformVersion-specific transforms
+                      $GcPolicy.properties.policyrule.if.anyof[0].allof += New-Object -TypeName pscustomobject
+                      Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name field -Value "Microsoft.Compute/virtualMachines/storageProfile.imageReference.id"
+                      switch ($GcPolicyMetadata.PlatformVersion) {
+                          "Server 2016" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2016SOE" } 
+                          "Server 2019" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2019SOE" }
+                          "Server 2022" { Add-Member -InputObject $GcPolicy.properties.policyrule.if.anyof[0].allof[2] -MemberType NoteProperty -Name contains -Value "images/WindowsServer2022SOE" }
+                          Default {}
+                      }
+                  }
+                  if ($GcPolicyMetadata.keys -contains "PolicyParameters") { #Apply PolicyParameters-specific transforms
+                      $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals = "[" + $gcpolicy.properties.policyrule.then.details.existencecondition.allof[1].equals
+                  }
+
+                  #Cleanup
+                  Remove-Item ($GcPolFilePath.FullName + "\" + $DscShortName) -Recurse -Force
+                  Remove-Item ($GcPolFilePath.FullName + "\Packages") -Recurse -Force
+                  Remove-item ($GcPolFilePath.FullName + "\policiestemp") -Recurse -Force
+
+                  #Construct ARM template from guest configuration policy
+                  if ((Test-Path ($GcPolFilePath.Parent.FullName + "\policies\" + $GcPolicyMetadata.PolicyPath)) -eq $false) {New-Item ($GcPolFilePath.Parent.FullName + "\policies\" + $GcPolicyMetadata.PolicyPath) -ItemType Directory}
+                  $ArmTemplate = [ordered]@{
+                      "`$schema"="https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#";
+                      "contentVersion"="1.0.0.0";
+                      "parameters"=@{"policyName"=@{"type"="string"}};
+                      "resources"=@(
+                          [ordered]@{
+                              "type"="Microsoft.Authorization/policyDefinitions";
+                              "name"="[parameters('policyName')]";
+                              "apiVersion"="2019-09-01"
+                          }
+                      );
+                      "outputs"=@{
+                          "policyDefinitionId"=@{
+                              "type"="string";
+                              "value"= "[resourceId('Microsoft.Authorization/policyDefinitions',parameters('policyName'))]"
+                          }
+                      }
+                  }
+                  $ArmTemplate["resources"][0] += @{"properties"=$GcPolicy.properties}
+                  $ArmTemplate | ConvertTo-Json -depth 100 | Set-Content -Path ($GcPolFilePath.Parent.FullName + "\policies\" + $GcPolicyMetadata.PolicyPath + "\policy.template.json")
+              }
+            }
+      - name: Commit and push policy ARM templates
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add policies/*/*.json
+          git commit -m "Compiled GC policies (GH actions)"
+          git push
