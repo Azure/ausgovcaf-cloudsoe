@@ -38,6 +38,7 @@ The current prototype version of the CloudSOE implements the following features:
 - Disk encryption should be applied on virtual machines
 - Deploy vulnerability assessment solution on virtual machines
 - Azure Security Benchmark
+- Configure Windows machines to be associated with a Data Collection Rule
 
 ## Guest Configuration policy
 
@@ -137,15 +138,16 @@ The current prototype version of the CloudSOE implements the following features:
   - HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa
   - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 - Event
-  - Microsoft-Windows-NTLM/Operational
+  - Microsoft-Windows-NTLM/Operational Event IDs: 8001, 8004
   - Microsoft-Windows-CodeIntegrity/Operational
   - Microsoft-Windows-AppLocker/MSI and Script
-  - Microsoft-Windows-Security-Mitigations/KernelMode
-  - Microsoft-Windows-Windows Defender/Operational
-  - Microsoft-Windows-Security-Mitigations/UserMode
-  - Microsoft-Windows-Win32k/Operational
-  - Microsoft-Windows-Windows Defender/WHC
-  - Security: All
+  - Microsoft-Windows-Security-Mitigations/KernelMode Event IDs: 1, 24
+  - Microsoft-Windows-Windows Defender/Operational Event IDs: 1121, 1122
+  - Microsoft-Windows-Security-Mitigations/UserMode Event IDs: 1, 24
+  - Microsoft-Windows-Win32k/Operational Event ID 260
+  - Microsoft-Windows-Windows Defender/WHC Event IDs: 1121, 1122
+  - System Event ID 5 (Microsoft-Windows-WER-Diag)
+  - Security: Azure Defender Commmon events & Event IDs: 4625, 4750
 
 # Getting started
 
