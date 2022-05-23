@@ -113,7 +113,7 @@
                         "value": "REPLACE WITH YOUR LEGAL BANNER TEXT"
                     },
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -161,7 +161,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -177,7 +177,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -192,7 +192,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -207,7 +207,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -222,7 +222,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -237,7 +237,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -252,7 +252,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -267,7 +267,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -282,7 +282,7 @@
                  ],
                  "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                  }
             },
@@ -297,7 +297,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -312,7 +312,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -326,9 +326,9 @@
                     "ISM-1139-0"
                 ],
                "parameters": {
-                "IncludeArcMachines": {
-                    "value": true
-                }
+                    "IncludeArcMachines": {
+                        "value": "True"
+                    }
                }
             },
             {
@@ -342,7 +342,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
@@ -370,7 +370,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": true
+                        "value": "True"
                     }
                 }
             },
