@@ -32,10 +32,6 @@
                 "customPolicyDefinitionName": "gc-windows-logon-banner"
             },
             {
-                "relativeUri": "policies/enable-vulnerability-assessment/policy.template.json",
-                "customPolicyDefinitionName": "enable-vulnerability-assessment"
-            },
-            {
                 "relativeUri": "policies/gc-ipsec-audit-logging/policy.template.json",
                 "customPolicyDefinitionName": "gc-ipsec-audit-logging"
             },
@@ -115,12 +111,15 @@
                     },
                     "bannerText": {
                         "value": "REPLACE WITH YOUR LEGAL BANNER TEXT"
+                    },
+                    "IncludeArcMachines": {
+                        "value": true
                     }
                 }
             },
             {
-                "assignmentName": "disk-encryption",
-                "displayName": "Disk encryption should be applied on virtual machines",
+                "assignmentName": "encrypt-host-storage",
+                "displayName": "Virtual machines should encrypt temp disks, caches, and data flows between Compute and Storage resources",
                 "definition": {
                     "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0961003e-5a0a-4549-abde-af6a37f2724d"
                 },
@@ -134,7 +133,7 @@
                 "assignmentName": "enable-vulnerability-assessment",
                 "displayName": "Deploy vulnerability assessment solution on virtual machines",
                 "definition": {
-                    "customPolicyDefinitionName": "enable-vulnerability-assessment",
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/13ce0167-8ca6-4048-8e6b-f996402e3c1b",
                     "roleDefinitionIds": [
                         "fb1c8493-542b-48eb-b624-b4c8fea62acd"
                     ]
@@ -160,7 +159,11 @@
                     "ISM-0999-5",
                     "ISM-0472-5"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-ntlm-audit-logging",
@@ -172,7 +175,11 @@
                     "ISM-1055-4",
                     "ISM-1603-0"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "enable-firewall-policy",
@@ -183,7 +190,11 @@
                 "controls": [
                     "ISM-1416-2"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-account-lockout",
@@ -194,7 +205,11 @@
                 "controls": [
                     "ISM-1403-2"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-security-baseline-2016",
@@ -205,7 +220,11 @@
                 "controls": [
                     "ISM-1409-1"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-security-baseline-2019",
@@ -216,7 +235,11 @@
                 "controls": [
                     "ISM-1409-1"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-security-baseline-2022",
@@ -227,7 +250,11 @@
                 "controls": [
                     "ISM-1409-1"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-password-length",
@@ -238,7 +265,11 @@
                 "controls": [
                     "ISM-0421-6"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-windows-powershell-logging",
@@ -249,7 +280,11 @@
                 "controls": [
                     "ISM-1623-0"
                  ],
-                 "parameters": {}
+                 "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                 }
             },
             {
                 "assignmentName": "gc-windows-disable-autorun",
@@ -260,7 +295,11 @@
                 "controls": [
                     "ISM-0341-3"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-tls-schannel-settings",
@@ -271,7 +310,11 @@
                 "controls": [
                     "ISM-1139-0"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "gc-tls-dot-net-settings",
@@ -282,7 +325,11 @@
                 "controls": [
                     "ISM-1139-0"
                 ],
-               "parameters": {}
+               "parameters": {
+                "IncludeArcMachines": {
+                    "value": true
+                }
+               }
             },
             {
                 "assignmentName": "gc-windows-powershell-v2",
@@ -293,7 +340,11 @@
                 "controls": [
                     "ISM-1621-0"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "Azure Security Benchmark",
@@ -317,7 +368,11 @@
                     "ISM-1486-0",
                     "ISM-1412-2"
                 ],
-                "parameters": {}
+                "parameters": {
+                    "IncludeArcMachines": {
+                        "value": true
+                    }
+                }
             },
             {
                 "assignmentName": "enable-dcr-association-account-lockout-events",
