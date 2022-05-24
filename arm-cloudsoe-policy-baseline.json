@@ -273,7 +273,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": "True"
+                        "value": "true"
                     }
                 }
             },
