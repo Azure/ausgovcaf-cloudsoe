@@ -19,6 +19,12 @@
             "metadata":{
                 "description": "An object that lists the resource IDs for the Azure Monitor data collection rules."
             }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Log Analytics Workspace where VMs will be directed."
+            }
         }
     },
     "variables": {
@@ -192,7 +198,7 @@
                 ],
                 "parameters": {
                     "IncludeArcMachines": {
-                        "value": "True"
+                        "value": "true"
                     }
                 }
             },
@@ -527,18 +533,20 @@
                 }
             },
             {
-                "assignmentName": "enable-azure-monitor-agent-windows",
-                "displayName": "Configure Windows virtual machines to run Azure Monitor Agent",
+                "assignmentName": "enable-azure-monitor-for-vms",
+                "displayName": "Enable Azure Monitor for VMs",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ca817e41-e85a-4783-bc7f-dc532d36235e",
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a",
                     "roleDefinitionIds": [
-                        "9980e02c-c2be-4d73-94e8-173b1dc7cf3c",
-                        "b24988ac-6180-42a0-ab88-20f7382dd24c" //Contributor
+                        "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
                     ]
                 },
                 "parameters": {
-                    "listOfWindowsImageIdToInclude": {
+                    "listOfWindowsImageIdToInclude_windows": {
                         "value": "[parameters('windowsImageIds')]"
+                    },
+                    "logAnalytics_1": {
+                        "value": "[parameters('workspaceResourceId')]"
                     }
                 }
             }
