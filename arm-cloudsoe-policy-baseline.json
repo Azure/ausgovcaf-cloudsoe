@@ -536,7 +536,7 @@
                 "assignmentName": "enable-azure-monitor-for-vms",
                 "displayName": "Enable Azure Monitor for VMs",
                 "definition": {
-                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a",
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/55f3eceb-5573-4f18-9695-226972c6d74a",
                     "roleDefinitionIds": [
                         "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
                     ]
