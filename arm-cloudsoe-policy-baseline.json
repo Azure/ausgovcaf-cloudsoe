@@ -542,7 +542,7 @@
                     ]
                 },
                 "parameters": {
-                    "listOfWindowsImageIdToInclude_windows": {
+                    "listOfImageIdToInclude_windows": {
                         "value": "[parameters('windowsImageIds')]"
                     },
                     "logAnalytics_1": {
