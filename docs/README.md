@@ -2,7 +2,7 @@
 
 # About this project
 
-Welcome to the CloudSOE project - we're developing a community-driven, cloud-native, multi-platform Standard Operating Environment (SOE) for organisations that adopt Information Security Manual (ISM) guidelines when building information systems that use Virtual Machines.
+Welcome to the CloudSOE project - we're developing a community-driven, cloud-native, multi-platform Standard Operating Environment (SOE) for organisations that adopt Information Security Manual (ISM) guidelines when building information systems that use Virtual Machines, or when managing hybrid systems with Azure Arc.
 
 The project uses a collection of cloud-native technologies to achieve desired outcomes for Azure (and in future, on-premises & multi-cloud) IaaS systems:
 
@@ -34,7 +34,7 @@ The current prototype version of the CloudSOE implements the following features:
 
 ## Assign built-in Azure Policy
 
-- Enable Azure Monitor for VMs
+- Enable Azure Monitor for VMs (include Arc)
 - Disk encryption should be applied on virtual machines
 - Deploy vulnerability assessment solution on virtual machines
 - Azure Security Benchmark
@@ -130,6 +130,7 @@ The current prototype version of the CloudSOE implements the following features:
 
 - Change Tracking / Inventory
 - Azure Defender for Servers
+- Azure Monitor for VMs
 
 ## Log Analytics data sources
 
@@ -519,7 +520,6 @@ When creating a policy assignment in the `policyAssignments` variable, using the
 We hope that future development of the CloudSOE project will be ✨community-driven✨. We can think of a number of enhancements that would improve the utility of the solution, such as:
 
 - Simplify the setup process
-- Test/build Azure Arc for on-premises and other cloud management
 - Add Linux support
 - Move to policy-based setting enforcement (i.e. not just audit)
 - ESLZ integration
