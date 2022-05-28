@@ -24,7 +24,8 @@
         "changeTrackingResourceName": "[concat('ChangeTracking(', variables('workspaceName'), ')')]",
         "securityResourceName": "[concat('Security(', variables('workspaceName'), ')')]",
         "securityCenterFreeResourceName": "[concat('SecurityCenterFree(', variables('workspaceName'), ')')]",
-        "updatesResourceName": "[concat('Updates(', variables('workspaceName'), ')')]"
+        "updatesResourceName": "[concat('Updates(', variables('workspaceName'), ')')]",
+        "vminsightsResourceName": "[concat('VMInsights(', variables('workspaceName'), ')')]"
     },
     "resources": [      
         {
@@ -82,6 +83,21 @@
                 "name": "[variables('updatesResourceName')]",
                 "promotionCode": "",
                 "product": "OMSGallery/Updates",
+                "publisher": "Microsoft"
+            },
+            "properties": {
+                "workspaceResourceId": "[parameters('workspaceResourceId')]"
+            }
+        },
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "name": "[variables('vminsightsResourceName')]",
+            "location": "[parameters('workspaceRegion')]",
+            "plan": {
+                "name": "[variables('vminsightsResourceName')]",
+                "promotionCode": "",
+                "product": "OMSGallery/VMInsights",
                 "publisher": "Microsoft"
             },
             "properties": {
