@@ -153,7 +153,7 @@
             "kind": "ChangeTrackingDefaultRegistry"
         },
         {
-            //Set Log Analytics workspace to collect all security events
+            //Set Log Analytics workspace to collect common security events
             "apiVersion": "2020-08-01",
             "type": "Microsoft.OperationalInsights/workspaces/dataSources",
             "name": "[concat(variables('workspaceName'),'/SecurityEventCollectionConfiguration')]",
