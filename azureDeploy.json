@@ -203,6 +203,9 @@
                     },
                     "dataCollectionRuleEventResourceIds": {
                         "value": "[reference('CloudSOELaSolutionDeployment').outputs.dataCollectionRuleResourceIds.value]"
+                    },
+                    "workspaceResourceId": {
+                        "value": "[parameters('workspaceResourceId')]"
                     }
                 }
             }
