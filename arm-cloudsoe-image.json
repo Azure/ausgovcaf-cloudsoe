@@ -3025,14 +3025,14 @@
             "type": "array",
             "copy": {
                 "count": "[length(parameters('buildImages'))]",
-                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Windows'),reference(concat('AIBImageBuild-',copyIndex())).outputs.artifactId,null())]"
+                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Windows'),resourceId('Microsoft.Compute/galleries/images','CloudSOESIG',variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku),null())]"
             }
         },
         "linuxImageIds": {
             "type": "array",
             "copy": {
                 "count": "[length(parameters('buildImages'))]",
-                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Linux'),reference(concat('AIBImageBuild-',copyIndex())).outputs.artifactId,null())]"
+                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Linux'),resourceId('Microsoft.Compute/galleries/images','CloudSOESIG',variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku),null())]"
             }
         }
     }
