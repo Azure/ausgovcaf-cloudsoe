@@ -3012,7 +3012,7 @@
                 "arguments": "[concat(resourceGroup().name, ' ', variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku, ' ', concat('BuildOutput-',copyIndex()))]",
                 "scriptContent": "
                     az login --identity
-                    az image builder run -g $1 -n $2
+                    az image builder run -g $1 -n $2 --no-wait
                     az image builder show-runs -g $1 -n $2 --output-name $3 > $AZ_SCRIPTS_OUTPUT_PATH
                 ",
                 "cleanupPreference": "OnSuccess",
