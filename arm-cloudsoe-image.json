@@ -3013,7 +3013,6 @@
                 "scriptContent": "
                     az login --identity
                     az image builder run -g $1 -n $2 --no-wait
-                    az image builder show-runs -g $1 -n $2 --output-name $3 > $AZ_SCRIPTS_OUTPUT_PATH
                 ",
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "P1D"
