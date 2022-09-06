@@ -549,6 +549,36 @@
                         "value": "[parameters('workspaceResourceId')]"
                     }
                 }
+            },
+            {
+                "assignmentName": "enable-azure-monitor-agent-for-vms",
+                "displayName": "Configure Windows virtual machines to run Azure Monitor Agent with user-assigned managed identity-based authentication",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/637125fd-7c39-4b94-bb0a-d331faf333a9",
+                    "roleDefinitionIds": [
+                        "9980e02c-c2be-4d73-94e8-173b1dc7cf3c"
+                    ]
+                },
+                "parameters": {
+                    "listOfWindowsImageIdToInclude": {
+                        "value": "[parameters('windowsImageIds')]"
+                    },
+                    "bringYourOwnUserAssignedManagedIdentity": {
+                        "value": false
+                    }
+                }
+            },
+            {
+                "assignmentName": "enable-azure-monitor-agent-for-arc-vms",
+                "displayName": "Configure Windows Arc-enabled machines to run Azure Monitor Agent",
+                "definition": {
+                    "builtinPolicyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/94f686d6-9a24-4e19-91f1-de937dc171a4",
+                    "roleDefinitionIds": [
+                        "cd570a14-e51a-42ad-bac8-bafd67325302"
+                    ]
+                },
+                "parameters": {
+                }
             }
         ]
     },
