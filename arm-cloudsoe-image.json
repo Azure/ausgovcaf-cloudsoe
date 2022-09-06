@@ -3012,8 +3012,7 @@
                 "arguments": "[concat(resourceGroup().name, ' ', variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku, ' ', concat('BuildOutput-',copyIndex()))]",
                 "scriptContent": "
                     az login --identity
-                    az image builder run -g $1 -n $2
-                    az image builder show-runs -g $1 -n $2 --output-name $3 > $AZ_SCRIPTS_OUTPUT_PATH
+                    az image builder run -g $1 -n $2 --no-wait
                 ",
                 "cleanupPreference": "OnSuccess",
                 "retentionInterval": "P1D"
@@ -3025,14 +3024,14 @@
             "type": "array",
             "copy": {
                 "count": "[length(parameters('buildImages'))]",
-                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Windows'),reference(concat('AIBImageBuild-',copyIndex())).outputs.artifactId,null())]"
+                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Windows'),resourceId('Microsoft.Compute/galleries/images','CloudSOESIG',variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku),null())]"
             }
         },
         "linuxImageIds": {
             "type": "array",
             "copy": {
                 "count": "[length(parameters('buildImages'))]",
-                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Linux'),reference(concat('AIBImageBuild-',copyIndex())).outputs.artifactId,null())]"
+                "input": "[if(equals(variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].osType,'Linux'),resourceId('Microsoft.Compute/galleries/images','CloudSOESIG',variables('imagePropertiesSet')[parameters('buildImages')[copyIndex()]].soeSku),null())]"
             }
         }
     }
