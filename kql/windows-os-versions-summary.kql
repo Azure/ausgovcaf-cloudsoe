@@ -6,8 +6,8 @@ let VersionConfigItems = ConfigurationData
 | project Computer, ValueName, ValueData;
 VersionConfigItems
 | extend p = pack(ValueName, ValueData)
-| summarize bag=make_bag(p)
+| summarize bag=make_bag(p) by Computer
 | evaluate bag_unpack(bag)
-| project OperatingSystem = strcat(ProductName, " - ", ReleaseId)
+| project OperatingSystem = strcat(ProductName, iif(strlen(ReleaseId) == 0,""," - "), ReleaseId)
 | summarize count() by OperatingSystem
-| render columnchart
+| render columnchart;
