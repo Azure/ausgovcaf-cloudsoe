@@ -1,842 +1,997 @@
 {
-    "version": "Notebook/1.0",
-    "items": [
-      {
-        "type": 9,
-        "content": {
-          "version": "KqlParameterItem/1.0",
-          "parameters": [
-            {
-              "id": "f3e7cdac-f2b5-4682-aefa-cf4130bde675",
-              "version": "KqlParameterItem/1.0",
-              "name": "Subscription",
-              "type": 6,
-              "isRequired": true,
-              "value": "",
-              "typeSettings": {
-                "additionalResourceOptions": [],
-                "includeAll": false,
-                "showDefault": false
-              },
-              "timeContext": {
-                "durationMs": 86400000
-              }
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "f3e7cdac-f2b5-4682-aefa-cf4130bde675",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "value": "",
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "includeAll": false,
+              "showDefault": false
             },
-            {
-              "id": "ed59c0aa-e545-46c9-812c-05af308f0777",
-              "version": "KqlParameterItem/1.0",
-              "name": "Workspace",
-              "type": 5,
-              "isRequired": true,
-              "value": "",
-              "typeSettings": {
-                "resourceTypeFilter": {
-                  "microsoft.operationalinsights/workspaces": true
-                },
-                "additionalResourceOptions": []
-              },
-              "timeContext": {
-                "durationMs": 86400000
-              }
+            "timeContext": {
+              "durationMs": 86400000
             }
-          ],
-          "style": "pills",
-          "queryType": 0,
-          "resourceType": "microsoft.operationalinsights/workspaces"
-        },
-        "name": "parameters - 9"
-      },
-      {
-        "type": 11,
-        "content": {
-          "version": "LinkItem/1.0",
-          "style": "tabs",
-          "links": [
-            {
-              "id": "7ded99c5-2f17-4c37-80bb-dbbc2796c0fd",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Software Updates",
-              "subTarget": "Software Updates",
-              "style": "link"
+          },
+          {
+            "id": "ed59c0aa-e545-46c9-812c-05af308f0777",
+            "version": "KqlParameterItem/1.0",
+            "name": "Workspace",
+            "type": 5,
+            "isRequired": true,
+            "value": "",
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.operationalinsights/workspaces": true
+              },
+              "additionalResourceOptions": []
             },
-            {
-              "id": "ae848e98-a680-424a-98c2-bc3268c87074",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Installed Software",
-              "subTarget": "Installed Software",
-              "style": "link"
-            },
-            {
-              "id": "179336c4-797c-40f5-97cc-ebf76fd92efc",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Application Control",
-              "subTarget": "Application Control",
-              "style": "link"
-            },
-            {
-              "id": "bbdb7762-fd5b-401b-a537-253f011c7b29",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Connectivity",
-              "subTarget": "Connectivity",
-              "style": "link"
-            },
-            {
-              "id": "2dba6e16-afc4-4143-9058-4e40d49938fc",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Exploit Protection",
-              "subTarget": "Exploit Protection",
-              "style": "link"
-            },
-            {
-              "id": "c5f3401b-f92b-4ab3-92ea-ef66de0607b3",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Account Lockout",
-              "subTarget": "Account Lockout",
-              "style": "link"
-            },
-            {
-              "id": "21bf6837-d8d3-43b4-8a7a-e1d3af0113ea",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Weak authentication protocols",
-              "subTarget": "Weak authentication protocols",
-              "style": "link"
-            },
-            {
-              "id": "c279d59c-e24b-4762-8006-4a5b8d9e536a",
-              "cellValue": "selectedTab",
-              "linkTarget": "parameter",
-              "linkLabel": "Operating System",
-              "subTarget": "Operating System",
-              "style": "link"
+            "timeContext": {
+              "durationMs": 86400000
             }
-          ]
-        },
-        "name": "links - 0"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Software Updates",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Shows all updates newer than 90 days and all updates with < 100% coverage and renders their coverage summary\r\nUpdate\r\n| where MSRCSeverity == \"Critical\" or MSRCSeverity == \"Security\"\r\n| where TimeGenerated > now(-180days) or UpdateID in ( \r\n    (Update\r\n    | where MSRCSeverity == \"Critical\" or MSRCSeverity == \"Security\"\r\n    | summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n    | where UpdateState != \"Installed\"\r\n    | project UpdateID)\r\n)\r\n| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n| summarize NotInstalledCount = countif(UpdateState != \"Installed\"), InstalledCount = countif(UpdateState == \"Installed\"), TotalCount = count() by Product, MSRCSeverity, KBID, Title\r\n//| project Product, MSRCSeverity, KBID, Title, NotInstalledCount, InstalledCount, TotalCount, Coverage = strcat(tostring(InstalledCount / TotalCount * 100),\"%\")\r\n| project Update=strcat(Product,\" - \", Title), NotInstalledCount,InstalledCount\r\n| render barchart with (kind = stacked)",
-                "size": 1,
-                "timeContext": {
-                  "durationMs": 604800000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 2"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Show system missing updates over time\r\nUpdateSummary\r\n| project TimeGenerated,Computer, SecurityUpdatesMissing\r\n| render timechart with (series = Computer)",
-                "size": 1,
-                "title": "Missing Updates",
-                "timeContext": {
-                  "durationMs": 604800000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 2"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Show systems missing most updates\r\nUpdateSummary \r\n| summarize arg_max(TimeGenerated, *) by SourceComputerId\r\n| project Computer, OsVersion,OldestMissingSecurityUpdateInDays\r\n| sort by OldestMissingSecurityUpdateInDays",
-                "size": 0,
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 2"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "Update\r\n| where MSRCSeverity == \"Critical\" or MSRCSeverity == \"Security\"\r\n| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n| where UpdateState != \"Installed\"\r\n| project Computer, Product, MSRCSeverity, KBID, Title, UpdateState, HoursOld = datetime_diff('hour',now(),PublishedDate)\r\n| sort by HoursOld",
-                "size": 0,
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 0"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Software Updates"
-        },
-        "name": "Software Updates"
+      "name": "parameters - 9"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {
+            "id": "7ded99c5-2f17-4c37-80bb-dbbc2796c0fd",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Software Updates",
+            "subTarget": "Software Updates",
+            "style": "link"
+          },
+          {
+            "id": "ae848e98-a680-424a-98c2-bc3268c87074",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Installed Software",
+            "subTarget": "Installed Software",
+            "style": "link"
+          },
+          {
+            "id": "179336c4-797c-40f5-97cc-ebf76fd92efc",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Application Control",
+            "subTarget": "Application Control",
+            "style": "link"
+          },
+          {
+            "id": "bbdb7762-fd5b-401b-a537-253f011c7b29",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Connectivity",
+            "subTarget": "Connectivity",
+            "style": "link"
+          },
+          {
+            "id": "2dba6e16-afc4-4143-9058-4e40d49938fc",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Exploit Protection",
+            "subTarget": "Exploit Protection",
+            "style": "link"
+          },
+          {
+            "id": "c5f3401b-f92b-4ab3-92ea-ef66de0607b3",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Account Lockout",
+            "subTarget": "Account Lockout",
+            "style": "link"
+          },
+          {
+            "id": "21bf6837-d8d3-43b4-8a7a-e1d3af0113ea",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Weak authentication protocols",
+            "subTarget": "Weak authentication protocols",
+            "style": "link"
+          },
+          {
+            "id": "c279d59c-e24b-4762-8006-4a5b8d9e536a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "Operating System",
+            "subTarget": "Operating System",
+            "style": "link"
+          }
+        ]
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Installed Software",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Identifies the prevelance of unqiue software versions\r\nConfigurationData \r\n| where ConfigDataType == \"Software\"\r\n| where SoftwareType == \"Application\"  \r\n| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion\r\n| summarize Systems=make_set(Computer) by SoftwareName,Publisher,CurrentVersion\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Security Intelligence Update for Microsoft Defender Antivirus - KB\")\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Update for Microsoft Defender Antivirus antimalware platform - KB\")\r\n| project SoftwareVersion = strcat(SoftwareName, \" \", CurrentVersion), Publisher, SystemCount = array_length(Systems), Systems",
-                "size": 0,
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 0"
+      "name": "links - 0"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Software Updates",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Provides heartbeat time according to Update Management\r\nUpdate\r\n| where TimeGenerated > now(-2days)\r\n| summarize arg_max(TimeGenerated, *) by VMUUID\r\n| project ResourceId, VMUUID, UpdateStatusHeartbeatHours = datetime_diff(\"hour\",now(),TimeGenerated)",
+              "size": 0,
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Identifies software applications where multiple versions are present\r\nConfigurationData \r\n| where ConfigDataType == \"Software\"\r\n| where SoftwareType == \"Application\"  \r\n| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion\r\n| summarize Versions=make_set(CurrentVersion) by SoftwareName,Publisher\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Security Intelligence Update for Microsoft Defender Antivirus - KB\")\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Update for Microsoft Defender Antivirus antimalware platform - KB\")\r\n| where array_length(Versions) > 1",
-                "size": 0,
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 1"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Installed Software"
-        },
-        "name": "Installed Software"
-      },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Application Control",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Summarise all WDAC block events by count of event pattern\r\nEvent\r\n| where EventID == 3077\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project CallingProcess = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'File Name'\r\n    | project FileName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyName'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'FileDescription'\r\n    | project FileDescription = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProductName'\r\n    | project ProductName = tostring(ed['#text'])\r\n)\r\n| project TimeGenerated,Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName\r\n| summarize count() by Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName",
-                "size": 0,
-                "title": "WDAC Block Events (24 hours)",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ],
-                "gridSettings": {
-                  "rowLimit": 30
-                }
-              },
-              "name": "query - 9"
+            "conditionalVisibility": {
+              "parameterName": "true",
+              "comparison": "isEqualTo",
+              "value": "false"
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Summarises the lastest WDAC policy load events by Computer, PolicyName, PolicyId\r\nEvent\r\n| where EventID == 3099\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyNameBuffer'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyIdBuffer'\r\n    | project PolicyId = tostring(ed['#text'])\r\n)\r\n| project TimeGenerated,Computer,PolicyName,PolicyId\r\n| summarize arg_max(TimeGenerated,*) by Computer,PolicyName,PolicyId",
-                "size": 0,
-                "title": "WDAC policy load events (24 hours)",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ],
-                "gridSettings": {
-                  "rowLimit": 30
-                }
-              },
-              "name": "query - 11"
+            "name": "query - 5"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarise the VMs and Arc-enabled VMs according to ARG\r\nresources\r\n| where type == \"microsoft.compute/virtualmachines\" or type == \"microsoft.hybridcompute/machines\"\r\n| extend location=iif(type == \"microsoft.compute/virtualmachines\",location,tags.Datacenter),VMUUID=properties.vmUuid,VMID=properties.vmId\r\n| extend UpdateUUID=iif(type==\"microsoft.compute/virtualmachines\",VMID,VMUUID)\r\n| project id,Name=name,UpdateUUID",
+              "size": 0,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources"
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Show WDAC blocks as a result of the ISG\r\nEvent\r\n| where EventID == 3092\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'FileName'\r\n    | project FileName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'StatusCode'\r\n    | project StatusCode = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PassesSmartlocker'\r\n    | project PassesISG = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyName'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| where PassesISG == \"false\"\r\n| summarize FailCount = count() by FileName\r\n| sort by FailCount",
-                "size": 0,
-                "title": "WDAC Intelligent Security Graph Block Events (24 hours)",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 10"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Application Control"
-        },
-        "name": "Application Control"
-      },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Connectivity",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//KQL query to detect TLS versions used, cipher used and destination targets\r\n//update the Cipher table here with Cipher Suite/Name mappings\r\nlet CipherLookupTable = datatable(CipherSuite: string, CipherName: string )\r\n[\r\n\"0X0001\", \"RSA_WITH_NULL_MD5\", \r\n\"0X0002\", \"RSA_WITH_NULL_SHA\",\r\n\"0X0004\", \"RSA_WITH_RC4_128_MD5\",\r\n\"0X0005\", \"RSA_WITH_RC4_128_SHA\",\r\n\"0X0009\", \"RSA_WITH_DES_CBC_SHA\",\r\n\"0X000A\", \"RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X0012\", \"DHE_DSS_WITH_DES_CBC_SHA\",\r\n\"0X0013\", \"DHE_DSS_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X0015\", \"DHE_RSA_WITH_DES_CBC_SHA\",\r\n\"0X0016\", \"DHE_RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X002F\", \"RSA_WITH_AES_128_CBC_SHA\",\r\n\"0X0032\", \"DHE_DSS_WITH_AES_128_CBC_SHA\",\r\n\"0X0033\", \"DHE_RSA_WITH_AES_128_CBC_SHA\",\r\n\"0X0035\", \"RSA_WITH_AES_256_CBC_SHA\",\r\n\"0X0038\", \"DHE_DSS_WITH_AES_256_CBC_SHA\",\r\n\"0X0039\", \"DHE_RSA_WITH_AES_256_CBC_SHA\",\r\n\"0X003B\", \"RSA_WITH_NULL_SHA256\",\r\n\"0X003C\", \"RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0X003D\", \"RSA_WITH_AES_256_CBC_SHA256\",\r\n\"0X0040\", \"DHE_DSS_WITH_AES_128_CBC_SHA256\",\r\n\"0X0067\", \"DHE_RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0X006A\", \"DHE_DSS_WITH_AES_256_CBC_SHA256\",\r\n\"0X006B\", \"DHE_RSA_WITH_AES_256_CBC_SHA256\",\r\n\"0X009C\", \"RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X9C\", \"RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X009D\", \"RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X009E\", \"DHE_RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X009F\", \"DHE_RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X00A2\", \"DHE_DSS_WITH_AES_128_GCM_SHA256\",\r\n\"0X00A3\", \"DHE_DSS_WITH_AES_256_GCM_SHA384\",\r\n\"0XC010\", \"ECDHE_RSA_WITH_NULL_SHA\",\r\n\"0XC011\", \"ECDHE_RSA_WITH_RC4_128_SHA\",\r\n\"0XC012\", \"ECDHE_RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0XC013\", \"ECDHE_RSA_WITH_AES_128_CBC_SHA\",\r\n\"0XC014\", \"ECDHE_RSA_WITH_AES_256_CBC_SHA\",\r\n\"0XC027\", \"ECDHE_RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0XC028\", \"ECDHE_RSA_WITH_AES_256_CBC_SHA384\",\r\n\"0XC02F\", \"ECDHE_RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0XC030\", \"ECDHE_RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0XC006\", \"ECDHE_ECDSA_WITH_NULL_SHA\",\r\n\"0XC007\", \"ECDHE_ECDSA_WITH_RC4_128_SHA\",\r\n\"0XC008\", \"ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0XC009\", \"ECDHE_ECDSA_WITH_AES_128_CBC_SHA\",\r\n\"0XC00A\", \"ECDHE_ECDSA_WITH_AES_256_CBC_SHA\",\r\n\"0XC023\", \"ECDHE_ECDSA_WITH_AES_128_CBC_SHA256\",\r\n\"0XC024\", \"ECDHE_ECDSA_WITH_AES_256_CBC_SHA384\",\r\n\"0XC02B\", \"ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\",\r\n\"0XC02C\", \"ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X1301\", \"AES_128_GCM_SHA256\",\r\n\"0X1302\", \"AES_256_GCM_SHA384\",\r\n\"0X1303\", \"CHACHA20_POLY1305_SHA256\",\r\n\"0X1304\", \"AES_128_CCM_SHA256\",\r\n\"0X1305\", \"AES_128_CCM_8_SHA256\"\r\n];\r\nEvent\r\n| where EventID == 36880\r\n| extend Protocol = tostring(parse_xml(EventData).DataItem.UserData.EventXML.Protocol)\r\n| extend Type = tostring(parse_xml(EventData).DataItem.UserData.EventXML.Type)\r\n| extend TargetName = (parse_xml(EventData).DataItem.UserData.EventXML.TargetName)\r\n| extend CipherSuite = tostring(toupper((parse_xml(EventData).DataItem.UserData.EventXML.CipherSuite)))\r\n| join kind=inner CipherLookupTable on CipherSuite\r\n| project TimeGenerated, Type, Computer, Protocol, TargetName, CipherSuite, CipherName",
-                "size": 0,
-                "title": "Detect TLS version",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 0"
+            "conditionalVisibility": {
+              "parameterName": "true",
+              "comparison": "isEqualTo",
+              "value": "false"
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Identifies where SNMP service is running on Windows systems\r\nConfigurationData \r\n| where ConfigDataType == \"WindowsServices\"\r\n| where SvcName =~ \"snmptrap\"\r\n| where SvcState == \"Running\"\r\n| project TimeGenerated,Computer,SvcDisplayName,SvcName,SvcState,SvcStartupType\r\n| summarize arg_max(TimeGenerated, *) by Computer",
-                "size": 0,
-                "title": "Detect SNMP service running",
-                "timeContext": {
-                  "durationMs": 86400000
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"2cf54307-2440-46af-85d7-427dc334f0da\",\"mergeType\":\"leftouter\",\"leftTable\":\"query - 4\",\"rightTable\":\"query - 5\",\"leftColumn\":\"UpdateUUID\",\"rightColumn\":\"VMUUID\"}],\"projectRename\":[{\"originalName\":\"[query - 5].UndateStatusHeartbeatHours\",\"mergedName\":\"UndateStatusHeartbeatHours\",\"fromId\":\"unknown\"},{\"originalName\":\"ResourceId\",\"mergedName\":\"ResourceId\",\"fromId\":\"unknown\"},{\"originalName\":\"name\",\"mergedName\":\"name\",\"fromId\":\"unknown\"},{\"originalName\":\"location\",\"mergedName\":\"location\",\"fromId\":\"unknown\"},{\"originalName\":\"tags\",\"mergedName\":\"tags\",\"fromId\":\"unknown\"},{\"originalName\":\"VMUUID\",\"mergedName\":\"VMUUID\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 5].UpdateStatusHeartbeatHours\",\"mergedName\":\"UpdateStatusHeartbeatHours\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].properties_vmId\",\"mergedName\":\"properties_vmId\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].properties\",\"mergedName\":\"properties\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].VMID\",\"mergedName\":\"VMID\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].type\",\"mergedName\":\"type\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].FinalUUID\",\"mergedName\":\"FinalUUID\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].UpdateUUID\",\"mergedName\":\"UpdateUUID\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].id\",\"mergedName\":\"id\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].tenantId\",\"mergedName\":\"tenantId\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].kind\",\"mergedName\":\"kind\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].resourceGroup\",\"mergedName\":\"resourceGroup\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].subscriptionId\",\"mergedName\":\"subscriptionId\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].managedBy\",\"mergedName\":\"managedBy\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].apiVersion\",\"mergedName\":\"apiVersion\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].sku\",\"mergedName\":\"sku\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].plan\",\"mergedName\":\"plan\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].identity\",\"mergedName\":\"identity\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].zones\",\"mergedName\":\"zones\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].extendedLocation\",\"mergedName\":\"extendedLocation\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].systemData\",\"mergedName\":\"systemData\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].name\",\"mergedName\":\"name\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 4].Name\",\"mergedName\":\"Name\",\"fromId\":\"unknown\"},{\"originalName\":\"[query - 5].ResourceId\",\"mergedName\":\"ResourceId1\",\"fromId\":\"2cf54307-2440-46af-85d7-427dc334f0da\"},{\"originalName\":\"[query - 5].VMUUID\",\"mergedName\":\"VMUUID1\",\"fromId\":\"2cf54307-2440-46af-85d7-427dc334f0da\"}]}",
+              "size": 1,
+              "title": "Update heartbeat",
+              "queryType": 7,
+              "visualization": "graph",
+              "graphSettings": {
+                "type": 2,
+                "topContent": {
+                  "columnMatch": "Name",
+                  "formatter": 1
                 },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 1"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//KQL query to detect VMs not reporting IPv6 tunnels disabled\r\nHeartbeat | where SourceComputerId !in (\r\n    ( ConfigurationData \r\n    | where RegistryKey == \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip6\\\\Parameters\"\r\n    | where ValueName == \"DisabledComponents\"\r\n    | where binary_and(toint(ValueData),1) == 1\r\n    | project SourceComputerId )\r\n)\r\n| extend resourceId=ResourceId\r\n| distinct resourceId",
-                "size": 0,
-                "title": "Detect IPv6 tunnel protocols enabled",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 9"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "Heartbeat \r\n| where SourceComputerId !in (\r\n    ( ConfigurationData \r\n        | where RegistryKey == \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip6\\\\Parameters\"\r\n        | where ValueName == \"DisabledComponents\"\r\n        | where ValueData == 255\r\n        | project SourceComputerId )\r\n    )\r\n| extend resourceId=ResourceId\r\n| distinct resourceId",
-                "size": 0,
-                "title": "VMs with IPv6 enabled",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "conditionalVisibility": {
-                "parameterName": "ShowIPv6Tables",
-                "comparison": "isEqualTo",
-                "value": "t"
-              },
-              "showPin": false,
-              "name": "VMs with IPv6 enabled"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "Resources\r\n| where type =~ 'microsoft.compute/virtualmachines'\r\n| mv-expand nic=properties.networkProfile.networkInterfaces\r\n| project vmId = id, vmName = name, vmSize=tostring(properties.hardwareProfile.vmSize), nicId = tostring(nic.id)  \r\n| join kind=inner (\r\n    resources \r\n    | where type == 'microsoft.network/networkinterfaces' \r\n    | mvexpand properties.ipConfigurations \r\n    | extend subnetId = tostring(properties_ipConfigurations.properties.subnet.id) \r\n    | extend nicId = id \r\n    | join kind=inner ( \r\n        resources \r\n        | where type == 'microsoft.network/virtualnetworks' \r\n        | mvexpand properties.subnets\r\n        | where tostring(properties_subnets.properties.addressPrefixes) !contains ':' \r\n        | extend subnetId = tostring(properties_subnets.id)) \r\n     on subnetId\r\n) on nicId\r\n| project resourceId=vmId",
-                "size": 0,
-                "title": "VMs connected to IPv4 -only subnets",
-                "queryType": 1,
-                "resourceType": "microsoft.resourcegraph/resources",
-                "crossComponentResources": [
-                  "{Subscription}"
-                ]
-              },
-              "conditionalVisibility": {
-                "parameterName": "ShowIPv6Tables",
-                "comparison": "isEqualTo",
-                "value": "true"
-              },
-              "name": "VMs connected to IPv4 -only subnets"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"0fa799b5-a6e5-4ade-b919-8ceb2b5f415f\",\"mergeType\":\"innerunique\",\"leftTable\":\"VMs with IPv6 enabled\",\"rightTable\":\"VMs connected to IPv4 -only subnets\",\"leftColumn\":\"resourceId\",\"rightColumn\":\"resourceId\"}]}",
-                "size": 0,
-                "title": "IPv6 unnecessarily enabled",
-                "queryType": 7,
-                "gridSettings": {
-                  "formatters": [
-                    {
-                      "columnMatch": "resourceId1",
-                      "formatter": 5
+                "centerContent": {
+                  "columnMatch": "UpdateStatusHeartbeatHours",
+                  "formatter": 1,
+                  "numberFormat": {
+                    "unit": 26,
+                    "options": {
+                      "style": "decimal",
+                      "maximumFractionDigits": 2,
+                      "maximumSignificantDigits": 3
                     }
-                  ]
-                }
-              },
-              "showPin": false,
-              "name": "query - 6"
+                  }
+                },
+                "nodeIdField": "id",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 50,
+                "colorSettings": {
+                  "nodeColorField": "UpdateStatusHeartbeatHours",
+                  "type": 4,
+                  "heatmapPalette": "greenRed",
+                  "heatmapMin": 0,
+                  "heatmapMax": 48,
+                  "emptyValueColor": "redBright"
+                },
+                "hivesMargin": 5
+              }
             },
-            {
-              "type": 12,
-              "content": {
-                "version": "NotebookGroup/1.0",
-                "groupType": "editable",
-                "title": "IPsec reporting",
-                "expandable": true,
-                "expanded": true,
-                "items": [
+            "showPin": false,
+            "name": "query - 6"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Shows all updates newer than 30 days and all updates with < 100% coverage and renders their coverage summary\r\nUpdate\r\n| where MSRCSeverity in (\"Critical\", \"Important\", \"Moderate\", \"Security\")\r\n| where PublishedDate > now(-30days) or UpdateID in ( \r\n    (Update\r\n    | where MSRCSeverity in (\"Critical\", \"Important\", \"Moderate\", \"Security\")\r\n    | summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n    | where UpdateState != \"Installed\"\r\n    | summarize count() by UpdateID\r\n    | project UpdateID)\r\n)\r\n| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n| summarize NotInstalledCount = countif(UpdateState != \"Installed\"), InstalledCount = countif(UpdateState == \"Installed\"), TotalCount = count() by Product, MSRCSeverity, PublishedDate, KBID, Title\r\n| project Update=strcat(Product,\" - \", Title), MSRCSeverity, DaysOld=datetime_diff(\"Day\",now(),PublishedDate), NotInstalledCount,InstalledCount,TotalCount",
+              "size": 0,
+              "title": "Recent (30 days) and missing update summary",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "visualization": "table",
+              "gridSettings": {
+                "formatters": [
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec MM HMAC algorithm (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MMIntegrityAlg'\r\n    | project MMIntegrityAlg = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where MMIntegrityAlg != \"%%8242\" and MMIntegrityAlg != \"%%8243\" \r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, MMIntegrityAlg\r\n",
-                      "size": 0,
-                      "title": "IPsec HMAC algorithms",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 0"
+                    "columnMatch": "Update",
+                    "formatter": 1,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "100%"
+                    }
                   },
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec DH Groups with low modulus (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'DHGroup'\r\n    | project DHGroup = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where DHGroup != \"%%8232\" and DHGroup != \"%%8248\" and DHGroup != \"%%8233\" and DHGroup != \"%%8234\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, DHGroup\r\n",
-                      "size": 0,
-                      "title": "Low modulus DH groups",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 1"
+                    "columnMatch": "NotInstalledCount",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "compositeBarSettings": {
+                        "labelText": "",
+                        "columnSettings": []
+                      }
+                    }
                   },
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec MM SAs with long lifetime (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MMLifetime'\r\n    | project LifetimeSeconds = (ed['#text'] * 60)\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where LifetimeSeconds >= 14400\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, LifetimeSeconds\r\n",
-                      "size": 0,
-                      "title": "Long lifetime main-mode SAs",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 2"
+                    "columnMatch": "InstalledCount",
+                    "formatter": 5,
+                    "formatOptions": {
+                      "compositeBarSettings": {
+                        "labelText": "",
+                        "columnSettings": [
+                          {
+                            "columnName": "InstalledCount",
+                            "color": "green"
+                          },
+                          {
+                            "columnName": "NotInstalledCount",
+                            "color": "redBright"
+                          }
+                        ]
+                      }
+                    }
                   },
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec SAs without ESP (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'EspAuthType'\r\n    | project ESPAuthType = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where ESPAuthType == \"-\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress\r\n",
-                      "size": 0,
-                      "title": "SAs without ESP",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 3"
-                  },
+                    "columnMatch": "TotalCount",
+                    "formatter": 22,
+                    "formatOptions": {
+                      "compositeBarSettings": {
+                        "labelText": "",
+                        "columnSettings": [
+                          {
+                            "columnName": "InstalledCount",
+                            "color": "green"
+                          },
+                          {
+                            "columnName": "NotInstalledCount",
+                            "color": "redBright"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "sortBy": [
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec SAs without IKE (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'KeyingModuleName'\r\n    | project KeyingModuleName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where KeyingModuleName !startswith \"IKE\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, KeyingModuleName\r\n",
-                      "size": 0,
-                      "title": "SAs without IKE",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 4"
-                  },
+                    "itemKey": "Update",
+                    "sortOrder": 1
+                  }
+                ],
+                "labelSettings": [
                   {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec QM SAs with long lifetime (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LifetimeSeconds'\r\n    | project LifetimeSeconds = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where LifetimeSeconds > 14400\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, LifetimeSeconds",
-                      "size": 0,
-                      "title": "Long lifetime quick-mode SAs",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 5"
-                  },
-                  {
-                    "type": 3,
-                    "content": {
-                      "version": "KqlItem/1.0",
-                      "query": "//KQL query to detect IPsec Transport mode (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Mode'\r\n    | project Mode = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where Mode == \"%%16403\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, Mode=\"Transport\"",
-                      "size": 0,
-                      "title": "Transport mode SAs",
-                      "timeContext": {
-                        "durationMs": 86400000
-                      },
-                      "queryType": 0,
-                      "resourceType": "microsoft.operationalinsights/workspaces",
-                      "crossComponentResources": [
-                        "{Workspace}"
-                      ]
-                    },
-                    "name": "query - 6"
+                    "columnId": "TotalCount",
+                    "label": "Install Summary"
                   }
                 ]
               },
-              "name": "group - 3"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Connectivity"
-        },
-        "name": "Connectivity"
+              "sortBy": [
+                {
+                  "itemKey": "Update",
+                  "sortOrder": 1
+                }
+              ]
+            },
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Show system missing updates over time\r\nUpdateSummary\r\n| where TimeGenerated > now(-30days)\r\n| project TimeGenerated,Computer, SecurityUpdatesMissing\r\n| render timechart with (series = Computer)",
+              "size": 0,
+              "aggregation": 5,
+              "title": "Missing update count by computer over time (30 days)",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Show systems missing most updates\r\nUpdateSummary \r\n| summarize arg_max(TimeGenerated, *) by SourceComputerId\r\n| project Computer, OsVersion,OldestMissingSecurityUpdateInDays\r\n| sort by OldestMissingSecurityUpdateInDays",
+              "size": 1,
+              "title": "Oldest missing update by computer",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Shows the oldest updates not yet installed\r\nUpdate\r\n| where MSRCSeverity == \"Critical\" or MSRCSeverity == \"Security\"\r\n| summarize arg_max(TimeGenerated, *) by UpdateID,SourceComputerId\r\n| where UpdateState != \"Installed\"\r\n| project Computer, Product, MSRCSeverity, KBID, Title, UpdateState, HoursOld = datetime_diff('hour',now(),PublishedDate)\r\n| sort by HoursOld",
+              "size": 1,
+              "title": "Oldest missing updates",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          }
+        ]
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Exploit Protection",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Show all Exploit Protection events\r\nlet Mitigations = datatable (EventLogID:string, Mitigation:string)\r\n    [\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-1\", \"ACG audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-2\", \"ACG enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-3\", \"Do not allow child processes audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-4\", \"Do not allow child processes block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-5\", \"Block low integrity images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-6\", \"Block low integrity images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-7\", \"Block remote images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-8\", \"Block remote images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-9\", \"Disable win32k system calls audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-10\", \"Disable win32k system calls block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-11\", \"Code integrity guard audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-12\", \"Code integrity guard block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-13\", \"EAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-14\", \"EAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-15\", \"EAF+ audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-16\", \"EAF+ enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-17\", \"IAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-18\", \"IAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-19\", \"ROP StackPivot audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-20\", \"ROP StackPivot enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-21\", \"ROP CallerCheck audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-22\", \"ROP CallerCheck enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-23\", \"ROP SimExec audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-24\", \"ROP SimExec enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-1\", \"ACG audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-2\", \"ACG enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-3\", \"Do not allow child processes audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-4\", \"Do not allow child processes block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-5\", \"Block low integrity images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-6\", \"Block low integrity images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-7\", \"Block remote images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-8\", \"Block remote images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-9\", \"Disable win32k system calls audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-10\", \"Disable win32k system calls block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-11\", \"Code integrity guard audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-12\", \"Code integrity guard block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-13\", \"EAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-14\", \"EAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-15\", \"EAF+ audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-16\", \"EAF+ enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-17\", \"IAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-18\", \"IAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-19\", \"ROP StackPivot audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-20\", \"ROP StackPivot enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-21\", \"ROP CallerCheck audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-22\", \"ROP CallerCheck enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-23\", \"ROP SimExec audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-24\", \"ROP SimExec enforce\",\r\n        \"WER-Diagnostics-5\", \"CFG Block\",\r\n        \"Microsoft-Windows-Win32k/Operational-260\", \"Untrusted Font\"\r\n    ];\r\nEvent\r\n| where (EventID >= 1 and EventID <= 24 and (EventLog == \"Microsoft-Windows-Security-Mitigations/KernelMode\" or EventLog == \"Microsoft-Windows-Security-Mitigations/UserMode\")) or  (EventID == 260 and EventLog == \"Microsoft-Windows-Win32k/Operational\") or (EventID == 5 and EventLog == \"System\" and Source == \"Microsoft-Windows-WER-Diag\")\r\n| extend EventLogID = strcat(EventLog, \"-\", tostring(EventID))\r\n| join kind=leftouter Mitigations on EventLogID\r\n| project TimeGenerated, Computer,UserName,Mitigation,RenderedDescription",
-                "size": 0,
-                "title": "Exploit protection events",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 0"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Summarise all recent ASR block/audit events\r\nlet Mitigations = datatable (MitigationName:string, MitigationId:string)\r\n    [\r\n        \"Block Adobe Reader from creating child processes\", \"7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C\",\r\n        \"Block all Office applications from creating child processes\", \"D4F940AB-401B-4EFC-AADC-AD5F3C50688A\",\r\n        \"Block credential stealing from the Windows local security authority subsystem (lsass.exe)\", \"9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2\",\r\n        \"Block executable content from email client and webmail\", \"BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550\",\r\n        \"Block executable files from running unless they meet a prevalence, age, or trusted list criterion\", \"01443614-CD74-433A-B99E-2ECDC07BFC25\",\r\n        \"Block execution of potentially obfuscated scripts\", \"5BEB7EFE-FD9A-4556-801D-275E5FFC04CC\",\r\n        \"Block JavaScript or VBScript from launching downloaded executable content\", \"D3E037E1-3EB8-44C8-A917-57927947596D\",\r\n        \"Block Office applications from creating executable content\", \"3B576869-A4EC-4529-8536-B80A7769E899\",\r\n        \"Block Office applications from injecting code into other processes\", \"75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84\",\r\n        \"Block Office communication application from creating child processes\", \"26190899-1602-49E8-8B27-EB1D0A1CE869\",\r\n        \"Block persistence through WMI event subscription\", \"E6DB77E5-3DF2-4CF1-B95A-636979351E5B\",\r\n        \"Block process creations originating from PSExec and WMI commands\", \"D1E49AAC-8F56-4280-B9BA-993A6D77406C\",\r\n        \"Block untrusted and unsigned processes that run from USB\", \"B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4\",\r\n        \"Block Win32 API calls from Office macros\", \"92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B\",\r\n        \"Use advanced protection against ransomware\", \"C1DB55AB-C21A-4637-BB3F-A12568109D35\"\r\n    ];\r\nlet Responses = datatable (EventID:int, Response:string)\r\n    [\r\n        1121, \"Block\",\r\n        1122, \"Audit\"\r\n    ];\r\nEvent\r\n| where EventLog == \"Microsoft-Windows-Windows Defender/Operational\" or EventLog == \"Microsoft-Windows-Windows Defender/WHC\"\r\n| where EventID == 1121 or EventID == 1122\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ID'\r\n    | project MitigationId = toupper(tostring(ed['#text']))\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Detection Time'\r\n    | project DetectionTime = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project ProcessName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'User'\r\n    | project User = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Path'\r\n    | project Path = tostring(ed['#text'])\r\n)\r\n| join kind=leftouter Mitigations on MitigationId\r\n| join kind=leftouter Responses on EventID\r\n| summarize Count=count() by Computer, MitigationName, ProcessName, User, Path, Response\r\n| project Count, Response, Computer, MitigationName, ProcessName, User, Path\r\n| sort by Count",
-                "size": 0,
-                "title": "Attack surface reduction events",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 2"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Summarise Network Protection events\r\nlet Responses = datatable (EventID:int, Response:string)\r\n    [\r\n        1126, \"Block\",\r\n        1125, \"Audit\"\r\n    ];\r\nEvent\r\n| where EventLog == \"Microsoft-Windows-Windows Defender/Operational\" or EventLog == \"Microsoft-Windows-Windows Defender/WHC\"\r\n| where EventID == 1125 or EventID == 1126\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Detection Time'\r\n    | project DetectionTime = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'User'\r\n    | project User = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Destination'\r\n    | project Destination = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project ProcessName = tostring(ed['#text'])\r\n)\r\n| join kind=leftouter Responses on EventID\r\n| summarize Count=count() by Computer, ProcessName, User, Destination, Response\r\n| project Count, Response, Computer, ProcessName, Destination, User\r\n| sort by Count",
-                "size": 0,
-                "title": "Network protection events",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 1"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Exploit Protection"
-        },
-        "name": "Exploit Protection"
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Software Updates"
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Account Lockout",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//KQL query to show account lockout events\r\nSecurityEvent \r\n| where EventID == 4740",
-                "size": 0,
-                "title": "Account Lockouts",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
+      "name": "Software Updates"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Installed Software",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Identifies the prevelance of unqiue software versions\r\nConfigurationData \r\n| where ConfigDataType == \"Software\"\r\n| where SoftwareType == \"Application\"  \r\n| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion\r\n| summarize Systems=make_set(Computer) by SoftwareName,Publisher,CurrentVersion\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Security Intelligence Update for Microsoft Defender Antivirus - KB\")\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Update for Microsoft Defender Antivirus antimalware platform - KB\")\r\n| project SoftwareVersion = strcat(SoftwareName, \" \", CurrentVersion), Publisher, SystemCount = array_length(Systems), Systems",
+              "size": 0,
+              "title": "Software Summary",
+              "timeContext": {
+                "durationMs": 604800000
               },
-              "name": "query - 0"
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//KQL query to show failed logins by account and source\r\nSecurityEvent \r\n| where EventID == 4625\r\n| where Status =~ \"0xC000006D\"\r\n| summarize BadLogins = count() by TargetAccount, WorkstationName\r\n| sort by BadLogins",
-                "size": 0,
-                "title": "Failed Logins",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Identifies software applications where multiple versions are present\r\nConfigurationData \r\n| where ConfigDataType == \"Software\"\r\n| where SoftwareType == \"Application\"  \r\n| summarize arg_max(TimeGenerated, *) by Computer,SoftwareName,Publisher,CurrentVersion\r\n| summarize Versions=make_set(CurrentVersion) by SoftwareName,Publisher\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Security Intelligence Update for Microsoft Defender Antivirus - KB\")\r\n| where not(Publisher == \"Microsoft Corporation\" and SoftwareName hasprefix \"Update for Microsoft Defender Antivirus antimalware platform - KB\")\r\n| where array_length(Versions) > 1",
+              "size": 4,
+              "title": "Software with multiple versions installted",
+              "timeContext": {
+                "durationMs": 604800000
               },
-              "name": "query - 1"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Account Lockout"
-        },
-        "name": "Account Lockout"
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          }
+        ]
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Weak authentication protocols",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Aggregate NTLM incomming/outgoing events into one table\r\nlet AllEvents = Event\r\n| where EventLog =~ \"Microsoft-Windows-NTLM/Operational\"\r\n| extend NtlmDirection = iif(EventID == 8001, \"Outgoing\", iif(EventID == 8002, \"Incomming\", iif(EventID == 8003,\"In Domain (Server)\", iif(EventID == 8004,\"In Domain (Domain Controller)\", \"Unknown\"))))\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data;\r\nlet IncommingEvents = AllEvents | where NtlmDirection == \"Incomming\"\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'CallerPID'\r\n    | project CallerPID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProcessName'\r\n    | project ProcessName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientLUID'\r\n    | project ClientLUID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientUserName'\r\n    | project ClientUserName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientDomainName'\r\n    | project ClientDomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MechanismOID'\r\n    | project MechanismOID = ed['#text']\r\n);\r\nlet OutgoingEvents = AllEvents | where NtlmDirection == \"Outgoing\"\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'TargetName'\r\n    | project TargetName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'UserName'\r\n    | project UserName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'DomainName'\r\n    | project DomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'CallerPID'\r\n    | project CallerPID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProcessName'\r\n    | project ProcessName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientLUID'\r\n    | project ClientLUID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientUserName'\r\n    | project ClientUserName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientDomainName'\r\n    | project ClientDomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MechanismOID'\r\n    | project MechanismOID = ed['#text']\r\n)\r\n;\r\nunion IncommingEvents, OutgoingEvents\r\n| project TimeGenerated, Computer, NtlmDirection, TargetName, UserName, DomainName, CallerPID, ProcessName, ClientLUID, ClientUserName, ClientDomainName, MechanismOID\r\n",
-                "size": 0,
-                "title": "NTLM Events",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 0"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Discover state of lanman auth\r\nHeartbeat\r\n| summarize arg_max(TimeGenerated, *) by Computer\r\n| join kind=leftouter (\r\n    ( ConfigurationData \r\n    | where ConfigDataType == \"Registry\"\r\n    | where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\"\r\n    | where ValueName =~ \"lmcompatibilitylevel\"\r\n    | summarize arg_max(TimeGenerated, *) by Computer\r\n    | project SourceComputerId, LmCompatibilityLevel = ValueData )\r\n) on SourceComputerId\r\n| project Computer, InferredLmCompatibilityLevel = toint(iif(isnull(LmCompatibilityLevel),LmCompatibilityLevel,\"3\"))\r\n| project Computer, LanmanEnabled = (InferredLmCompatibilityLevel <= 3), Ntlmv1Enabled = (InferredLmCompatibilityLevel <= 4)",
-                "size": 0,
-                "title": "Lanman Auth Level",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
-              },
-              "name": "query - 1"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Weak authentication protocols"
-        },
-        "name": "Weak authentication protocols"
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Installed Software"
       },
-      {
-        "type": 12,
-        "content": {
-          "version": "NotebookGroup/1.0",
-          "groupType": "editable",
-          "title": "Operating System",
-          "items": [
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Summarises count of VM by OS version\r\nlet VersionConfigItems = ConfigurationData \r\n| where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\"\r\n| where ValueName =~ \"ProductName\" or ValueName =~ \"ReleaseId\"\r\n| summarize arg_max(TimeGenerated, *) by Computer,ValueName\r\n| project Computer, ValueName, ValueData;\r\nVersionConfigItems\r\n| extend p = pack(ValueName, ValueData)\r\n| summarize bag=make_bag(p)\r\n| evaluate bag_unpack(bag)\r\n| project OperatingSystem = strcat(ProductName, \" - \", ReleaseId)\r\n| summarize count() by OperatingSystem\r\n| render columnchart",
-                "size": 0,
-                "title": "OS summary",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
+      "name": "Installed Software"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Application Control",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarise all WDAC block events by count of event pattern\r\nEvent\r\n| where EventID == 3077\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project CallingProcess = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'File Name'\r\n    | project FileName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyName'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'FileDescription'\r\n    | project FileDescription = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProductName'\r\n    | project ProductName = tostring(ed['#text'])\r\n)\r\n| project TimeGenerated,Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName\r\n| summarize count() by Computer,CallingProcess,FileName,PolicyName,FileDescription,ProductName",
+              "size": 0,
+              "title": "WDAC Block Events (24 hours)",
+              "timeContext": {
+                "durationMs": 86400000
               },
-              "name": "query - 0"
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "gridSettings": {
+                "rowLimit": 30
+              }
             },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "//Details VM and associated operating system version\r\nlet VersionConfigItems = ConfigurationData \r\n| where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\"\r\n| where ValueName =~ \"ProductName\" or ValueName =~ \"ReleaseId\"\r\n| summarize arg_max(TimeGenerated, *) by Computer,ValueName\r\n| project Computer, ValueName, ValueData;\r\nVersionConfigItems\r\n| extend p = pack(ValueName, ValueData)\r\n| summarize bag=make_bag(p) by Computer\r\n| evaluate bag_unpack(bag);",
-                "size": 0,
-                "title": "OS detailed",
-                "timeContext": {
-                  "durationMs": 86400000
-                },
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "{Workspace}"
-                ]
+            "name": "query - 9"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarises the lastest WDAC policy load events by Computer, PolicyName, PolicyId\r\nEvent\r\n| where EventID == 3099\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyNameBuffer'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyIdBuffer'\r\n    | project PolicyId = tostring(ed['#text'])\r\n)\r\n| project TimeGenerated,Computer,PolicyName,PolicyId\r\n| summarize arg_max(TimeGenerated,*) by Computer,PolicyName,PolicyId",
+              "size": 0,
+              "title": "WDAC policy load events (24 hours)",
+              "timeContext": {
+                "durationMs": 86400000
               },
-              "name": "query - 1"
-            }
-          ]
-        },
-        "conditionalVisibility": {
-          "parameterName": "selectedTab",
-          "comparison": "isEqualTo",
-          "value": "Operating System"
-        },
-        "name": "Operating System"
-      }
-    ],
-    "defaultResourceIds": [
-      "Azure Monitor"
-    ],
-    "fallbackResourceIds": [
-      "Azure Monitor"
-    ],
-    "isLocked": false,
-    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
-  }
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ],
+              "gridSettings": {
+                "rowLimit": 30
+              }
+            },
+            "name": "query - 11"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Show WDAC blocks as a result of the ISG\r\nEvent\r\n| where EventID == 3092\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'FileName'\r\n    | project FileName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'StatusCode'\r\n    | project StatusCode = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PassesSmartlocker'\r\n    | project PassesISG = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'PolicyName'\r\n    | project PolicyName = tostring(ed['#text'])\r\n)\r\n| where PassesISG == \"false\"\r\n| summarize FailCount = count() by FileName\r\n| sort by FailCount",
+              "size": 0,
+              "title": "WDAC Intelligent Security Graph Block Events (24 hours)",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 10"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Application Control"
+      },
+      "name": "Application Control"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Connectivity",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//KQL query to detect TLS versions used, cipher used and destination targets\r\n//update the Cipher table here with Cipher Suite/Name mappings\r\nlet CipherLookupTable = datatable(CipherSuite: string, CipherName: string )\r\n[\r\n\"0X0001\", \"RSA_WITH_NULL_MD5\", \r\n\"0X0002\", \"RSA_WITH_NULL_SHA\",\r\n\"0X0004\", \"RSA_WITH_RC4_128_MD5\",\r\n\"0X0005\", \"RSA_WITH_RC4_128_SHA\",\r\n\"0X0009\", \"RSA_WITH_DES_CBC_SHA\",\r\n\"0X000A\", \"RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X0012\", \"DHE_DSS_WITH_DES_CBC_SHA\",\r\n\"0X0013\", \"DHE_DSS_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X0015\", \"DHE_RSA_WITH_DES_CBC_SHA\",\r\n\"0X0016\", \"DHE_RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0X002F\", \"RSA_WITH_AES_128_CBC_SHA\",\r\n\"0X0032\", \"DHE_DSS_WITH_AES_128_CBC_SHA\",\r\n\"0X0033\", \"DHE_RSA_WITH_AES_128_CBC_SHA\",\r\n\"0X0035\", \"RSA_WITH_AES_256_CBC_SHA\",\r\n\"0X0038\", \"DHE_DSS_WITH_AES_256_CBC_SHA\",\r\n\"0X0039\", \"DHE_RSA_WITH_AES_256_CBC_SHA\",\r\n\"0X003B\", \"RSA_WITH_NULL_SHA256\",\r\n\"0X003C\", \"RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0X003D\", \"RSA_WITH_AES_256_CBC_SHA256\",\r\n\"0X0040\", \"DHE_DSS_WITH_AES_128_CBC_SHA256\",\r\n\"0X0067\", \"DHE_RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0X006A\", \"DHE_DSS_WITH_AES_256_CBC_SHA256\",\r\n\"0X006B\", \"DHE_RSA_WITH_AES_256_CBC_SHA256\",\r\n\"0X009C\", \"RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X9C\", \"RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X009D\", \"RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X009E\", \"DHE_RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0X009F\", \"DHE_RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X00A2\", \"DHE_DSS_WITH_AES_128_GCM_SHA256\",\r\n\"0X00A3\", \"DHE_DSS_WITH_AES_256_GCM_SHA384\",\r\n\"0XC010\", \"ECDHE_RSA_WITH_NULL_SHA\",\r\n\"0XC011\", \"ECDHE_RSA_WITH_RC4_128_SHA\",\r\n\"0XC012\", \"ECDHE_RSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0XC013\", \"ECDHE_RSA_WITH_AES_128_CBC_SHA\",\r\n\"0XC014\", \"ECDHE_RSA_WITH_AES_256_CBC_SHA\",\r\n\"0XC027\", \"ECDHE_RSA_WITH_AES_128_CBC_SHA256\",\r\n\"0XC028\", \"ECDHE_RSA_WITH_AES_256_CBC_SHA384\",\r\n\"0XC02F\", \"ECDHE_RSA_WITH_AES_128_GCM_SHA256\",\r\n\"0XC030\", \"ECDHE_RSA_WITH_AES_256_GCM_SHA384\",\r\n\"0XC006\", \"ECDHE_ECDSA_WITH_NULL_SHA\",\r\n\"0XC007\", \"ECDHE_ECDSA_WITH_RC4_128_SHA\",\r\n\"0XC008\", \"ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA\",\r\n\"0XC009\", \"ECDHE_ECDSA_WITH_AES_128_CBC_SHA\",\r\n\"0XC00A\", \"ECDHE_ECDSA_WITH_AES_256_CBC_SHA\",\r\n\"0XC023\", \"ECDHE_ECDSA_WITH_AES_128_CBC_SHA256\",\r\n\"0XC024\", \"ECDHE_ECDSA_WITH_AES_256_CBC_SHA384\",\r\n\"0XC02B\", \"ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\",\r\n\"0XC02C\", \"ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\",\r\n\"0X1301\", \"AES_128_GCM_SHA256\",\r\n\"0X1302\", \"AES_256_GCM_SHA384\",\r\n\"0X1303\", \"CHACHA20_POLY1305_SHA256\",\r\n\"0X1304\", \"AES_128_CCM_SHA256\",\r\n\"0X1305\", \"AES_128_CCM_8_SHA256\"\r\n];\r\nEvent\r\n| where EventID == 36880\r\n| extend Protocol = tostring(parse_xml(EventData).DataItem.UserData.EventXML.Protocol)\r\n| extend Type = tostring(parse_xml(EventData).DataItem.UserData.EventXML.Type)\r\n| extend TargetName = (parse_xml(EventData).DataItem.UserData.EventXML.TargetName)\r\n| extend CipherSuite = tostring(toupper((parse_xml(EventData).DataItem.UserData.EventXML.CipherSuite)))\r\n| join kind=inner CipherLookupTable on CipherSuite\r\n| project TimeGenerated, Type, Computer, Protocol, TargetName, CipherSuite, CipherName",
+              "size": 0,
+              "title": "Detect TLS version",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Identifies where SNMP service is running on Windows systems\r\nConfigurationData \r\n| where ConfigDataType == \"WindowsServices\"\r\n| where SvcName =~ \"snmptrap\"\r\n| where SvcState == \"Running\"\r\n| project TimeGenerated,Computer,SvcDisplayName,SvcName,SvcState,SvcStartupType\r\n| summarize arg_max(TimeGenerated, *) by Computer",
+              "size": 0,
+              "title": "Detect SNMP service running",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//KQL query to detect VMs not reporting IPv6 tunnels disabled\r\nHeartbeat | where SourceComputerId !in (\r\n    ( ConfigurationData \r\n    | where RegistryKey == \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip6\\\\Parameters\"\r\n    | where ValueName == \"DisabledComponents\"\r\n    | where binary_and(toint(ValueData),1) == 1\r\n    | project SourceComputerId )\r\n)\r\n| extend resourceId=ResourceId\r\n| distinct resourceId",
+              "size": 0,
+              "title": "Detect IPv6 tunnel protocols enabled",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 9"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Heartbeat \r\n| where SourceComputerId !in (\r\n    ( ConfigurationData \r\n        | where RegistryKey == \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\Tcpip6\\\\Parameters\"\r\n        | where ValueName == \"DisabledComponents\"\r\n        | where ValueData == 255\r\n        | project SourceComputerId )\r\n    )\r\n| extend resourceId=ResourceId\r\n| distinct resourceId",
+              "size": 0,
+              "title": "VMs with IPv6 enabled",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "ShowIPv6Tables",
+              "comparison": "isEqualTo",
+              "value": "t"
+            },
+            "showPin": false,
+            "name": "VMs with IPv6 enabled"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type =~ 'microsoft.compute/virtualmachines'\r\n| mv-expand nic=properties.networkProfile.networkInterfaces\r\n| project vmId = id, vmName = name, vmSize=tostring(properties.hardwareProfile.vmSize), nicId = tostring(nic.id)  \r\n| join kind=inner (\r\n    resources \r\n    | where type == 'microsoft.network/networkinterfaces' \r\n    | mvexpand properties.ipConfigurations \r\n    | extend subnetId = tostring(properties_ipConfigurations.properties.subnet.id) \r\n    | extend nicId = id \r\n    | join kind=inner ( \r\n        resources \r\n        | where type == 'microsoft.network/virtualnetworks' \r\n        | mvexpand properties.subnets\r\n        | where tostring(properties_subnets.properties.addressPrefixes) !contains ':' \r\n        | extend subnetId = tostring(properties_subnets.id)) \r\n     on subnetId\r\n) on nicId\r\n| project resourceId=vmId",
+              "size": 0,
+              "title": "VMs connected to IPv4 -only subnets",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "{Subscription}"
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "ShowIPv6Tables",
+              "comparison": "isEqualTo",
+              "value": "true"
+            },
+            "name": "VMs connected to IPv4 -only subnets"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "{\"version\":\"Merge/1.0\",\"merges\":[{\"id\":\"0fa799b5-a6e5-4ade-b919-8ceb2b5f415f\",\"mergeType\":\"innerunique\",\"leftTable\":\"VMs with IPv6 enabled\",\"rightTable\":\"VMs connected to IPv4 -only subnets\",\"leftColumn\":\"resourceId\",\"rightColumn\":\"resourceId\"}]}",
+              "size": 0,
+              "title": "IPv6 unnecessarily enabled",
+              "queryType": 7,
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "resourceId1",
+                    "formatter": 5
+                  }
+                ]
+              }
+            },
+            "showPin": false,
+            "name": "query - 6"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "title": "IPsec reporting",
+              "expandable": true,
+              "expanded": true,
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec MM HMAC algorithm (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MMIntegrityAlg'\r\n    | project MMIntegrityAlg = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where MMIntegrityAlg != \"%%8242\" and MMIntegrityAlg != \"%%8243\" \r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, MMIntegrityAlg\r\n",
+                    "size": 0,
+                    "title": "IPsec HMAC algorithms",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 0"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec DH Groups with low modulus (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'DHGroup'\r\n    | project DHGroup = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where DHGroup != \"%%8232\" and DHGroup != \"%%8248\" and DHGroup != \"%%8233\" and DHGroup != \"%%8234\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, DHGroup\r\n",
+                    "size": 0,
+                    "title": "Low modulus DH groups",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 1"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec MM SAs with long lifetime (Event table)\r\nEvent \r\n| where EventID == 4650 or EventID == 4651\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MMLifetime'\r\n    | project LifetimeSeconds = (ed['#text'] * 60)\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where LifetimeSeconds >= 14400\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, LifetimeSeconds\r\n",
+                    "size": 0,
+                    "title": "Long lifetime main-mode SAs",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 2"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec SAs without ESP (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'EspAuthType'\r\n    | project ESPAuthType = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where ESPAuthType == \"-\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress\r\n",
+                    "size": 0,
+                    "title": "SAs without ESP",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 3"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec SAs without IKE (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'KeyingModuleName'\r\n    | project KeyingModuleName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where KeyingModuleName !startswith \"IKE\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, KeyingModuleName\r\n",
+                    "size": 0,
+                    "title": "SAs without IKE",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 4"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec QM SAs with long lifetime (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LifetimeSeconds'\r\n    | project LifetimeSeconds = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where LifetimeSeconds > 14400\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, LifetimeSeconds",
+                    "size": 0,
+                    "title": "Long lifetime quick-mode SAs",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 5"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "//KQL query to detect IPsec Transport mode (Event table)\r\nEvent \r\n| where EventID == 5451\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Mode'\r\n    | project Mode = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'LocalAddress'\r\n    | project LocalAddress = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'RemoteAddress'\r\n    | project RemoteAddress = ed['#text']\r\n)\r\n| where Mode == \"%%16403\"\r\n| project TimeGenerated, Computer, LocalAddress, RemoteAddress, Mode=\"Transport\"",
+                    "size": 0,
+                    "title": "Transport mode SAs",
+                    "timeContext": {
+                      "durationMs": 604800000
+                    },
+                    "queryType": 0,
+                    "resourceType": "microsoft.operationalinsights/workspaces",
+                    "crossComponentResources": [
+                      "{Workspace}"
+                    ]
+                  },
+                  "name": "query - 6"
+                }
+              ]
+            },
+            "name": "group - 3"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Connectivity"
+      },
+      "name": "Connectivity"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Exploit Protection",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Show all Exploit Protection events\r\nlet Mitigations = datatable (EventLogID:string, Mitigation:string)\r\n    [\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-1\", \"ACG audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-2\", \"ACG enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-3\", \"Do not allow child processes audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-4\", \"Do not allow child processes block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-5\", \"Block low integrity images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-6\", \"Block low integrity images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-7\", \"Block remote images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-8\", \"Block remote images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-9\", \"Disable win32k system calls audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-10\", \"Disable win32k system calls block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-11\", \"Code integrity guard audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-12\", \"Code integrity guard block\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-13\", \"EAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-14\", \"EAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-15\", \"EAF+ audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-16\", \"EAF+ enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-17\", \"IAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-18\", \"IAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-19\", \"ROP StackPivot audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-20\", \"ROP StackPivot enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-21\", \"ROP CallerCheck audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-22\", \"ROP CallerCheck enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-23\", \"ROP SimExec audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/KernelMode-24\", \"ROP SimExec enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-1\", \"ACG audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-2\", \"ACG enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-3\", \"Do not allow child processes audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-4\", \"Do not allow child processes block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-5\", \"Block low integrity images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-6\", \"Block low integrity images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-7\", \"Block remote images audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-8\", \"Block remote images block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-9\", \"Disable win32k system calls audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-10\", \"Disable win32k system calls block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-11\", \"Code integrity guard audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-12\", \"Code integrity guard block\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-13\", \"EAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-14\", \"EAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-15\", \"EAF+ audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-16\", \"EAF+ enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-17\", \"IAF audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-18\", \"IAF enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-19\", \"ROP StackPivot audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-20\", \"ROP StackPivot enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-21\", \"ROP CallerCheck audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-22\", \"ROP CallerCheck enforce\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-23\", \"ROP SimExec audit\",\r\n        \"Microsoft-Windows-Security-Mitigations/UserMode-24\", \"ROP SimExec enforce\",\r\n        \"WER-Diagnostics-5\", \"CFG Block\",\r\n        \"Microsoft-Windows-Win32k/Operational-260\", \"Untrusted Font\"\r\n    ];\r\nEvent\r\n| where (EventID >= 1 and EventID <= 24 and (EventLog == \"Microsoft-Windows-Security-Mitigations/KernelMode\" or EventLog == \"Microsoft-Windows-Security-Mitigations/UserMode\")) or  (EventID == 260 and EventLog == \"Microsoft-Windows-Win32k/Operational\") or (EventID == 5 and EventLog == \"System\" and Source == \"Microsoft-Windows-WER-Diag\")\r\n| extend EventLogID = strcat(EventLog, \"-\", tostring(EventID))\r\n| join kind=leftouter Mitigations on EventLogID\r\n| project TimeGenerated, Computer,UserName,Mitigation,RenderedDescription",
+              "size": 0,
+              "title": "Exploit protection events",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarise all recent ASR block/audit events\r\nlet Mitigations = datatable (MitigationName:string, MitigationId:string)\r\n    [\r\n        \"Block Adobe Reader from creating child processes\", \"7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C\",\r\n        \"Block all Office applications from creating child processes\", \"D4F940AB-401B-4EFC-AADC-AD5F3C50688A\",\r\n        \"Block credential stealing from the Windows local security authority subsystem (lsass.exe)\", \"9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2\",\r\n        \"Block executable content from email client and webmail\", \"BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550\",\r\n        \"Block executable files from running unless they meet a prevalence, age, or trusted list criterion\", \"01443614-CD74-433A-B99E-2ECDC07BFC25\",\r\n        \"Block execution of potentially obfuscated scripts\", \"5BEB7EFE-FD9A-4556-801D-275E5FFC04CC\",\r\n        \"Block JavaScript or VBScript from launching downloaded executable content\", \"D3E037E1-3EB8-44C8-A917-57927947596D\",\r\n        \"Block Office applications from creating executable content\", \"3B576869-A4EC-4529-8536-B80A7769E899\",\r\n        \"Block Office applications from injecting code into other processes\", \"75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84\",\r\n        \"Block Office communication application from creating child processes\", \"26190899-1602-49E8-8B27-EB1D0A1CE869\",\r\n        \"Block persistence through WMI event subscription\", \"E6DB77E5-3DF2-4CF1-B95A-636979351E5B\",\r\n        \"Block process creations originating from PSExec and WMI commands\", \"D1E49AAC-8F56-4280-B9BA-993A6D77406C\",\r\n        \"Block untrusted and unsigned processes that run from USB\", \"B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4\",\r\n        \"Block Win32 API calls from Office macros\", \"92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B\",\r\n        \"Use advanced protection against ransomware\", \"C1DB55AB-C21A-4637-BB3F-A12568109D35\"\r\n    ];\r\nlet Responses = datatable (EventID:int, Response:string)\r\n    [\r\n        1121, \"Block\",\r\n        1122, \"Audit\"\r\n    ];\r\nEvent\r\n| where EventLog == \"Microsoft-Windows-Windows Defender/Operational\" or EventLog == \"Microsoft-Windows-Windows Defender/WHC\"\r\n| where EventID == 1121 or EventID == 1122\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ID'\r\n    | project MitigationId = toupper(tostring(ed['#text']))\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Detection Time'\r\n    | project DetectionTime = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project ProcessName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'User'\r\n    | project User = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Path'\r\n    | project Path = tostring(ed['#text'])\r\n)\r\n| join kind=leftouter Mitigations on MitigationId\r\n| join kind=leftouter Responses on EventID\r\n| summarize Count=count() by Computer, MitigationName, ProcessName, User, Path, Response\r\n| project Count, Response, Computer, MitigationName, ProcessName, User, Path\r\n| sort by Count",
+              "size": 0,
+              "title": "Attack surface reduction events",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarise Network Protection events\r\nlet Responses = datatable (EventID:int, Response:string)\r\n    [\r\n        1126, \"Block\",\r\n        1125, \"Audit\"\r\n    ];\r\nEvent\r\n| where EventLog == \"Microsoft-Windows-Windows Defender/Operational\" or EventLog == \"Microsoft-Windows-Windows Defender/WHC\"\r\n| where EventID == 1125 or EventID == 1126\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Detection Time'\r\n    | project DetectionTime = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'User'\r\n    | project User = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Destination'\r\n    | project Destination = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'Process Name'\r\n    | project ProcessName = tostring(ed['#text'])\r\n)\r\n| join kind=leftouter Responses on EventID\r\n| summarize Count=count() by Computer, ProcessName, User, Destination, Response\r\n| project Count, Response, Computer, ProcessName, Destination, User\r\n| sort by Count",
+              "size": 0,
+              "title": "Network protection events",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Exploit Protection"
+      },
+      "name": "Exploit Protection"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Account Lockout",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//KQL query to show account lockout events\r\nSecurityEvent \r\n| where EventID == 4740\r\n| project TimeGenerated, Account, Computer",
+              "size": 1,
+              "title": "Account Lockouts",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//KQL query to show failed logins by account and source\r\nSecurityEvent \r\n| where EventID == 4625\r\n| where Status =~ \"0xC000006D\"\r\n| summarize BadLogins = count() by TargetAccount, WorkstationName\r\n| sort by BadLogins",
+              "size": 1,
+              "title": "Failed Logins",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Account Lockout"
+      },
+      "name": "Account Lockout"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Weak authentication protocols",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Aggregate NTLM incomming/outgoing events into one table\r\nlet AllEvents = Event\r\n| where EventLog =~ \"Microsoft-Windows-NTLM/Operational\"\r\n| extend NtlmDirection = iif(EventID == 8001, \"Outgoing\", iif(EventID == 8002, \"Incomming\", iif(EventID == 8003,\"In Domain (Server)\", iif(EventID == 8004,\"In Domain (Domain Controller)\", \"Unknown\"))))\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data;\r\nlet IncommingEvents = AllEvents | where NtlmDirection == \"Incomming\"\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'CallerPID'\r\n    | project CallerPID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProcessName'\r\n    | project ProcessName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientLUID'\r\n    | project ClientLUID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientUserName'\r\n    | project ClientUserName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientDomainName'\r\n    | project ClientDomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MechanismOID'\r\n    | project MechanismOID = ed['#text']\r\n);\r\nlet OutgoingEvents = AllEvents | where NtlmDirection == \"Outgoing\"\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'TargetName'\r\n    | project TargetName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'UserName'\r\n    | project UserName = tostring(ed['#text'])\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'DomainName'\r\n    | project DomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'CallerPID'\r\n    | project CallerPID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ProcessName'\r\n    | project ProcessName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientLUID'\r\n    | project ClientLUID = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientUserName'\r\n    | project ClientUserName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'ClientDomainName'\r\n    | project ClientDomainName = ed['#text']\r\n)\r\n| extend ed = parse_xml(EventData).DataItem.EventData.Data\r\n| mv-apply ed on \r\n(\r\n    where ed['@Name'] == 'MechanismOID'\r\n    | project MechanismOID = ed['#text']\r\n)\r\n;\r\nunion IncommingEvents, OutgoingEvents\r\n| project TimeGenerated, Computer, NtlmDirection, TargetName, UserName, DomainName, CallerPID, ProcessName, ClientLUID, ClientUserName, ClientDomainName, MechanismOID\r\n",
+              "size": 0,
+              "title": "NTLM Events",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Discover state of lanman auth\r\nHeartbeat\r\n| summarize arg_max(TimeGenerated, *) by Computer\r\n| join kind=leftouter (\r\n    ( ConfigurationData \r\n    | where ConfigDataType == \"Registry\"\r\n    | where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\"\r\n    | where ValueName =~ \"lmcompatibilitylevel\"\r\n    | summarize arg_max(TimeGenerated, *) by Computer\r\n    | project SourceComputerId, LmCompatibilityLevel = ValueData )\r\n) on SourceComputerId\r\n| project Computer, InferredLmCompatibilityLevel = toint(iif(isnull(LmCompatibilityLevel),LmCompatibilityLevel,\"3\"))\r\n| project Computer, LanmanEnabled = (InferredLmCompatibilityLevel <= 3), Ntlmv1Enabled = (InferredLmCompatibilityLevel <= 4)",
+              "size": 0,
+              "title": "Lanman Auth Level",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Weak authentication protocols"
+      },
+      "name": "Weak authentication protocols"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Operating System",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Summarises count of VM by OS version\r\nlet VersionConfigItems = ConfigurationData \r\n| where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\"\r\n| where ValueName =~ \"ProductName\" or ValueName =~ \"ReleaseId\"\r\n| summarize arg_max(TimeGenerated, *) by Computer,ValueName\r\n| project Computer, ValueName, ValueData;\r\nVersionConfigItems\r\n| extend p = pack(ValueName, ValueData)\r\n| summarize bag=make_bag(p) by Computer\r\n| evaluate bag_unpack(bag)\r\n| project OperatingSystem = strcat(ProductName, iif(strlen(ReleaseId) == 0,\"\",\" - \"), ReleaseId)\r\n| summarize count() by OperatingSystem\r\n| render columnchart;\r\n",
+              "size": 0,
+              "title": "OS summary",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 0"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "//Details VM and associated operating system version\r\nlet VersionConfigItems = ConfigurationData \r\n| where RegistryKey =~ \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\"\r\n| where ValueName =~ \"ProductName\" or ValueName =~ \"ReleaseId\"\r\n| summarize arg_max(TimeGenerated, *) by Computer,ValueName\r\n| project Computer, ValueName, ValueData;\r\nVersionConfigItems\r\n| extend p = pack(ValueName, ValueData)\r\n| summarize bag=make_bag(p) by Computer\r\n| evaluate bag_unpack(bag);",
+              "size": 1,
+              "title": "OS detailed",
+              "timeContext": {
+                "durationMs": 604800000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{Workspace}"
+              ]
+            },
+            "name": "query - 1"
+          }
+        ]
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "Operating System"
+      },
+      "name": "Operating System"
+    }
+  ],
+  "defaultResourceIds": [
+    "Azure Monitor"
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
