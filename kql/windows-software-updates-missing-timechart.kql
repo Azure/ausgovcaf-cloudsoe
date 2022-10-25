@@ -1,4 +1,5 @@
 //Show system missing updates over time
 UpdateSummary
+| where TimeGenerated > now(-30days)
 | project TimeGenerated,Computer, SecurityUpdatesMissing
 | render timechart with (series = Computer)

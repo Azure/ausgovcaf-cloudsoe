@@ -1,0 +1,14 @@
+//Note: The following ARG and AML queries are used to create an Azure Monitor Workbooks merge to show update heartbeat with ARG providing inventory
+
+//Summarise the VMs and Arc-enabled VMs according to ARG
+resources
+| where type == "microsoft.compute/virtualmachines" or type == "microsoft.hybridcompute/machines"
+| extend location=iif(type == "microsoft.compute/virtualmachines",location,tags.Datacenter),VMUUID=properties.vmUuid,VMID=properties.vmId
+| extend UpdateUUID=iif(type=="microsoft.compute/virtualmachines",VMID,VMUUID)
+| project id,Name=name,UpdateUUID
+
+//Provides heartbeat time according to Update Management
+Update
+| where TimeGenerated > now(-2days)
+| summarize arg_max(TimeGenerated, *) by VMUUID
+| project ResourceId, VMUUID, UpdateStatusHeartbeatHours = datetime_diff("hour",now(),TimeGenerated)
